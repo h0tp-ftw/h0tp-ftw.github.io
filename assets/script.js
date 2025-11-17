@@ -480,8 +480,7 @@ let currentView = 'cumulative';
 
 async function loadPortfolioDataFromCSV() {
     try {
-        const cacheBuster = `?v=${Date.now()}`;
-        const csvUrl = PORTFOLIO_CSV_URL + cacheBuster;
+        const csvUrl = PORTFOLIO_CSV_URL;
 
         console.log('📊 Loading CSV:', csvUrl);
 
