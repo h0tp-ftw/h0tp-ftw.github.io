@@ -7,7 +7,7 @@ const FEATURED_PROJECTS_COUNT = 6;
 const PORTFOLIO_CSV_URL = 'assets/portfolio-returns.csv';
 
 const ROTATING_WORDS = [
-    'underappreciated',
+    'unpaid',
     'unknown',
     'overworked',
     'broke',
