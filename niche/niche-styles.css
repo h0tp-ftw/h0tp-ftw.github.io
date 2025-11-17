@@ -1,0 +1,135 @@
+/* Additional styles for niche page */
+
+.niche-header {
+    text-align: center;
+    padding: 4rem 2rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    background: var(--ctp-surface0);
+    transform: translateX(-4px);
+}
+
+.niche-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--ctp-text);
+    margin-bottom: 0.5rem;
+}
+
+.niche-subtitle {
+    font-size: 1.25rem;
+    color: var(--ctp-subtext0);
+}
+
+.niche-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.guides-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.guide-section {
+    background: var(--ctp-surface0);
+    padding: 2rem;
+    border-radius: 16px;
+    border: 2px solid var(--ctp-surface1);
+}
+
+.guide-section h2 {
+    color: var(--accent);
+    margin-bottom: 1rem;
+}
+
+.guide-section ul {
+    list-style-position: inside;
+    color: var(--ctp-subtext0);
+    line-height: 1.8;
+}
+
+.guide-card {
+    background: var(--ctp-surface0);
+    border: 2px solid var(--ctp-surface1);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+.guide-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.guide-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--ctp-text);
+    margin-bottom: 0.75rem;
+}
+
+.guide-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.guide-date, .guide-category {
+    color: var(--ctp-subtext0);
+}
+
+.guide-category {
+    padding: 0.25rem 0.75rem;
+    background: var(--ctp-surface1);
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.guide-content {
+    color: var(--ctp-subtext0);
+    line-height: 1.7;
+}
+
+.guide-content pre {
+    background: var(--ctp-mantle);
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+.guide-content code {
+    color: var(--ctp-green);
+    font-family: 'Courier New', monospace;
+}
+
+@media (max-width: 768px) {
+    .niche-title {
+        font-size: 2rem;
+    }
+
+    .niche-subtitle {
+        font-size: 1rem;
+    }
+}
