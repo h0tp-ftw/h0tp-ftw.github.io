@@ -6,6 +6,7 @@
     <title>TWR Calculator | h0tp-ftw</title>
     <link rel="stylesheet" href="../assets/styles.css">
     <link rel="stylesheet" href="assets/niche.css">
+    <link rel="stylesheet" href="assets/twr-calculator-enhanced.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body data-theme="frappe">
@@ -26,19 +27,18 @@
             <p class="niche-subtitle">Calculate accurate portfolio returns accounting for cash flows</p>
         </header>
 
-        <div class="calculator-grid">
-            <!-- Input Section -->
-            <div class="calculator-card">
-                <h2>📝 Portfolio Data</h2>
+        <div class="twr-container">
+            <div class="twr-form-container">
+                <h2>Portfolio Data</h2>
 
-                <div class="input-group">
+                <div class="form-group">
+                    <input type="date" id="start-date" placeholder=" " />
                     <label for="start-date">Start Date</label>
-                    <input type="date" id="start-date" class="calc-input">
                 </div>
 
-                <div class="input-group">
+                <div class="form-group">
+                    <input type="number" id="start-balance" placeholder=" " step="0.01" />
                     <label for="start-balance">Starting Balance ($)</label>
-                    <input type="number" id="start-balance" class="calc-input" placeholder="10000" step="0.01">
                 </div>
 
                 <h3>Cash Flows</h3>
@@ -54,75 +54,22 @@
                 </button>
 
                 <div class="button-group">
-                    <button class="calc-btn primary" id="calculate-btn">Calculate TWR</button>
-                    <button class="calc-btn secondary" id="reset-btn">Reset</button>
+                    <button class="twr-button" id="calculate-btn">Calculate TWR</button>
+                    <button class="twr-button secondary" id="reset-btn">Reset</button>
                 </div>
             </div>
 
-            <!-- Results Section -->
-            <div class="calculator-card">
-                <h2>📈 Results</h2>
-
+            <div class="twr-chart-container">
+                <h2>Results</h2>
                 <div id="results-container" class="results-hidden">
-                    <div class="result-stat">
-                        <span class="result-label">Time-Weighted Return</span>
-                        <span class="result-value" id="twr-result">-</span>
+                    <div id="twr-chart-wrapper">
+                        <canvas id="twr-chart"></canvas>
                     </div>
-
-                    <div class="result-stat">
-                        <span class="result-label">Simple Return</span>
-                        <span class="result-value" id="simple-return">-</span>
-                    </div>
-
-                    <div class="result-stat">
-                        <span class="result-label">Total Gain/Loss</span>
-                        <span class="result-value" id="total-gain">-</span>
-                    </div>
-
-                    <div class="result-stat">
-                        <span class="result-label">Ending Balance</span>
-                        <span class="result-value" id="end-balance">-</span>
-                    </div>
-
-                    <canvas id="twr-chart"></canvas>
-
-                    <button class="calc-btn export" id="export-btn">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 16l-5-5h3V4h4v7h3l-5 5zM5 20h14v2H5v-2z"/>
-                        </svg>
-                        Export to CSV
-                    </button>
                 </div>
-
                 <div id="results-placeholder" class="results-placeholder">
-                    <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor" opacity="0.3">
-                        <path d="M3 13h2v8H3v-8zm4-6h2v14H7V7zm4 10h2v4h-2v-4zm4-6h2v10h-2V11zm4-4h2v14h-2V7z"/>
-                    </svg>
                     <p>Enter your portfolio data and click Calculate</p>
                 </div>
             </div>
-        </div>
-
-        <!-- Explanation Section -->
-        <div class="explanation-card">
-            <h2>🤔 What is Time-Weighted Return?</h2>
-            <p>
-                Time-Weighted Return (TWR) measures the compound rate of growth in a portfolio,
-                removing the effects of cash flows (deposits and withdrawals). This makes it ideal
-                for comparing investment performance regardless of when you added or removed money.
-            </p>
-
-            <h3>Formula</h3>
-            <div class="formula">
-                TWR = [(1 + R₁) × (1 + R₂) × ... × (1 + Rₙ) - 1] × 100%
-            </div>
-            <p class="formula-note">Where R₁, R₂, ..., Rₙ are the returns for each period between cash flows.</p>
-
-            <h3>TWR vs Simple Return</h3>
-            <ul>
-                <li><strong>TWR:</strong> Removes timing effects of cash flows. Better for performance evaluation.</li>
-                <li><strong>Simple Return:</strong> (End Value - Start Value - Net Flows) / Start Value. Affected by deposit timing.</li>
-            </ul>
         </div>
     </div>
 

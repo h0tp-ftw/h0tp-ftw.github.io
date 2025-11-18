@@ -1,0 +1,128 @@
+/* ============================================ */
+/* GUIDE PAGES - STYLES */
+/* ============================================ */
+
+:root {
+    --guide-code-bg: #1e1e2e;
+    --guide-code-border: #45475a;
+    --guide-callout-info: #89b4fa;
+    --guide-callout-warning: #f9e2af;
+    --guide-callout-success: #a6e3a1;
+}
+
+.guide-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+.guide-sidebar {
+    position: sticky;
+    top: 6rem;
+}
+
+.guide-toc {
+    background: var(--niche-surface);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--niche-card);
+}
+
+.guide-toc h3 {
+    margin-top: 0;
+    font-size: 1.25rem;
+    color: var(--niche-accent);
+}
+
+.guide-toc ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.guide-toc li a {
+    color: var(--niche-subtext);
+    text-decoration: none;
+    display: block;
+    padding: 0.5rem 0;
+    border-left: 2px solid transparent;
+    padding-left: 1rem;
+    transition: all 0.2s ease;
+}
+
+.guide-toc li a:hover {
+    color: var(--niche-text);
+    border-left-color: var(--niche-accent-hover);
+}
+
+.guide-toc li a.active {
+    color: var(--niche-accent);
+    border-left-color: var(--niche-accent);
+    font-weight: 600;
+}
+
+.guide-content h2 {
+    font-size: 2rem;
+    color: var(--niche-accent);
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--niche-card);
+}
+
+.guide-content h3 {
+    font-size: 1.5rem;
+    color: var(--niche-text);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.guide-content p {
+    font-size: 1.125rem;
+    line-height: 1.7;
+}
+
+.guide-content pre {
+    background: var(--guide-code-bg);
+    border: 1px solid var(--guide-code-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    overflow-x: auto;
+    position: relative;
+}
+
+.guide-content code {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+}
+
+.copy-code-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--niche-surface);
+    color: var(--niche-text);
+    border: 1px solid var(--niche-card);
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.copy-code-btn:hover {
+    background: var(--niche-accent);
+    color: var(--niche-bg);
+}
+
+@media (max-width: 1024px) {
+    .guide-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .guide-sidebar {
+        position: static;
+        top: auto;
+        margin-bottom: 2rem;
+    }
+}
