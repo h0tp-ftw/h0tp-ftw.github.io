@@ -162,7 +162,8 @@ navItems.forEach(item => {
 });
 
 function updateActiveNav() {
-    const sections = ['hero', 'my-setup', 'featured-projects', 'surprise-section', 'portfolio-performance', 'cool-people'];
+    const sections = ['hero', 'my-setup', 'featured-projects', 'surprise-section', 'portfolio-performance', 'niche-projects', 'cool-people'];
+
     const scrollPosition = window.scrollY + 100;
 
     for (const sectionId of sections) {
@@ -1067,3 +1068,36 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Stack trace:', error.stack);
     }
 });
+
+
+// ============================================
+// NICHE PROJECTS TOGGLE
+// ============================================
+
+const showAllNicheBtn = document.getElementById('show-all-niche-btn');
+const nicheGrid = document.getElementById('niche-grid');
+let nicheExpanded = false;
+
+if (showAllNicheBtn) {
+    showAllNicheBtn.addEventListener('click', () => {
+        nicheExpanded = !nicheExpanded;
+
+        const hiddenTiles = nicheGrid.querySelectorAll('.hidden-niche-tile');
+
+        if (nicheExpanded) {
+            hiddenTiles.forEach(tile => {
+                tile.classList.remove('hidden-niche-tile');
+                tile.classList.add('visible-niche-tile');
+            });
+            showAllNicheBtn.querySelector('span').textContent = 'Show Less Projects';
+            showAllNicheBtn.classList.add('expanded');
+        } else {
+            hiddenTiles.forEach(tile => {
+                tile.classList.add('hidden-niche-tile');
+                tile.classList.remove('visible-niche-tile');
+            });
+            showAllNicheBtn.querySelector('span').textContent = 'Show More Projects';
+            showAllNicheBtn.classList.remove('expanded');
+        }
+    });
+}

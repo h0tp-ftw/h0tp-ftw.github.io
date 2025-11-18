@@ -1,0 +1,106 @@
+/* ============================================ */
+/* NICHE PAGES - SHARED STYLES */
+/* ============================================ */
+
+:root[data-theme="frappe"] {
+    --niche-bg: #303446;
+    --niche-surface: #414559;
+    --niche-card: #51576d;
+    --niche-text: #c6d0f5;
+    --niche-subtext: #a5adce;
+    --niche-accent: #ca9ee6;
+    --niche-accent-hover: #f4b8e4;
+}
+
+:root[data-theme="latte"] {
+    --niche-bg: #eff1f5;
+    --niche-surface: #e6e9ef;
+    --niche-card: #dce0e8;
+    --niche-text: #4c4f69;
+    --niche-subtext: #6c6f85;
+    --niche-accent: #8839ef;
+    --niche-accent-hover: #ca9ee6;
+}
+
+body {
+    background: var(--niche-bg);
+    color: var(--niche-text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.niche-back-nav {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+    z-index: 1000;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--niche-surface);
+    color: var(--niche-text);
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.back-btn:hover {
+    background: var(--niche-accent);
+    color: var(--niche-bg);
+    transform: translateX(-4px);
+}
+
+.niche-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 6rem 2rem 4rem;
+}
+
+.niche-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.niche-header h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--niche-text), var(--niche-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.niche-subtitle {
+    font-size: 1.25rem;
+    color: var(--niche-subtext);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .niche-back-nav {
+        top: 1rem;
+        left: 1rem;
+    }
+
+    .niche-container {
+        padding: 5rem 1rem 2rem;
+    }
+
+    .niche-header h1 {
+        font-size: 2rem;
+    }
+
+    .niche-subtitle {
+        font-size: 1rem;
+    }
+}
