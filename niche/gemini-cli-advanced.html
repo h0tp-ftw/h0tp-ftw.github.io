@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using Gemini CLI for Advanced Coding | h0tp-ftw</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <link rel="stylesheet" href="assets/niche.css">
+    <link rel="stylesheet" href="assets/guide.css">
+</head>
+<body data-theme="frappe">
+    <!-- Back Button -->
+    <div class="niche-back-nav">
+        <a href="../index.html#niche-projects" class="back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M15 18l-6-6 6-6"/>
+            </svg>
+            Back to Portfolio
+        </a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="niche-container">
+        <header class="niche-header">
+            <h1>🤖 Using Gemini CLI for Advanced Coding</h1>
+            <p class="niche-subtitle">A guide to leveraging the power of Gemini for your development workflow.</p>
+        </header>
+
+        <div class="guide-layout">
+            <aside class="guide-sidebar">
+                <nav class="guide-toc">
+                    <h3>On this page</h3>
+                    <ul>
+                        <!-- TOC will be generated here -->
+                    </ul>
+                </nav>
+            </aside>
+            <main class="guide-content">
+                <section>
+                    <h2>What is Gemini CLI?</h2>
+                    <p>The Gemini CLI is a powerful tool that brings the capabilities of Google's Gemini models to your terminal. It allows you to interact with Gemini in a conversational way, and to integrate it into your scripts and workflows.</p>
+                </section>
+
+                <section>
+                    <h2>Setup and Authentication</h2>
+                    <p>Before you can use the Gemini CLI, you need to install it and authenticate with your Google account. This is typically done using the `gcloud` command-line tool.</p>
+                    <pre><code>gcloud auth application-default login</code></pre>
+                </section>
+
+                <section>
+                    <h2>Basic Usage</h2>
+                    <p>You can interact with Gemini by piping text to it, or by providing a prompt as an argument.</p>
+                    <pre><code>echo "Hello, Gemini!" | gemini</code></pre>
+                    <pre><code>gemini "What is the capital of France?"</code></pre>
+                </section>
+
+                <section>
+                    <h2>Advanced Techniques</h2>
+                    <p>For more advanced use cases, you can use the Gemini CLI to analyze code, generate documentation, and even write new code from scratch.</p>
+                    <h3>Code Analysis</h3>
+                    <p>You can pipe a code file to Gemini and ask it to explain the code, identify potential bugs, or suggest improvements.</p>
+                    <pre><code>cat my_script.py | gemini "Explain this Python script"</code></pre>
+                    <h3>Code Generation</h3>
+                    <p>You can also ask Gemini to generate code for you. Be as specific as possible in your prompt to get the best results.</p>
+                    <pre><code>gemini "Write a Python function that takes a list of numbers and returns the sum"</code></pre>
+                </section>
+
+                <section>
+                    <h2>Best Practices</h2>
+                    <p>To get the most out of the Gemini CLI, keep the following tips in mind:</p>
+                    <ul>
+                        <li>Be specific and provide context in your prompts.</li>
+                        <li>Experiment with different models to find the one that works best for your task.</li>
+                        <li>Use the `--json` flag to get structured output that can be parsed by other tools.</li>
+                    </ul>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="assets/guide-utils.js"></script>
+</body>
+</html>

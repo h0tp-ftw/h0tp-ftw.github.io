@@ -1,0 +1,44 @@
+{
+  "projects": [
+    {
+      "file": "twr-calculator.html",
+      "title": "TWR Calculator",
+      "description": "Calculate time-weighted returns",
+      "icon": "📊",
+      "tag": "Tool",
+      "order": 1
+    },
+    {
+      "file": "pokemon-trading-tool.html",
+      "title": "Pokémon Trading Tool",
+      "description": "Track card trades",
+      "icon": "🎮",
+      "tag": "Tool",
+      "order": 2
+    },
+    {
+      "file": "youtube-music-together.html",
+      "title": "🎵 Listening to Music Together in YouTube Music",
+      "description": "A guide on how to listen to music together in YouTube Music.",
+      "icon": "🎵",
+      "tag": "Guide",
+      "order": 3
+    },
+    {
+      "file": "discord-rich-presence.html",
+      "title": "🎮 Enabling Discord Rich Presence in Flatpak",
+      "description": "A guide on how to enable Discord Rich Presence in Flatpak applications.",
+      "icon": "🎮",
+      "tag": "Guide",
+      "order": 4
+    },
+    {
+      "file": "gemini-cli-advanced.html",
+      "title": "🤖 Using Gemini CLI for Advanced Coding",
+      "description": "A guide on how to use the Gemini CLI for advanced coding tasks.",
+      "icon": "🤖",
+      "tag": "Guide",
+      "order": 5
+    }
+  ]
+}
