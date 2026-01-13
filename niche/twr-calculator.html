@@ -295,6 +295,31 @@
             margin-top: 0.25rem;
         }
 
+        /* Info Blurb */
+        .twr-info-blurb {
+            margin-top: 2rem;
+            padding: 1.25rem 1.5rem;
+            background: linear-gradient(135deg, rgba(166, 209, 137, 0.1), rgba(129, 200, 190, 0.1));
+            border-left: 3px solid var(--ctp-green);
+            border-radius: 0 12px 12px 0;
+            font-size: 0.9rem;
+            color: var(--ctp-subtext1);
+            line-height: 1.6;
+        }
+
+        .twr-info-blurb strong {
+            color: var(--ctp-text);
+        }
+
+        .twr-info-blurb .blurb-title {
+            font-weight: 700;
+            color: var(--ctp-green);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
         /* Responsive */
         @media (max-width: 900px) {
             .twr-layout {
@@ -376,6 +401,16 @@
                     <input type="number" id="start-balance" placeholder="e.g., 10000" step="0.01" />
                 </div>
 
+                <div class="form-group">
+                    <label for="end-date">End Date</label>
+                    <input type="date" id="end-date" />
+                </div>
+
+                <div class="form-group">
+                    <label for="end-balance">Ending Balance ($)</label>
+                    <input type="number" id="end-balance" placeholder="e.g., 12000" step="0.01" />
+                </div>
+
                 <div class="cash-flows-section">
                     <h3>Cash Flows</h3>
                     <div id="cash-flows-container">
@@ -409,6 +444,16 @@
                     <canvas id="twr-chart"></canvas>
                     <div class="result-stats" id="result-stats">
                         <!-- Stats populated by JS -->
+                    </div>
+
+                    <div class="twr-info-blurb">
+                        <div class="blurb-title">💡 Why Time-Weighted Return?</div>
+                        <p>
+                            <strong>Time-Weighted Return (TWR)</strong> measures your portfolio's actual investment performance 
+                            by eliminating the distortion caused by deposits and withdrawals. Unlike simple percentage returns, 
+                            TWR isolates manager/strategy skill from the timing of your cash flows—giving you a fair, 
+                            comparable metric, regardless of when you added or removed money.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -470,33 +515,178 @@
             document.getElementById('twr-chart-wrapper').classList.remove('visible');
         });
 
-        // Calculate (simplified demo)
+        // Calculate (Modified Dietz & IRR Visualization)
         let chart = null;
+
         document.getElementById('calculate-btn').addEventListener('click', () => {
-            const startBalance = parseFloat(document.getElementById('start-balance').value) || 10000;
-            
-            // Demo: generate sample data
-            const labels = ['Start', 'Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'End'];
-            const data = [startBalance];
-            for (let i = 1; i < labels.length; i++) {
-                const change = (Math.random() - 0.4) * 0.08 * data[i-1];
-                data.push(data[i-1] + change);
+            // 1. Gather Inputs
+            const startBal = parseFloat(document.getElementById('start-balance').value);
+            const startDateVal = document.getElementById('start-date').value;
+            const endBal = parseFloat(document.getElementById('end-balance').value);
+            const endDateVal = document.getElementById('end-date').value;
+
+            // Validate Basics
+            if (isNaN(startBal) || !startDateVal || isNaN(endBal) || !endDateVal) {
+                alert("Please fill in all Portfolio Data fields (Start/End Date and Balances).");
+                return;
             }
 
-            const totalReturn = ((data[data.length-1] - startBalance) / startBalance * 100).toFixed(2);
+            const startDate = new Date(startDateVal);
+            const endDate = new Date(endDateVal);
 
+            if (endDate <= startDate) {
+                alert("End Date must be after Start Date.");
+                return;
+            }
+
+            // 2. Gather Cash Flows
+            const flowRows = document.querySelectorAll('.cash-flow-row');
+            const cashFlows = [];
+            let netCashFlow = 0;
+            let weightedCashFlow = 0;
+            const totalDays = (endDate - startDate) / (1000 * 60 * 60 * 24);
+
+            for (const row of flowRows) {
+                const inputs = row.querySelectorAll('input');
+                const dVal = inputs[0].value;
+                const amtVal = parseFloat(inputs[1].value);
+
+                if (dVal && !isNaN(amtVal)) {
+                    const d = new Date(dVal);
+                    // Filter flows within range
+                    if (d >= startDate && d <= endDate) {
+                        cashFlows.push({ date: d, amount: amtVal });
+                        
+                        netCashFlow += amtVal;
+
+                        // Weight for Modified Dietz
+                        // Weight = (End Date - Flow Date) / Total Days
+                        const daysSinceStart = (d - startDate) / (1000 * 60 * 60 * 24);
+                        const daysRemaining = totalDays - daysSinceStart;
+                        const weight = daysRemaining / totalDays;
+                        weightedCashFlow += amtVal * weight;
+                    }
+                }
+            }
+
+            // Sort flows by date
+            cashFlows.sort((a, b) => a.date - b.date);
+
+            // 3. Calculate Modified Dietz TWR
+            // TWR ≈ (EndValue - StartValue - NetCashFlow) / (StartValue + WeightedCashFlow)
+            const gain = endBal - startBal - netCashFlow;
+            const averageCapital = startBal + weightedCashFlow;
+            let twr = 0;
+            if (averageCapital !== 0) {
+                twr = gain / averageCapital;
+            }
+
+            const twrPercent = (twr * 100).toFixed(2);
+            
+            // 4. Generate Chart Data (Solving for implied daily growth rate)
+            // This creates a smooth curve that hits the target EndBalance exactly
+            
+            // Function to calculate final balance given a daily rate
+            function calculateFinal(rate) {
+                let bal = startBal;
+                let currDate = startDate;
+                
+                // We'll iterate day by day or hop between events. Hopping is faster.
+                // Events: Start -> Flow 1 -> Flow 2 -> ... -> End
+                
+                const events = [...cashFlows.map(f => ({...f, type: 'flow'})), { date: endDate, type: 'end' }];
+                
+                let lastTime = startDate.getTime();
+                
+                for (const ev of events) {
+                    const daysStr = (ev.date.getTime() - lastTime) / (1000 * 60 * 60 * 24);
+                    // Compound existing balance
+                    bal = bal * Math.pow(1 + rate, daysStr);
+                    
+                    if (ev.type === 'flow') {
+                        bal += ev.amount;
+                    }
+                    lastTime = ev.date.getTime();
+                }
+                return bal;
+            }
+
+            // Binary search for rate
+            let low = -0.05; // -5% daily
+            let high = 0.05; // +5% daily
+            let rate = 0;
+            let iterations = 0;
+            
+            // Safety check for impossible returns (e.g. 0 to 1M with no flows)
+            // Expand bounds if needed
+            if (calculateFinal(high) < endBal) high = 1.0; 
+            if (calculateFinal(low) > endBal) low = -0.99;
+
+            while (iterations < 100) {
+                rate = (low + high) / 2;
+                const calc = calculateFinal(rate);
+                if (Math.abs(calc - endBal) < 0.01) break;
+                if (calc < endBal) low = rate;
+                else high = rate;
+                iterations++;
+            }
+
+            // Generate daily points for chart
+            const labels = [];
+            const data = [];
+            
+            let currTime = startDate.getTime();
+            const endTime = endDate.getTime();
+            const oneDay = 1000 * 60 * 60 * 24;
+            let currBal = startBal;
+            let flowIdx = 0;
+
+            // Limit points if range is huge
+            const totalDaysMapped = Math.ceil(totalDays);
+            const step = Math.max(1, Math.floor(totalDaysMapped / 100)); // Max ~100 points
+
+            for (let i = 0; i <= totalDaysMapped; i += step) {
+                const dayTime = startDate.getTime() + (i * oneDay);
+                if (dayTime > endTime) break; // Don't overshoot
+                
+                const dObj = new Date(dayTime);
+                labels.push(dObj.toISOString().split('T')[0]); // YYYY-MM-DD
+                
+                // Calculate balance at this exact moment
+                // Re-calculate simply:
+                let tempBal = startBal * Math.pow(1 + rate, i);
+                
+                // Add flows that happened
+                for (let f of cashFlows) {
+                    const fTime = f.date.getTime();
+                    // If flow happened on or before this day
+                    if (fTime <= dayTime) {
+                        const daysSinceFlow = (dayTime - fTime) / oneDay;
+                        tempBal += f.amount * Math.pow(1 + rate, daysSinceFlow);
+                    }
+                }
+                data.push(tempBal);
+            }
+            // Ensure exact end point
+            if (labels[labels.length - 1] !== endDateVal) {
+                labels.push(endDateVal);
+                data.push(endBal);
+            }
+
+
+            // Display Results
             document.getElementById('results-placeholder').style.display = 'none';
             document.getElementById('twr-chart-wrapper').classList.add('visible');
 
             // Stats
             document.getElementById('result-stats').innerHTML = `
                 <div class="stat-card">
-                    <div class="stat-value ${totalReturn < 0 ? 'negative' : ''}">${totalReturn}%</div>
-                    <div class="stat-label">Total TWR</div>
+                    <div class="stat-value ${twr < 0 ? 'negative' : ''}">${twrPercent}%</div>
+                    <div class="stat-label">Approx. TWR (Modified Dietz)</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">$${data[data.length-1].toFixed(2)}</div>
-                    <div class="stat-label">Final Value</div>
+                    <div class="stat-value">$${gain.toFixed(2)}</div>
+                    <div class="stat-label">Net Investment Gain</div>
                 </div>
             `;
 
@@ -515,24 +705,42 @@
                         borderColor: isDark ? '#ca9ee6' : '#8839ef',
                         backgroundColor: isDark ? 'rgba(202, 158, 230, 0.1)' : 'rgba(136, 57, 239, 0.1)',
                         fill: true,
-                        tension: 0.4,
-                        pointRadius: 6,
-                        pointHoverRadius: 8
+                        tension: 0.1, // Less smooth to show cash flow jumps better
+                        pointRadius: 0, // Clean look
+                        pointHoverRadius: 6,
+                        borderWidth: 2
                     }]
                 },
                 options: {
                     responsive: true,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
                     plugins: {
-                        legend: { display: false }
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return '$ ' + context.parsed.y.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                                }
+                            }
+                        }
                     },
                     scales: {
                         y: {
                             grid: { color: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)' },
-                            ticks: { color: isDark ? '#c6d0f5' : '#4c4f69' }
+                            ticks: { 
+                                color: isDark ? '#c6d0f5' : '#4c4f69',
+                                callback: function(value) { return '$' + value.toLocaleString(); }
+                            }
                         },
                         x: {
                             grid: { display: false },
-                            ticks: { color: isDark ? '#c6d0f5' : '#4c4f69' }
+                            ticks: { 
+                                color: isDark ? '#c6d0f5' : '#4c4f69',
+                                maxTicksLimit: 8
+                            }
                         }
                     }
                 }
