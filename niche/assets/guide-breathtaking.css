@@ -327,13 +327,22 @@ body::before {
     font-size: 3.5rem;
     font-weight: 800;
     margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+    color: var(--ctp-text);
+    text-wrap: wrap;
+    word-spacing: normal;
+}
+
+/* Gradient text effect - apply to spans to exclude emojis */
+.niche-header h1 .gradient-text,
+.gradient-text {
+    display: inline;
     background: linear-gradient(135deg, var(--ctp-text), var(--ctp-mauve), var(--ctp-pink));
     background-size: 200% 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: gradient-text 8s ease infinite;
-    letter-spacing: -0.02em;
 }
 
 .niche-subtitle {
@@ -686,9 +695,32 @@ body {
 h1,
 h2,
 h3 {
-    text-wrap: balance;
+    /* Fix for weird word-spacing in browsers caused by text-wrap: balance inheritance */
+    text-wrap: nowrap;
+    word-spacing: normal;
 }
 
 p {
     text-wrap: pretty;
+}
+
+/* ============================================
+   EMOJI SUPPORT
+   Ensures emojis display in native colors
+   even when text has gradient effects
+   ============================================ */
+
+/* Utility class for manual emoji wrapping */
+.emoji {
+    -webkit-text-fill-color: initial;
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    font-style: normal;
+}
+
+/* Auto-target common emoji Unicode ranges */
+h1, h2, h3, .niche-header h1, .twr-panel h2, .blurb-title {
+    /* Use font-family fallback for emoji rendering */
+    font-family: 'Inter', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif;
 }

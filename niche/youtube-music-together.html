@@ -47,6 +47,12 @@
             font-size: 4rem;
             font-weight: 800;
             margin-bottom: 1.5rem;
+            color: var(--ctp-text);
+        }
+
+        .hero-title .gradient-text,
+        .hero-title.gradient-text {
+            display: inline;
             background: linear-gradient(135deg, var(--ctp-text), var(--ctp-mauve), var(--ctp-pink), var(--ctp-blue));
             background-size: 300% 300%;
             -webkit-background-clip: text;
@@ -742,7 +748,7 @@
             <div class="hero-badge">
                 <span>🎧</span> Powered by Pear Desktop
             </div>
-            <h1 class="hero-title">Listen Together</h1>
+            <h1 class="hero-title"><span class="gradient-text">Listen Together</span></h1>
             <p class="hero-subtitle">
                 Use Pear Desktop to listen with friends!
             </p>

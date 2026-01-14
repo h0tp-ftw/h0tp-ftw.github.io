@@ -564,12 +564,19 @@ body::before {
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
+  color: var(--ctp-text);
+  position: relative;
+  display: inline-block;
+}
+
+/* Gradient text effect - apply to spans to exclude emojis */
+.section-title .gradient-text,
+.gradient-text {
+  display: inline;
   background: linear-gradient(135deg, var(--ctp-text), var(--ctp-mauve));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  position: relative;
-  display: inline-block;
 }
 
 .section-title::after {
@@ -1940,8 +1947,8 @@ img.project-logo-img {
   opacity: 1;
 }
 
-/* Smooth text gradient animations */
-.section-title {
+/* Smooth text gradient animations - ONLY on .gradient-text spans */
+.section-title .gradient-text {
   background: linear-gradient(
     135deg,
     var(--ctp-text),
@@ -2595,11 +2602,11 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Balanced text wrapping */
+/* Balanced text wrapping - disabled to prevent spacing issues in single-line headers */
 h1,
 h2,
 h3 {
-  text-wrap: balance;
+  /* text-wrap: balance; */
 }
 
 p {
@@ -2967,8 +2974,8 @@ a:focus-visible,
    PREMIUM VISUAL ENHANCEMENTS
    ============================================ */
 
-/* Shimmer text effect for section titles */
-.section-title {
+/* Shimmer text effect for section titles - ONLY on .gradient-text spans */
+.section-title .gradient-text {
   background: linear-gradient(
     90deg,
     var(--ctp-text) 0%,
