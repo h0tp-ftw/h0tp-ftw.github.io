@@ -578,13 +578,37 @@ function renderChart(viewType) {
                 borderColor: '#ca9ee6',
                 backgroundColor: function (context) {
                     const chart = context.chart;
-                    const { ctx, chartArea } = chart;
+                    const { ctx, chartArea, scales } = chart;
                     if (!chartArea) return null;
 
                     const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-                    gradient.addColorStop(0, 'rgba(202, 158, 230, 0.3)');
-                    gradient.addColorStop(0.5, 'rgba(202, 158, 230, 0.15)');
-                    gradient.addColorStop(1, 'rgba(202, 158, 230, 0.05)');
+                    
+                    // If scales are not ready yet, return a default or wait
+                    if (!scales || !scales.y) {
+                         return 'rgba(202, 158, 230, 0.2)'; // fallback
+                    }
+
+                    const yAxis = scales.y;
+                    // getPixelForValue returns the pixel location for a value
+                    const zeroPixel = yAxis.getPixelForValue(0);
+                    const top = chartArea.top;
+                    const bottom = chartArea.bottom;
+                    const height = bottom - top;
+                    
+                    // Calculate ratio where 0 is located from 0..1 (top..bottom)
+                    let zeroRatio = (zeroPixel - top) / height;
+                    
+                    // Clamp ratio to [0, 1]
+                    zeroRatio = Math.max(0, Math.min(1, zeroRatio));
+
+                    // Green for above 0 (#a6d189)
+                    gradient.addColorStop(0, 'rgba(166, 209, 137, 0.5)'); 
+                    gradient.addColorStop(zeroRatio, 'rgba(166, 209, 137, 0.05)');
+                    
+                    // Red for below 0 (#e78284)
+                    gradient.addColorStop(zeroRatio, 'rgba(231, 130, 132, 0.05)');
+                    gradient.addColorStop(1, 'rgba(231, 130, 132, 0.5)');
+                    
                     return gradient;
                 },
                 borderWidth: 3,
