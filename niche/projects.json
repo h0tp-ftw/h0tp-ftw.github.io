@@ -39,6 +39,14 @@
       "icon": "🤖",
       "tag": "Guide",
       "order": 5
+    },
+    {
+      "file": "https://flashcards-fawn-one.vercel.app/",
+      "title": "AI Flashcard Maker",
+      "description": "AI flashcard maker tool for Anki. Created by <a href='https://github.com/MORGANlTE' target='_blank' rel='noopener'>Morganite</a>.",
+      "icon": "🎴",
+      "tag": "Tool",
+      "order": 6
     }
   ]
 }

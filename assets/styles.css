@@ -2848,6 +2848,7 @@ a:focus-visible,
   gap: 1rem;
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .niche-tile::before {
