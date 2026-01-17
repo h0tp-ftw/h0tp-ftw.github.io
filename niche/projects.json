@@ -47,6 +47,14 @@
       "icon": "🎴",
       "tag": "Tool",
       "order": 6
+    },
+    {
+      "file": "discord-mods.html",
+      "title": "💬 Vencord & Equicord Guide",
+      "description": "Unlock the full potential of Discord with powerful modifications. Features, installation, and comparison.",
+      "icon": "💬",
+      "tag": "Guide",
+      "order": 7
     }
   ]
 }

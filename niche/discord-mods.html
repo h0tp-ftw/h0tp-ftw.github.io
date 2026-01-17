@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vencord & Equicord Installation Guide | h0tp-ftw</title>
+    <meta name="description" content="A comprehensive guide to installing Vencord and Equicord, comparing their features and enhancing your Discord experience.">
+    <link rel="stylesheet" href="assets/guide-breathtaking.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Styles for Command Blocks */
+        .cmd-block {
+            background: #111;
+            border-radius: 12px;
+            padding: 1.25rem;
+            font-family: 'Fira Code', monospace;
+            color: #d4d4d4;
+            margin: 1rem 0;
+            border: 1px solid #333;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .cmd-line {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .cmd-line:last-child {
+            margin-bottom: 0;
+        }
+
+        .cmd-prompt {
+            color: var(--ctp-green);
+            margin-right: 0.5rem;
+            user-select: none;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: #d4d4d4;
+            padding: 4px;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            opacity: 0;
+        }
+
+        .cmd-block:hover .copy-btn {
+            opacity: 1;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .copy-btn.copied {
+            background: var(--ctp-green);
+            color: black;
+            border-color: var(--ctp-green);
+        }
+
+        /* Tabs for different methods */
+        .method-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .method-tab {
+            padding: 0.75rem 1.5rem;
+            background: rgba(var(--ctp-surface0-rgb, 65, 69, 89), 0.5);
+            border: 2px solid var(--ctp-surface1);
+            border-radius: 50px;
+            color: var(--ctp-subtext1);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .method-tab:hover {
+            border-color: var(--ctp-mauve);
+            color: var(--ctp-text);
+        }
+
+        .method-tab.active {
+            background: var(--ctp-mauve);
+            color: var(--ctp-base);
+            border-color: var(--ctp-mauve);
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: var(--ctp-surface0);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--ctp-surface1);
+            transition: transform 0.2s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--ctp-mauve);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Step Circles */
+        .step-item {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .step-marker {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--ctp-surface1);
+            color: var(--ctp-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            border: 2px solid var(--ctp-surface2);
+        }
+
+        .step-content {
+            flex-grow: 1;
+        }
+
+        .step-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--ctp-text);
+        }
+    </style>
+</head>
+
+<body data-theme="frappe">
+    <!-- Animated Background -->
+    <div class="guide-animated-bg">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+
+    <!-- Theme Toggle -->
+    <button class="guide-theme-toggle" id="guide-theme-toggle" aria-label="Toggle theme">
+        <div class="guide-theme-slider">
+            <svg class="guide-slider-icon moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+            </svg>
+            <svg class="guide-slider-icon sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="5" />
+                <path d="M12 1v2m0 18v2M23 12h-2M3 12H1m19.071-7.071l-1.414 1.414M5.343 18.657l-1.414 1.414m15.142 0l-1.414-1.414M5.343 5.343L3.929 3.929" />
+            </svg>
+        </div>
+    </button>
+
+    <!-- Back Button -->
+    <div class="niche-back-nav">
+        <a href="index.html" class="back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M15 18l-6-6 6-6" />
+            </svg>
+            Back to Projects
+        </a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="niche-container">
+        <!-- Hero -->
+        <header class="niche-header">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">💬</div>
+            <h1><span class="gradient-text">Vencord & Equicord Guide</span></h1>
+            <p class="niche-subtitle">
+                Unlock the full potential of Discord with powerful modifications. <br>
+                Privacy, Customization, and Plugins.
+            </p>
+        </header>
+
+        <!-- Intro Section -->
+        <div class="guide-content">
+            <section>
+                <h2>🤔 What are they?</h2>
+                <p style="margin-top: 1rem; line-height: 1.7; color: var(--ctp-subtext0);">
+                    <strong>Vencord</strong> and <strong>Equicord</strong> are client modifications that inject custom code into the Discord desktop app (or browser), allowing for plugins, themes, and enhanced privacy features that standard Discord lacks.
+                </p>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🛡️</div>
+                        <h3>Privacy Focused</h3>
+                        <p>Both mods block Discord's tracking, analytics, and crash reporting by default.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🧩</div>
+                        <h3>Plugin System</h3>
+                        <p>Enable features like "No Deleted Messages", "Spotify Controls", and more.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <h3>Custom CSS</h3>
+                        <p>Apply beautiful themes and customize every pixel of the interface.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Comparison Section -->
+        <div class="guide-content">
+            <section>
+                <h2>⚔️ Vencord vs Equicord</h2>
+                <div class="alert alert-info" style="margin-top: 1rem;">
+                    <strong>TL;DR:</strong> Equicord is a fork of Vencord. It has everything Vencord has, plus 150+ extra plugins and community additions.
+                </div>
+                <div style="margin-top: 2rem;">
+                    <h3>Vencord</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.5rem;">✅ Lightweight & Stable</li>
+                        <li style="margin-bottom: 0.5rem;">✅ Essential Plugins included</li>
+                        <li style="margin-bottom: 0.5rem;">✅ Great browser extensions</li>
+                    </ul>
+                    <h3 style="margin-top: 1.5rem;">Equicord</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.5rem;">✅ All Vencord features</li>
+                        <li style="margin-bottom: 0.5rem;">✅ Over 300+ total plugins</li>
+                        <li style="margin-bottom: 0.5rem;">✅ Cloud sync for settings included</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <!-- Installation Section -->
+        <div class="guide-content">
+            <h2 style="text-align: center; margin-bottom: 2rem;">🚀 Installation Guide</h2>
+            
+            <!-- App Version Switcher -->
+            <div class="method-tabs">
+                <button class="method-tab active" data-mod="vencord" onclick="switchMod('vencord')">
+                    Installing Vencord
+                </button>
+                <button class="method-tab" data-mod="equicord" onclick="switchMod('equicord')">
+                    Installing Equicord
+                </button>
+            </div>
+
+            <!-- Vencord Steps -->
+            <div id="vencord-steps">
+                <section>
+                    <h3>Step 1: Download the Installer</h3>
+                    <p>Go to the official Vencord website or GitHub releases.</p>
+                    <div class="step-item">
+                        <div class="step-marker">1</div>
+                        <div class="step-content">
+                            <div class="step-title">Download VencordInstaller</div>
+                            <p>Download the installer for your OS (Windows, Linux, macOS).</p>
+                            <a href="https://vencord.dev/download" target="_blank" class="niche-link" style="color: var(--ctp-blue); text-decoration: underline;">Visit vencord.dev/download</a>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Step 2: Run & Install</h3>
+                    <div class="step-item">
+                        <div class="step-marker">2</div>
+                        <div class="step-content">
+                            <div class="step-title">Patch Discord</div>
+                            <p>Run the installer. It will automatically detect your Discord installation (Stable, Canary, PTB).</p>
+                            <p>Click <strong>Install</strong>. It will close Discord and apply the patch.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-marker">3</div>
+                        <div class="step-content">
+                            <div class="step-title">Restart Discord</div>
+                            <p>Open Discord again. Go to <strong>User Settings</strong>. Scroll down to see a new <strong>Vencord</strong> section!</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Equicord Steps (Hidden by default) -->
+            <div id="equicord-steps" style="display: none;">
+                <section>
+                    <h3>Step 1: Download Equilotl</h3>
+                    <p>Equicord uses a custom installer called Equilotl.</p>
+                    <div class="step-item">
+                        <div class="step-marker">1</div>
+                        <div class="step-content">
+                            <div class="step-title">Get the Installer</div>
+                            <p>Download `Equilotl` from the official Equicord GitHub.</p>
+                            <a href="https://github.com/Equicord/Equilotl/releases" target="_blank" class="niche-link" style="color: var(--ctp-blue); text-decoration: underline;">Equilotl Releases on GitHub</a>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Step 2: Run & Install</h3>
+                    <div class="step-item">
+                        <div class="step-marker">2</div>
+                        <div class="step-content">
+                            <div class="step-title">Execute the Installer</div>
+                            <p>Run `Equilotl`. Like Vencord, select your Discord version and click Install.</p>
+                            <p><em>Note for Linux:</em> You may need to make the file executable first (`chmod +x Equilotl`).</p>
+                        </div>
+                    </div>
+                     <div class="step-item">
+                        <div class="step-marker">3</div>
+                        <div class="step-content">
+                            <div class="step-title">Restart Discord</div>
+                            <p>Launch Discord. Open <strong>User Settings</strong>. You will now see the <strong>Equicord</strong> settings menu.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Mod Switcher Logic
+        function switchMod(modKey) {
+            // Update buttons
+            document.querySelectorAll('.method-tab').forEach(btn => {
+                if (btn.dataset.mod === modKey) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Update content visibility
+            if (modKey === 'vencord') {
+                document.getElementById('vencord-steps').style.display = 'block';
+                document.getElementById('equicord-steps').style.display = 'none';
+            } else {
+                document.getElementById('vencord-steps').style.display = 'none';
+                document.getElementById('equicord-steps').style.display = 'block';
+            }
+        }
+
+        // Copy Code Logic
+        function copyCode(btn) {
+            const block = btn.closest('.cmd-block');
+            const lines = block.querySelectorAll('.cmd-line');
+            let textToCopy = '';
+
+            lines.forEach(line => {
+                let text = line.innerText;
+                if (text.startsWith('$')) {
+                    text = text.substring(1).trim();
+                }
+                textToCopy += text + '\n';
+            });
+
+            navigator.clipboard.writeText(textToCopy.trim()).then(() => {
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '✓';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+        
+        // Theme toggle logic
+        const themeToggle = document.getElementById('guide-theme-toggle');
+        const html = document.documentElement;
+        const savedTheme = localStorage.getItem('theme') || 'frappe';
+        html.setAttribute('data-theme', savedTheme);
+
+        function updateTogglePosition() {
+            const slider = document.querySelector('.guide-theme-slider');
+            if (slider) slider.classList.toggle('light-mode', html.getAttribute('data-theme') === 'latte');
+        }
+        updateTogglePosition();
+
+        themeToggle.addEventListener('click', () => {
+            const newTheme = html.getAttribute('data-theme') === 'frappe' ? 'latte' : 'frappe';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateTogglePosition();
+        });
+    </script>
+</body>
+</html>
