@@ -6,7 +6,7 @@ async function loadNicheProjects() {
     }
 
     try {
-        const response = await fetch('niche/projects.json');
+        const response = await fetch('./niche/projects.json');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -64,7 +64,7 @@ async function loadNicheProjects() {
 
         const createTile = (project) => {
             const isExternal = project.file.startsWith('http');
-            const href = isExternal ? project.file : `niche/${project.file}`;
+            const href = isExternal ? project.file : `./niche/${project.file}`;
             const targetAttr = isExternal ? '_blank' : '_self';
             
             return `
