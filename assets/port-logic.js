@@ -374,6 +374,7 @@ function renderRepoName(fullName) {
 
 async function loadFeaturedProjects() {
     const container = document.getElementById('featured-projects-grid');
+    const section = document.getElementById('featured-projects');
 
     try {
         const myRepos = await fetchMyRepos();
@@ -388,65 +389,115 @@ async function loadFeaturedProjects() {
             return repo.full_name !== 'h0tp-ftw/h0tp-ftw';
         });
 
+        if (filteredRepos.length === 0) {
+             container.innerHTML = `<div class="loading-state"><p>No other projects found.</p></div>`;
+             return;
+        }
+
         container.innerHTML = '';
 
-        const featuredRepos = filteredRepos.slice(0, FEATURED_PROJECTS_COUNT);
+        // Helper to render a chunk of repos
+        const renderRepos = (repos, startIndex) => {
+            repos.forEach((repo, i) => {
+                const index = startIndex + i;
+                const description = repo.description || 'No description available';
+                const stars = formatNumber(repo.stargazers_count);
+                const language = repo.language || 'Code'; // Better fallback
+                const customLogo = getProjectLogo(repo.name);
 
-        featuredRepos.forEach((repo, index) => {
-            const description = repo.description || 'No description available';
-            const stars = formatNumber(repo.stargazers_count);
-            const language = repo.language || 'Unknown';
-            const customLogo = getProjectLogo(repo.name);
+                // CREATE FULLY CLICKABLE CARD
+                const card = document.createElement('a');
+                card.href = repo.html_url;
+                card.target = '_blank';
+                card.rel = 'noopener';
+                card.className = 'project-card clickable-card';
+                // Stagger animations based on index in this batch
+                card.style.animationDelay = `${(i % 6) * 0.1}s`;
 
-            // CREATE FULLY CLICKABLE CARD
-            const card = document.createElement('a');
-            card.href = repo.html_url;
-            card.target = '_blank';
-            card.rel = 'noopener';
-            card.className = 'project-card clickable-card';
-            card.style.animationDelay = `${index * 0.1}s`;
-
-            if (customLogo) {
-                // LOGO CARD
-                card.innerHTML = `
-                    <div class="project-image logo-only">
-                        <img src="${customLogo}" alt="${repo.name}" class="project-logo-img" />
-                    </div>
-                    <div class="project-info">
-                        <h3 class="project-name">
-                            ${renderRepoName(repo.full_name)}
-                        </h3>
-                        <p class="project-description">${description}</p>
-                        <div class="project-stats">
-                            <span class="stat">⭐ ${stars}</span>
-                            <span class="stat">🍴 ${repo.forks_count}</span>
-                            <span class="stat">💻 ${language}</span>
+                if (customLogo) {
+                    // LOGO CARD
+                    card.innerHTML = `
+                        <div class="project-image logo-only">
+                            <img src="${customLogo}" alt="${repo.name}" class="project-logo-img" />
                         </div>
-                    </div>
-                `;
-            } else {
-                // REGULAR CARD
-                card.innerHTML = `
-                    <div class="project-image">
-                        <img src="${getRepoImage(repo)}" alt="${repo.full_name}" loading="lazy" />
-                    </div>
-                    <div class="project-info">
-                        <h3 class="project-name">
-                            ${renderRepoName(repo.full_name)}
-                        </h3>
-                        <p class="project-description">${description}</p>
-                        <div class="project-stats">
-                            <span class="stat">⭐ ${stars}</span>
-                            <span class="stat">🍴 ${repo.forks_count}</span>
-                            <span class="stat">💻 ${language}</span>
+                        <div class="project-info">
+                            <h3 class="project-name">
+                                ${renderRepoName(repo.full_name)}
+                            </h3>
+                            <p class="project-description">${description}</p>
+                            <div class="project-stats">
+                                <span class="stat">⭐ ${stars}</span>
+                                <span class="stat">🍴 ${repo.forks_count}</span>
+                                <span class="stat">💻 ${language}</span>
+                            </div>
                         </div>
-                    </div>
-                `;
-            }
+                    `;
+                } else {
+                    // REGULAR CARD
+                    card.innerHTML = `
+                        <div class="project-image">
+                            <img src="${getRepoImage(repo)}" alt="${repo.full_name}" loading="lazy" />
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-name">
+                                ${renderRepoName(repo.full_name)}
+                            </h3>
+                            <p class="project-description">${description}</p>
+                            <div class="project-stats">
+                                <span class="stat">⭐ ${stars}</span>
+                                <span class="stat">🍴 ${repo.forks_count}</span>
+                                <span class="stat">💻 ${language}</span>
+                            </div>
+                        </div>
+                    `;
+                }
 
-            container.appendChild(card);
-            observer.observe(card);
-        });
+                container.appendChild(card);
+                observer.observe(card);
+            });
+        };
+
+        const initialLimit = 6;
+        const initialRepos = filteredRepos.slice(0, initialLimit);
+        const remainingRepos = filteredRepos.slice(initialLimit);
+
+        renderRepos(initialRepos, 0);
+
+        // If there are more repos, add a Load More button
+        if (remainingRepos.length > 0) {
+            // Check if button container already exists (id: projects-load-more-container)
+            let existingBtnContainer = document.getElementById('projects-load-more-container');
+            if (existingBtnContainer) existingBtnContainer.remove();
+
+            const btnContainer = document.createElement('div');
+            btnContainer.id = 'projects-load-more-container'; // ID for easy removal
+            btnContainer.style.width = '100%';
+            btnContainer.style.display = 'flex';
+            btnContainer.style.justifyContent = 'center';
+            btnContainer.style.marginTop = '3rem';
+            
+            // Using surprise-btn class for consistent styling with the other button
+            btnContainer.innerHTML = `
+                <button id="projects-load-more-btn" class="surprise-btn" style="min-width: 200px;">
+                    <svg class="btn-svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                         <path d="M7 10l5 5 5-5z"/>
+                    </svg>
+                    <span>Show All Projects (${filteredRepos.length})</span>
+                </button>
+            `;
+            
+            // Append after the grid
+            container.parentNode.appendChild(btnContainer);
+
+            // Event listener
+            document.getElementById('projects-load-more-btn').addEventListener('click', function() {
+                renderRepos(remainingRepos, initialLimit);
+                // Animate removal
+                btnContainer.style.opacity = '0';
+                setTimeout(() => btnContainer.remove(), 300);
+            });
+        }
+
     } catch (error) {
         console.error('Error loading featured projects:', error);
         container.innerHTML = `<div class="loading-state"><p>Error loading projects.</p></div>`;
