@@ -3148,3 +3148,16 @@ a:focus-visible,
 .chart-wrapper:hover::before {
   opacity: 0.3;
 }
+
+
+
+/* ============================================
+   3D TILT EFFECT
+   ============================================ */
+.js-tilt-glare {
+  border-radius: inherit;
+}
+
+.js-tilt-glare-inner {
+  border-radius: inherit;
+}
