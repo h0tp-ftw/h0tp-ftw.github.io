@@ -375,6 +375,69 @@ body::before {
 }
 
 /* ============================================
+   BLOG NAVIGATION BUTTON
+   ============================================ */
+
+.blog-nav-btn {
+  position: fixed;
+  top: 2rem;
+  right: 7.5rem;
+  left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 2px solid var(--glass-border);
+  border-radius: 50px;
+  color: var(--ctp-text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  z-index: 1000;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.blog-nav-btn:hover {
+  background: var(--ctp-surface1);
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+}
+
+.blog-nav-btn svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+.blog-nav-btn:hover svg {
+  transform: rotate(-5deg);
+}
+
+@media (max-width: 768px) {
+  .blog-nav-btn {
+    top: 1rem;
+    right: 6rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+  
+  .blog-nav-btn span {
+    display: none;
+  }
+  
+  .blog-nav-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* ============================================
    SLIDING TOGGLE SWITCH!
    ============================================ */
 
@@ -2616,11 +2679,11 @@ canvas {
    ============================================ */
 
 /* Smooth link underlines - exclude buttons */
-a:not(.hero-link):not(.project-card):not(.person-card):not(.niche-link) {
+a:not(.hero-link):not(.project-card):not(.person-card):not(.niche-link):not(.blog-nav-btn) {
   position: relative;
 }
 
-a:not(.hero-link):not(.project-card):not(.person-card):not(.niche-link)::after {
+a:not(.hero-link):not(.project-card):not(.person-card):not(.niche-link):not(.blog-nav-btn)::after {
   content: "";
   position: absolute;
   bottom: -2px;
@@ -2633,7 +2696,7 @@ a:not(.hero-link):not(.project-card):not(.person-card):not(.niche-link)::after {
 
 a:not(.hero-link):not(.project-card):not(.person-card):not(
     .niche-link
-  ):hover::after {
+  ):not(.blog-nav-btn):hover::after {
   width: 100%;
 }
 

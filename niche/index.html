@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Niche Projects | h0tp-ftw</title>
+    <title>Blog | h0tp-ftw</title>
     <link rel="stylesheet" href="assets/guide-breathtaking.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,99 +12,124 @@
       rel="stylesheet"
     />
     <style>
-      /* Niche Index Specific Styles */
-      .projects-showcase {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 2rem;
+      /* Blog List Styles */
+      .blog-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
         margin-top: 3rem;
       }
 
-      .project-tile {
+      .blog-entry {
         background: rgba(65, 69, 89, 0.6);
         backdrop-filter: blur(30px) saturate(180%);
         -webkit-backdrop-filter: blur(30px) saturate(180%);
         border: 2px solid var(--ctp-surface1);
-        border-radius: 24px;
-        padding: 2rem;
+        border-radius: 20px;
+        padding: 1.75rem 2rem;
         text-decoration: none;
         color: var(--ctp-text);
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        display: flex;
-        flex-direction: column;
-        gap: 1.25rem;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 1.5rem;
         position: relative;
         overflow: hidden;
       }
 
-      .project-tile::before {
+      .blog-entry::before {
         content: "";
         position: absolute;
-        top: 0;
         left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(
-          90deg,
-          var(--ctp-mauve),
-          var(--ctp-pink),
-          var(--ctp-blue)
-        );
-        transform: scaleX(0);
-        transform-origin: left;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(180deg, var(--ctp-mauve), var(--ctp-pink));
+        transform: scaleY(0);
+        transform-origin: top;
         transition: transform 0.4s ease;
       }
 
-      .project-tile:hover::before {
-        transform: scaleX(1);
+      .blog-entry:hover::before {
+        transform: scaleY(1);
       }
 
-      .project-tile:hover {
+      .blog-entry:hover {
         border-color: var(--ctp-mauve);
-        transform: translateY(-8px);
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3),
-          0 0 40px rgba(202, 158, 230, 0.15);
+        transform: translateX(8px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25),
+          0 0 30px rgba(202, 158, 230, 0.1);
       }
 
-      .tile-icon {
-        font-size: 3.5rem;
+      .blog-icon {
+        font-size: 2.5rem;
         line-height: 1;
+        flex-shrink: 0;
       }
 
-      .tile-title {
-        font-size: 1.5rem;
+      .blog-content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        min-width: 0;
+      }
+
+      .blog-title {
+        font-size: 1.35rem;
         font-weight: 700;
         color: var(--ctp-text);
         margin: 0;
+        transition: color 0.3s ease;
       }
 
-      .tile-description {
+      .blog-entry:hover .blog-title {
+        color: var(--ctp-mauve);
+      }
+
+      .blog-description {
         font-size: 1rem;
         color: var(--ctp-subtext1);
-        line-height: 1.7;
+        line-height: 1.6;
         margin: 0;
-        flex-grow: 1;
       }
 
-      .tile-tag {
+      .blog-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-top: 0.5rem;
+      }
+
+      .blog-tag {
         display: inline-block;
-        padding: 0.5rem 1rem;
+        padding: 0.35rem 0.85rem;
         background: linear-gradient(135deg, var(--ctp-mauve), var(--ctp-pink));
         color: var(--ctp-base);
         border-radius: 50px;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        align-self: flex-start;
       }
 
-      .tile-arrow {
-        position: absolute;
-        bottom: 1.5rem;
-        right: 1.5rem;
-        width: 40px;
-        height: 40px;
+      .blog-date {
+        font-size: 0.85rem;
+        color: var(--ctp-overlay1);
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+
+      .blog-date svg {
+        width: 14px;
+        height: 14px;
+        opacity: 0.7;
+      }
+
+      .blog-arrow {
+        width: 44px;
+        height: 44px;
         background: var(--ctp-surface1);
         border-radius: 50%;
         display: flex;
@@ -112,15 +137,50 @@
         justify-content: center;
         color: var(--ctp-text);
         transition: all 0.3s ease;
+        flex-shrink: 0;
       }
 
-      .project-tile:hover .tile-arrow {
+      .blog-entry:hover .blog-arrow {
         background: var(--ctp-mauve);
         color: var(--ctp-base);
         transform: translateX(4px);
       }
 
-      /* Coming soon state */
+      /* External link indicator */
+      .blog-entry[data-external="true"] .blog-arrow::after {
+        content: "";
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        width: 10px;
+        height: 10px;
+        background: var(--ctp-blue);
+        border-radius: 50%;
+        border: 2px solid var(--ctp-base);
+      }
+
+      /* Loading state */
+      .blog-loading {
+        text-align: center;
+        padding: 3rem;
+        color: var(--ctp-subtext1);
+      }
+
+      .blog-loading .loader {
+        width: 40px;
+        height: 40px;
+        border: 3px solid var(--ctp-surface1);
+        border-top-color: var(--ctp-mauve);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin: 0 auto 1rem;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      /* Coming soon section */
       .coming-soon-section {
         margin-top: 4rem;
         text-align: center;
@@ -155,16 +215,22 @@
       }
 
       @media (max-width: 768px) {
-        .projects-showcase {
+        .blog-entry {
           grid-template-columns: 1fr;
+          gap: 1rem;
+          padding: 1.5rem;
         }
 
-        .tile-icon {
-          font-size: 2.5rem;
+        .blog-icon {
+          font-size: 2rem;
         }
 
-        .tile-title {
-          font-size: 1.25rem;
+        .blog-title {
+          font-size: 1.15rem;
+        }
+
+        .blog-arrow {
+          display: none;
         }
       }
     </style>
@@ -222,124 +288,19 @@
     <!-- Main Content -->
     <div class="niche-container">
       <header class="niche-header">
-        <h1>🎯 <span class="gradient-text">Niche Projects</span></h1>
+        <h1>📝 <span class="gradient-text">Blog</span></h1>
         <p class="niche-subtitle">
-          Tools, guides, and deep dives into my interests — from finance
-          calculators to gaming utilities.
+          Guides, tools, and deep dives into my interests — from finance
+          calculators to gaming utilities and developer tips.
         </p>
       </header>
 
-      <!-- Project Tiles -->
-      <div class="projects-showcase">
-        <a href="twr-calculator.html" class="project-tile">
-          <span class="tile-icon">📊</span>
-          <h2 class="tile-title">Time-Weighted Return Calculator</h2>
-          <p class="tile-description">
-            Calculate accurate portfolio returns accounting for deposits and
-            withdrawals. Perfect for tracking investment performance.
-          </p>
-          <span class="tile-tag">Finance</span>
-          <div class="tile-arrow">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </div>
-        </a>
-
-        <a href="https://h0tp-ftw.github.io/ankimon-trading-tool/" class="project-tile" target="_blank">
-          <span class="tile-icon">🎮</span>
-          <h2 class="tile-title">Ankimon Trading Tool</h2>
-          <p class="tile-description">
-            Upload your collection and instantly find duplicates, missing
-            Ankimon, and trading opportunities with friends.
-          </p>
-          <span class="tile-tag">Gaming</span>
-          <div class="tile-arrow">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </div>
-        </a>
-
-        <a href="gemini-cli-advanced.html" class="project-tile">
-          <span class="tile-icon">🤖</span>
-          <h2 class="tile-title">Gemini CLI Advanced Guide</h2>
-          <p class="tile-description">
-            Master the Gemini CLI for code analysis, generation, and automation.
-            Tips and tricks for power users.
-          </p>
-          <span class="tile-tag">AI/Dev</span>
-          <div class="tile-arrow">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </div>
-        </a>
-
-        <a href="discord-rich-presence.html" class="project-tile">
-          <span class="tile-icon">🎮</span>
-          <h2 class="tile-title">Discord Rich Presence in Flatpak</h2>
-          <p class="tile-description">
-            Enable Rich Presence for sandboxed Flatpak applications. Works with
-            games and other apps.
-          </p>
-          <span class="tile-tag">Linux</span>
-          <div class="tile-arrow">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </div>
-        </a>
-
-        <a href="youtube-music-together.html" class="project-tile">
-          <span class="tile-icon">🎵</span>
-          <h2 class="tile-title">YouTube Music Together</h2>
-          <p class="tile-description">
-            Listen to music with friends in real-time using YouTube Music.
-            Workarounds and tips for synced listening.
-          </p>
-          <span class="tile-tag">Guide</span>
-          <div class="tile-arrow">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </div>
-        </a>
+      <!-- Blog List (dynamically loaded) -->
+      <div class="blog-list" id="blog-list">
+        <div class="blog-loading">
+          <div class="loader"></div>
+          <p>Loading posts...</p>
+        </div>
       </div>
 
       <!-- Coming Soon -->
@@ -382,6 +343,69 @@
         localStorage.setItem("theme", newTheme);
         updateTogglePosition();
       });
+
+      // Load blog posts from projects.json
+      async function loadBlogPosts() {
+        const blogList = document.getElementById("blog-list");
+        
+        try {
+          const response = await fetch("./projects.json");
+          if (!response.ok) throw new Error("Failed to load posts");
+          
+          const { projects } = await response.json();
+          
+          // Sort by date (most recent first)
+          projects.sort((a, b) => new Date(b.date) - new Date(a.date));
+          
+          const formatDate = (dateStr) => {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric"
+            });
+          };
+          
+          const postsHTML = projects.map(post => {
+            const isExternal = post.file.startsWith("http");
+            const href = isExternal ? post.file : post.file;
+            const target = isExternal ? '_blank' : '_self';
+            
+            return `
+              <a href="${href}" class="blog-entry" target="${target}" rel="${isExternal ? 'noopener' : ''}" data-external="${isExternal}">
+                <span class="blog-icon">${post.icon}</span>
+                <div class="blog-content">
+                  <h2 class="blog-title">${post.title}</h2>
+                  <p class="blog-description">${post.description}</p>
+                  <div class="blog-meta">
+                    <span class="blog-tag">${post.tag}</span>
+                    <span class="blog-date">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>
+                      </svg>
+                      ${formatDate(post.date)}
+                    </span>
+                  </div>
+                </div>
+                <div class="blog-arrow">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </a>
+            `;
+          }).join("");
+          
+          blogList.innerHTML = postsHTML;
+          
+        } catch (error) {
+          console.error("Failed to load blog posts:", error);
+          blogList.innerHTML = '<p style="text-align: center; color: var(--ctp-red);">Failed to load posts. Please try again later.</p>';
+        }
+      }
+      
+      // Load posts on page load
+      document.addEventListener("DOMContentLoaded", loadBlogPosts);
     </script>
   </body>
 </html>
