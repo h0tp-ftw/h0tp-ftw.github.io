@@ -22,6 +22,39 @@ const PROJECT_LOGOS = {
     'anki-vscode': 'https://images.icon-icons.com/1381/PNG/512/anki_93962.png',
     'anki': 'https://images.icon-icons.com/1381/PNG/512/anki_93962.png',
     'api-key-cycler': 'https://em-content.zobj.net/source/apple/354/key_1f511.png',
+    'acoustic-engine': 'https://cdn-icons-png.flaticon.com/512/1251/1251671.png',
+    'h0tp-ftw.github.io': 'https://cdn-icons-png.flaticon.com/512/1055/1055683.png',
+};
+
+// Map GitHub languages to Devicon classes
+const LANGUAGE_ICONS = {
+    'JavaScript': 'devicon-javascript-plain',
+    'TypeScript': 'devicon-typescript-plain',
+    'Python': 'devicon-python-plain',
+    'HTML': 'devicon-html5-plain',
+    'CSS': 'devicon-css3-plain',
+    'Java': 'devicon-java-plain',
+    'C#': 'devicon-csharp-plain',
+    'C++': 'devicon-cplusplus-plain',
+    'C': 'devicon-c-plain',
+    'Go': 'devicon-go-plain',
+    'Rust': 'devicon-rust-plain',
+    'PHP': 'devicon-php-plain',
+    'Ruby': 'devicon-ruby-plain',
+    'Swift': 'devicon-swift-plain',
+    'Kotlin': 'devicon-kotlin-plain',
+    'Dart': 'devicon-dart-plain',
+    'Shell': 'devicon-bash-plain',
+    'PowerShell': 'devicon-powershell-plain',
+    'Vue': 'devicon-vuejs-plain',
+    'React': 'devicon-react-original',
+    'Angular': 'devicon-angularjs-plain',
+    'Svelte': 'devicon-svelte-plain',
+    'Docker': 'devicon-docker-plain',
+    'Kubernetes': 'devicon-kubernetes-plain',
+    'Lua': 'devicon-lua-plain',
+    // Fallback
+    'default': 'devicon-github-original'
 };
 
 // ============================================
@@ -342,16 +375,15 @@ function getProjectLogo(repoName) {
     return null;
 }
 
-function getRepoImage(repo) {
-    if (repo.owner && repo.owner.avatar_url) {
-        return repo.owner.avatar_url;
-    }
-
-    const colors = ['ca9ee6', '8caaee', 'a6d189', 'ef9f76', 'e78284', 'f4b8e4', '81c8be'];
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-    const repoName = encodeURIComponent(repo.name);
-    return `https://via.placeholder.com/400x400/${randomColor}/ffffff?text=${repoName}`;
+function getLanguageIcon(language) {
+    if (!language) return LANGUAGE_ICONS['default'];
+    return LANGUAGE_ICONS[language] || LANGUAGE_ICONS['default'];
 }
+
+/* 
+   REMOVED: getRepoImage(repo) 
+   We now use language icons instead of random placeholder images.
+*/
 
 function formatNumber(num) {
     if (num >= 1000) {
@@ -390,8 +422,8 @@ async function loadFeaturedProjects() {
         });
 
         if (filteredRepos.length === 0) {
-             container.innerHTML = `<div class="loading-state"><p>No other projects found.</p></div>`;
-             return;
+            container.innerHTML = `<div class="loading-state"><p>No other projects found.</p></div>`;
+            return;
         }
 
         container.innerHTML = '';
@@ -433,10 +465,12 @@ async function loadFeaturedProjects() {
                         </div>
                     `;
                 } else {
-                    // REGULAR CARD
+                    // NEW: NO-LOGO VARIANT (Language Icon + Gradient)
+                    const iconClass = getLanguageIcon(language);
+
                     card.innerHTML = `
-                        <div class="project-image">
-                            <img src="${getRepoImage(repo)}" alt="${repo.full_name}" loading="lazy" />
+                        <div class="project-image no-logo-variant">
+                             <i class="${iconClass}"></i>
                         </div>
                         <div class="project-info">
                             <h3 class="project-name">
@@ -475,7 +509,7 @@ async function loadFeaturedProjects() {
             btnContainer.style.display = 'flex';
             btnContainer.style.justifyContent = 'center';
             btnContainer.style.marginTop = '3rem';
-            
+
             // Using surprise-btn class for consistent styling with the other button
             btnContainer.innerHTML = `
                 <button id="projects-load-more-btn" class="surprise-btn" style="min-width: 200px;">
@@ -485,12 +519,12 @@ async function loadFeaturedProjects() {
                     <span>Show All Projects (${filteredRepos.length})</span>
                 </button>
             `;
-            
+
             // Append after the grid
             container.parentNode.appendChild(btnContainer);
 
             // Event listener
-            document.getElementById('projects-load-more-btn').addEventListener('click', function() {
+            document.getElementById('projects-load-more-btn').addEventListener('click', function () {
                 renderRepos(remainingRepos, initialLimit);
                 // Animate removal
                 btnContainer.style.opacity = '0';
@@ -633,10 +667,10 @@ function renderChart(viewType) {
                     if (!chartArea) return null;
 
                     const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-                    
+
                     // If scales are not ready yet, return a default or wait
                     if (!scales || !scales.y) {
-                         return 'rgba(202, 158, 230, 0.2)'; // fallback
+                        return 'rgba(202, 158, 230, 0.2)'; // fallback
                     }
 
                     const yAxis = scales.y;
@@ -645,21 +679,21 @@ function renderChart(viewType) {
                     const top = chartArea.top;
                     const bottom = chartArea.bottom;
                     const height = bottom - top;
-                    
+
                     // Calculate ratio where 0 is located from 0..1 (top..bottom)
                     let zeroRatio = (zeroPixel - top) / height;
-                    
+
                     // Clamp ratio to [0, 1]
                     zeroRatio = Math.max(0, Math.min(1, zeroRatio));
 
                     // Green for above 0 (#a6d189)
-                    gradient.addColorStop(0, 'rgba(166, 209, 137, 0.5)'); 
+                    gradient.addColorStop(0, 'rgba(166, 209, 137, 0.5)');
                     gradient.addColorStop(zeroRatio, 'rgba(166, 209, 137, 0.05)');
-                    
+
                     // Red for below 0 (#e78284)
                     gradient.addColorStop(zeroRatio, 'rgba(231, 130, 132, 0.05)');
                     gradient.addColorStop(1, 'rgba(231, 130, 132, 0.5)');
-                    
+
                     return gradient;
                 },
                 borderWidth: 3,
@@ -1273,7 +1307,7 @@ class VanillaTilt {
         this.glareElementWrapper.style.height = "100%";
         this.glareElementWrapper.style.overflow = "hidden";
         this.glareElementWrapper.style.pointerEvents = "none";
-        
+
         this.glareElement = document.createElement("div");
         this.glareElement.classList.add("js-tilt-glare-inner");
         this.glareElement.style.position = "absolute";
@@ -1325,7 +1359,7 @@ class VanillaTilt {
         this.element.addEventListener("mouseenter", this.onMouseEnterBind);
         this.element.addEventListener("mouseleave", this.onMouseLeaveBind);
         this.element.addEventListener("mousemove", this.onMouseMoveBind);
-        
+
         if (this.glare || this.fullPageListening) {
             window.addEventListener("resize", this.onWindowResizeBind);
         }
@@ -1358,7 +1392,7 @@ class VanillaTilt {
             clientX: this.left + this.width / 2,
             clientY: this.top + this.height / 2
         };
-        
+
         if (this.element && this.element.style) {
             this.element.style.transform = `perspective(${this.settings.perspective}px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
         }
@@ -1469,7 +1503,7 @@ class VanillaTilt {
 // Initialize New Features
 function initCoolFeatures() {
     console.log('✨ Initializing cool visual effects...');
-    
+
     // Init Tilt on Project Cards and Setup Categories
     const tiltElements = document.querySelectorAll('.project-card, .setup-category, .profile-image');
     tiltElements.forEach(el => {
@@ -1481,14 +1515,14 @@ function initCoolFeatures() {
             scale: 1.02
         });
     });
-    
+
     // Observe for new project cards (dynamic loading)
     const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
             if (mutation.addedNodes.length) {
                 mutation.addedNodes.forEach((node) => {
                     if (node.nodeType === 1 && node.classList.contains('project-card')) {
-                         new VanillaTilt(node, {
+                        new VanillaTilt(node, {
                             max: 5,
                             speed: 400,
                             glare: true,
@@ -1500,13 +1534,13 @@ function initCoolFeatures() {
             }
         });
     });
-    
+
     const grid = document.getElementById('featured-projects-grid');
     if (grid) observer.observe(grid, { childList: true });
-    
+
     const starsGrid = document.getElementById('stars-grid');
     if (starsGrid) observer.observe(starsGrid, { childList: true });
-    
+
     const surpriseGrid = document.getElementById('surprise-cards-grid');
     if (surpriseGrid) observer.observe(surpriseGrid, { childList: true });
 }
