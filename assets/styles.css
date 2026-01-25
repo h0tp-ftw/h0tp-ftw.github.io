@@ -1025,6 +1025,57 @@ img.project-logo-img {
   display: block !important;
 }
 
+/* ============================================
+   NO IMAGE VARIANT (Language Icon)
+   ============================================ */
+.project-image.no-logo-variant {
+  padding-top: 0;
+  height: 220px;
+  width: 100%;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: linear-gradient(135deg, var(--ctp-surface0), var(--ctp-mantle));
+  position: relative;
+  overflow: hidden;
+  color: var(--ctp-subtext0);
+  transition: all 0.4s ease;
+}
+
+.project-image.no-logo-variant i {
+  font-size: 6rem;
+  z-index: 2;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-card:hover .project-image.no-logo-variant {
+  background: linear-gradient(135deg, var(--ctp-surface1), var(--ctp-base));
+  color: var(--accent);
+}
+
+.project-card:hover .project-image.no-logo-variant i {
+  transform: scale(1.1) rotate(-5deg);
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
+  color: var(--accent);
+}
+
+/* Add a subtle background pattern or glow */
+.project-image.no-logo-variant::after {
+  content: '';
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+}
+
+.project-card:hover .project-image.no-logo-variant::after {
+  opacity: 0.2;
+}
+
 /* Project info */
 .project-info {
   padding: 1.25rem;
