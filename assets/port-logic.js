@@ -18,12 +18,16 @@ const ROTATING_WORDS = [
 ];
 
 const PROJECT_LOGOS = {
+    'ankimon-trading-tool': 'https://img.icons8.com/fluency/512/bullish.png',
     'ankimon': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Pok%C3%A9_Ball_icon.svg/2052px-Pok%C3%A9_Ball_icon.svg.png',
-    'anki-vscode': 'https://images.icon-icons.com/1381/PNG/512/anki_93962.png',
+    'anki-prettify': 'https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/logos/exports/1544x1544_circle.png',
+    'prettify': 'https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/logos/exports/1544x1544_circle.png',
+    'anki-vscode': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/512px-Visual_Studio_Code_1.35_icon.svg.png',
     'anki': 'https://images.icon-icons.com/1381/PNG/512/anki_93962.png',
     'api-key-cycler': 'https://em-content.zobj.net/source/apple/354/key_1f511.png',
-    'acoustic-engine': 'https://cdn-icons-png.flaticon.com/512/1251/1251671.png',
-    'h0tp-ftw.github.io': 'https://cdn-icons-png.flaticon.com/512/1055/1055683.png',
+    'acoustic-engine': 'https://img.icons8.com/fluency/512/speaker.png',
+    'alarm': 'https://img.icons8.com/color/512/alarm-clock.png',
+    'h0tp-ftw.github.io': 'https://img.icons8.com/color/512/globe--v1.png',
 };
 
 // Map GitHub languages to Devicon classes
