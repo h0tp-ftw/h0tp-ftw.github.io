@@ -400,28 +400,31 @@ body::before {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Top Navigation Buttons */
+/* Top Navigation Buttons - FIXED ORDER [Quiet] [Blog] [Toggle] */
 .blog-nav-btn,
 .quiet-nav-btn {
   /* ... */
-  z-index: 2000; /* Force on top */
+  z-index: 2000;
 }
 
+/* Blog is closer to toggle */
 .blog-nav-btn {
-  right: 15rem;
-}
-
-.quiet-nav-btn {
   right: 8rem;
 }
 
+/* Quiet is to the LEFT of Blog */
+.quiet-nav-btn {
+  right: 15rem;
+}
+
 @media (max-width: 768px) {
+  /* Mobile: Tighter spacing */
   .blog-nav-btn {
-    right: 12rem;
+    right: 7rem;
   }
 
   .quiet-nav-btn {
-    right: 7rem;
+    right: 12rem;
   }
   
   .theme-toggle-switch {
