@@ -400,50 +400,35 @@ body::before {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Top Navigation Buttons */
+.blog-nav-btn,
+.quiet-nav-btn {
+  /* ... */
+  z-index: 2000; /* Force on top */
+}
+
 .blog-nav-btn {
-  right: 14rem;
+  right: 15rem;
 }
 
 .quiet-nav-btn {
-  right: 20.5rem;
-}
-
-.blog-nav-btn:hover,
-.quiet-nav-btn:hover {
-  background: var(--ctp-surface1);
-  border-color: var(--accent);
-  color: var(--accent);
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
-}
-
-.blog-nav-btn svg,
-.quiet-nav-btn svg {
-  width: 18px;
-  height: 18px;
-  transition: transform 0.3s ease;
-}
-
-.blog-nav-btn:hover svg,
-.quiet-nav-btn:hover svg {
-  transform: rotate(-5deg);
+  right: 8rem;
 }
 
 @media (max-width: 768px) {
-  .blog-nav-btn,
-  .quiet-nav-btn {
-    top: 1rem;
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
-  }
-
   .blog-nav-btn {
-    right: 11rem;
+    right: 12rem;
   }
 
   .quiet-nav-btn {
-    right: 6.5rem;
+    right: 7rem;
   }
+  
+  .theme-toggle-switch {
+    top: 1rem;
+    right: 1rem;
+  }
+}
   
   .blog-nav-btn span,
   .quiet-nav-btn span {
