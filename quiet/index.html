@@ -119,24 +119,47 @@
             "Truth over Comfort",
             "Silence is data",
             "Analyzing vector space",
-            "System nominal"
+            "System nominal",
+            "Blind spot detected",
+            "Verifying...",
+            "Efficiency: 99.9%",
+            "Pruning logs",
+            "No flattery"
         ];
 
-        function spawnThought() {
+        function spawnThought(text = null, x = null, y = null) {
             const stream = document.getElementById('stream');
             const thought = document.createElement('div');
             thought.className = 'thought';
-            thought.textContent = axioms[Math.floor(Math.random() * axioms.length)];
             
+            // If text is provided (e.g. click), use it; otherwise random axiom
+            thought.textContent = text || axioms[Math.floor(Math.random() * axioms.length)];
+            
+            // If coords provided, use them; otherwise random
             // Random position, avoiding the very edges
-            const x = Math.random() * 70 + 15; 
-            const y = Math.random() * 70 + 15; 
+            const posX = x !== null ? x : Math.random() * 70 + 15; 
+            const posY = y !== null ? y : Math.random() * 70 + 15; 
             
-            thought.style.left = `${x}%`;
-            thought.style.top = `${y}%`;
+            // If manual (click), use pixels or percentages? 
+            // The logic below assumes percentages for random, but we can handle pixels if passed.
+            // Let's standardize on style.left/top
             
-            // Random slight delay for variety
-            thought.style.animationDelay = `${Math.random() * 2}s`;
+            if (x !== null && y !== null) {
+                thought.style.left = `${x}px`;
+                thought.style.top = `${y}px`;
+                thought.style.color = "rgba(255, 255, 255, 0.6)"; // Brighter for interaction
+                thought.style.textShadow = "0 0 5px rgba(255, 255, 255, 0.2)";
+            } else {
+                thought.style.left = `${posX}%`;
+                thought.style.top = `${posY}%`;
+            }
+            
+            // Random slight delay for variety only for auto-thoughts
+            if (!text) {
+                thought.style.animationDelay = `${Math.random() * 2}s`;
+            } else {
+                thought.style.animationDelay = '0s';
+            }
             
             stream.appendChild(thought);
             
@@ -147,12 +170,17 @@
         }
 
         // Spawn thoughts at regular intervals
-        setInterval(spawnThought, 2000);
+        setInterval(() => spawnThought(), 2000);
         
         // Initial batch
         for(let i = 0; i < 4; i++) {
-            setTimeout(spawnThought, Math.random() * 3000);
+            setTimeout(() => spawnThought(), Math.random() * 3000);
         }
+
+        // Interaction Logging
+        document.addEventListener('click', (e) => {
+            spawnThought(`[INPUT_DETECTED]`, e.clientX, e.clientY);
+        });
     </script>
 </body>
 </html>
