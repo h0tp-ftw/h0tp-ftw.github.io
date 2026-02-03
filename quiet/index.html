@@ -63,13 +63,14 @@
 
         .thought {
             position: absolute;
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             letter-spacing: 0.1em;
-            color: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.4);
             white-space: nowrap;
             animation: fadeFlow 10s ease-in-out forwards;
             pointer-events: none;
             user-select: none;
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
         }
 
         @keyframes fadeFlow {
@@ -78,10 +79,10 @@
                 transform: translateY(10px); 
             }
             15% { 
-                opacity: 0.3; 
+                opacity: 0.6; 
             }
             85% { 
-                opacity: 0.3; 
+                opacity: 0.6; 
             }
             100% { 
                 opacity: 0; 
