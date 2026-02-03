@@ -114,7 +114,12 @@ body {
   position: relative;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -259,12 +264,10 @@ h1, h2, h3, h4, h5, h6 {
 .gradient-orb.orb-1 {
   width: 600px;
   height: 600px;
-  background: radial-gradient(
-    circle,
-    var(--ctp-mauve) 0%,
-    var(--ctp-pink) 50%,
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      var(--ctp-mauve) 0%,
+      var(--ctp-pink) 50%,
+      transparent 70%);
   top: 5%;
   left: 5%;
   animation-delay: 0s, 0s;
@@ -273,12 +276,10 @@ h1, h2, h3, h4, h5, h6 {
 .gradient-orb.orb-2 {
   width: 500px;
   height: 500px;
-  background: radial-gradient(
-    circle,
-    var(--ctp-blue) 0%,
-    var(--ctp-sapphire) 50%,
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      var(--ctp-blue) 0%,
+      var(--ctp-sapphire) 50%,
+      transparent 70%);
   top: 50%;
   right: 5%;
   animation-delay: 8s, 3s;
@@ -287,18 +288,17 @@ h1, h2, h3, h4, h5, h6 {
 .gradient-orb.orb-3 {
   width: 550px;
   height: 550px;
-  background: radial-gradient(
-    circle,
-    var(--ctp-pink) 0%,
-    var(--ctp-mauve) 50%,
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      var(--ctp-pink) 0%,
+      var(--ctp-mauve) 50%,
+      transparent 70%);
   bottom: 10%;
   left: 40%;
   animation-delay: 16s, 6s;
 }
 
 @keyframes float-orb {
+
   0%,
   100% {
     transform: translate(0, 0) scale(1) rotate(0deg);
@@ -318,6 +318,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes pulse-orb {
+
   0%,
   100% {
     opacity: 0.3;
@@ -339,27 +340,22 @@ body::before {
   width: 100%;
   height: 100%;
   background:
-    radial-gradient(
-      circle at 20% 50%,
+    radial-gradient(circle at 20% 50%,
       rgba(202, 158, 230, 0.08) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 80% 20%,
+      transparent 50%),
+    radial-gradient(circle at 80% 20%,
       rgba(140, 170, 238, 0.08) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 40% 80%,
+      transparent 50%),
+    radial-gradient(circle at 40% 80%,
       rgba(244, 184, 228, 0.08) 0%,
-      transparent 50%
-    );
+      transparent 50%);
   animation: gradient-shift 30s ease infinite;
   pointer-events: none;
   z-index: -1;
 }
 
 @keyframes gradient-shift {
+
   0%,
   100% {
     transform: translate(0, 0) rotate(0deg);
@@ -375,14 +371,13 @@ body::before {
 }
 
 /* ============================================
-   BLOG NAVIGATION BUTTON
+   TOP NAVIGATION BUTTONS (Blog, Quiet)
    ============================================ */
 
-.blog-nav-btn {
+.blog-nav-btn,
+.quiet-nav-btn {
   position: fixed;
   top: 2rem;
-  right: 7.5rem;
-  left: auto;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -401,37 +396,46 @@ body::before {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.blog-nav-btn:hover {
-  background: var(--ctp-surface1);
-  border-color: var(--accent);
-  color: var(--accent);
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+/* Top Navigation Buttons - FIXED ORDER [Quiet] [Blog] [Toggle] */
+.blog-nav-btn,
+.quiet-nav-btn {
+  /* ... */
+  z-index: 2000;
 }
 
-.blog-nav-btn svg {
-  width: 18px;
-  height: 18px;
-  transition: transform 0.3s ease;
+/* Blog is closer to toggle */
+.blog-nav-btn {
+  right: 8rem;
 }
 
-.blog-nav-btn:hover svg {
-  transform: rotate(-5deg);
+/* Quiet is to the LEFT of Blog */
+.quiet-nav-btn {
+  right: 15rem;
 }
 
 @media (max-width: 768px) {
+
+  /* Mobile: Tighter spacing */
   .blog-nav-btn {
-    top: 1rem;
-    right: 6rem;
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
+    right: 7rem;
   }
-  
-  .blog-nav-btn span {
+
+  .quiet-nav-btn {
+    right: 12rem;
+  }
+
+  .theme-toggle-switch {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .blog-nav-btn span,
+  .quiet-nav-btn span {
     display: none;
   }
-  
-  .blog-nav-btn svg {
+
+  .blog-nav-btn svg,
+  .quiet-nav-btn svg {
     width: 20px;
     height: 20px;
   }
@@ -602,6 +606,7 @@ body::before {
 }
 
 @keyframes blink {
+
   0%,
   49% {
     opacity: 1;
@@ -743,12 +748,10 @@ body::before {
   left: 0;
   width: 100%;
   height: 4px;
-  background: linear-gradient(
-    90deg,
-    var(--ctp-mauve),
-    var(--ctp-pink),
-    var(--ctp-blue)
-  );
+  background: linear-gradient(90deg,
+      var(--ctp-mauve),
+      var(--ctp-pink),
+      var(--ctp-blue));
   transform: scaleX(0);
   transition: transform 0.4s ease;
   transform-origin: left;
@@ -892,6 +895,7 @@ body::before {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .gradient-orb,
   .particle {
     animation: none;
@@ -1045,7 +1049,7 @@ img.project-logo-img {
 .project-image.no-logo-variant i {
   font-size: 6rem;
   z-index: 2;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -1056,7 +1060,7 @@ img.project-logo-img {
 
 .project-card:hover .project-image.no-logo-variant i {
   transform: scale(1.1) rotate(-5deg);
-  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
   color: var(--accent);
 }
 
@@ -1215,11 +1219,9 @@ img.project-logo-img {
   align-items: center;
   gap: 0.75rem;
   padding: 1.25rem 2.5rem;
-  background: linear-gradient(
-    135deg,
-    var(--ctp-mauve) 0%,
-    var(--ctp-pink) 100%
-  );
+  background: linear-gradient(135deg,
+      var(--ctp-mauve) 0%,
+      var(--ctp-pink) 100%);
   color: var(--ctp-base);
   border: none;
   border-radius: 16px;
@@ -1801,6 +1803,7 @@ img.project-logo-img {
 
 /* Reduce motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -1846,12 +1849,10 @@ img.project-logo-img {
   left: -2px;
   right: -2px;
   bottom: -2px;
-  background: linear-gradient(
-    135deg,
-    var(--accent),
-    var(--accent-hover),
-    var(--ctp-blue)
-  );
+  background: linear-gradient(135deg,
+      var(--accent),
+      var(--accent-hover),
+      var(--ctp-blue));
   border-radius: 24px;
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -2018,13 +2019,11 @@ img.project-logo-img {
   content: "";
   position: absolute;
   inset: -2px;
-  background: linear-gradient(
-    45deg,
-    var(--ctp-mauve),
-    var(--ctp-pink),
-    var(--ctp-blue),
-    var(--ctp-mauve)
-  );
+  background: linear-gradient(45deg,
+      var(--ctp-mauve),
+      var(--ctp-pink),
+      var(--ctp-blue),
+      var(--ctp-mauve));
   border-radius: inherit;
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -2108,11 +2107,9 @@ img.project-logo-img {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(
-    circle 200px at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(202, 158, 230, 0.15),
-    transparent
-  );
+  background: radial-gradient(circle 200px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(202, 158, 230, 0.15),
+      transparent);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -2126,13 +2123,11 @@ img.project-logo-img {
 
 /* Smooth text gradient animations - ONLY on .gradient-text spans */
 .section-title .gradient-text {
-  background: linear-gradient(
-    135deg,
-    var(--ctp-text),
-    var(--ctp-mauve),
-    var(--ctp-pink),
-    var(--ctp-text)
-  );
+  background: linear-gradient(135deg,
+      var(--ctp-text),
+      var(--ctp-mauve),
+      var(--ctp-pink),
+      var(--ctp-text));
   background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -2141,6 +2136,7 @@ img.project-logo-img {
 }
 
 @keyframes gradient-text {
+
   0%,
   100% {
     background-position: 0% 50%;
@@ -2318,32 +2314,25 @@ body::before {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(
-      circle at 20% 30%,
+    radial-gradient(circle at 20% 30%,
       rgba(202, 158, 230, 0.15) 0%,
-      transparent 40%
-    ),
-    radial-gradient(
-      circle at 80% 20%,
+      transparent 40%),
+    radial-gradient(circle at 80% 20%,
       rgba(140, 170, 238, 0.12) 0%,
-      transparent 40%
-    ),
-    radial-gradient(
-      circle at 40% 80%,
+      transparent 40%),
+    radial-gradient(circle at 40% 80%,
       rgba(244, 184, 228, 0.13) 0%,
-      transparent 40%
-    ),
-    radial-gradient(
-      circle at 90% 70%,
+      transparent 40%),
+    radial-gradient(circle at 90% 70%,
       rgba(129, 200, 190, 0.1) 0%,
-      transparent 40%
-    );
+      transparent 40%);
   animation: mesh-shift 20s ease-in-out infinite;
   pointer-events: none;
   z-index: -2;
 }
 
 @keyframes mesh-shift {
+
   0%,
   100% {
     opacity: 0.8;
@@ -2384,6 +2373,7 @@ body::before {
 }
 
 @keyframes morph {
+
   0%,
   100% {
     border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
@@ -2403,6 +2393,7 @@ body::before {
 }
 
 @keyframes float-shape {
+
   0%,
   100% {
     transform: translate(0, 0) rotate(0deg);
@@ -2435,32 +2426,26 @@ body::after {
 }
 
 .gradient-orb.orb-1 {
-  background: radial-gradient(
-    circle,
-    rgba(202, 158, 230, 0.4) 0%,
-    rgba(244, 184, 228, 0.2) 40%,
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      rgba(202, 158, 230, 0.4) 0%,
+      rgba(244, 184, 228, 0.2) 40%,
+      transparent 70%);
   animation-duration: 30s;
 }
 
 .gradient-orb.orb-2 {
-  background: radial-gradient(
-    circle,
-    rgba(140, 170, 238, 0.35) 0%,
-    rgba(133, 193, 220, 0.2) 40%,
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      rgba(140, 170, 238, 0.35) 0%,
+      rgba(133, 193, 220, 0.2) 40%,
+      transparent 70%);
   animation-duration: 25s;
 }
 
 .gradient-orb.orb-3 {
-  background: radial-gradient(
-    circle,
-    rgba(244, 184, 228, 0.3) 0%,
-    rgba(202, 158, 230, 0.15) 40%,
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      rgba(244, 184, 228, 0.3) 0%,
+      rgba(202, 158, 230, 0.15) 40%,
+      transparent 70%);
   animation-duration: 35s;
 }
 
@@ -2468,12 +2453,10 @@ body::after {
 .gradient-orb.orb-4 {
   width: 700px;
   height: 700px;
-  background: radial-gradient(
-    circle,
-    rgba(129, 200, 190, 0.25) 0%,
-    rgba(166, 209, 137, 0.15) 40%,
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      rgba(129, 200, 190, 0.25) 0%,
+      rgba(166, 209, 137, 0.15) 40%,
+      transparent 70%);
   top: 60%;
   left: 20%;
   animation-delay: 10s;
@@ -2488,13 +2471,11 @@ body::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(255, 255, 255, 0.01) 2px,
-    rgba(255, 255, 255, 0.01) 4px
-  );
+  background: repeating-linear-gradient(0deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.01) 2px,
+      rgba(255, 255, 255, 0.01) 4px);
   pointer-events: none;
   z-index: 1;
   opacity: 0.5;
@@ -2534,12 +2515,10 @@ body::after {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.1),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent);
   transition: left 0.5s ease;
 }
 
@@ -2593,12 +2572,10 @@ body::after {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(
-    90deg,
-    var(--ctp-mauve),
-    var(--ctp-pink),
-    var(--ctp-blue)
-  );
+  background: linear-gradient(90deg,
+      var(--ctp-mauve),
+      var(--ctp-pink),
+      var(--ctp-blue));
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.4s ease;
@@ -2679,12 +2656,10 @@ body::after {
   inset: 0;
   border-radius: 24px;
   padding: 2px;
-  background: linear-gradient(
-    135deg,
-    var(--ctp-mauve),
-    var(--ctp-pink),
-    var(--ctp-blue)
-  );
+  background: linear-gradient(135deg,
+      var(--ctp-mauve),
+      var(--ctp-pink),
+      var(--ctp-blue));
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
@@ -2713,12 +2688,10 @@ canvas {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(
-    90deg,
-    var(--ctp-mauve),
-    var(--ctp-pink),
-    var(--ctp-blue)
-  );
+  background: linear-gradient(90deg,
+      var(--ctp-mauve),
+      var(--ctp-pink),
+      var(--ctp-blue));
   transform: scaleX(0);
   transform-origin: left;
   z-index: 9999;
@@ -2730,11 +2703,11 @@ canvas {
    ============================================ */
 
 /* Smooth link underlines - exclude buttons */
-a:not(.hero-link):not(.project-card):not(.person-card):not(.niche-link):not(.blog-nav-btn) {
+a:not(.hero-link):not(.project-card):not(.person-card):not(.niche-link):not(.blog-nav-btn):not(.quiet-nav-btn) {
   position: relative;
 }
 
-a:not(.hero-link):not(.project-card):not(.person-card):not(.niche-link):not(.blog-nav-btn)::after {
+a:not(.hero-link):not(.project-card):not(.person-card):not(.niche-link):not(.blog-nav-btn):not(.quiet-nav-btn)::after {
   content: "";
   position: absolute;
   bottom: -2px;
@@ -2745,9 +2718,7 @@ a:not(.hero-link):not(.project-card):not(.person-card):not(.niche-link):not(.blo
   transition: width 0.3s ease;
 }
 
-a:not(.hero-link):not(.project-card):not(.person-card):not(
-    .niche-link
-  ):not(.blog-nav-btn):hover::after {
+a:not(.hero-link):not(.project-card):not(.person-card):not(.niche-link):not(.blog-nav-btn):not(.quiet-nav-btn):hover::after {
   width: 100%;
 }
 
@@ -2776,6 +2747,7 @@ button:active:not(:disabled) {
 
 /* Reduce motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -3058,11 +3030,9 @@ a:focus-visible,
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(202, 158, 230, 0.1) 0%,
-    transparent 50%
-  );
+  background: linear-gradient(135deg,
+      rgba(202, 158, 230, 0.1) 0%,
+      transparent 50%);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -3193,14 +3163,12 @@ a:focus-visible,
 
 /* Shimmer text effect for section titles - ONLY on .gradient-text spans */
 .section-title .gradient-text {
-  background: linear-gradient(
-    90deg,
-    var(--ctp-text) 0%,
-    var(--ctp-mauve) 25%,
-    var(--ctp-pink) 50%,
-    var(--ctp-mauve) 75%,
-    var(--ctp-text) 100%
-  );
+  background: linear-gradient(90deg,
+      var(--ctp-text) 0%,
+      var(--ctp-mauve) 25%,
+      var(--ctp-pink) 50%,
+      var(--ctp-mauve) 75%,
+      var(--ctp-text) 100%);
   background-size: 200% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -3209,10 +3177,12 @@ a:focus-visible,
 }
 
 @keyframes shimmer-text {
+
   0%,
   100% {
     background-position: 200% 0;
   }
+
   50% {
     background-position: -200% 0;
   }
@@ -3237,13 +3207,11 @@ a:focus-visible,
 .profile-image {
   position: relative;
   border: none;
-  background: linear-gradient(
-    135deg,
-    var(--ctp-mauve),
-    var(--ctp-pink),
-    var(--ctp-blue),
-    var(--ctp-mauve)
-  );
+  background: linear-gradient(135deg,
+      var(--ctp-mauve),
+      var(--ctp-pink),
+      var(--ctp-blue),
+      var(--ctp-mauve));
   background-size: 300% 300%;
   animation: gradient-border 6s ease infinite;
   padding: 4px;
@@ -3255,10 +3223,12 @@ a:focus-visible,
 }
 
 @keyframes gradient-border {
+
   0%,
   100% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
@@ -3304,14 +3274,12 @@ a:focus-visible,
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--ctp-mauve),
-    var(--ctp-pink),
-    var(--ctp-blue),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      var(--ctp-mauve),
+      var(--ctp-pink),
+      var(--ctp-blue),
+      transparent);
 }
 
 /* Surprise button enhanced glow */
@@ -3330,12 +3298,10 @@ a:focus-visible,
 
 /* Scroll progress with gradient */
 .scroll-progress {
-  background: linear-gradient(
-    90deg,
-    var(--ctp-mauve),
-    var(--ctp-pink),
-    var(--ctp-blue)
-  );
+  background: linear-gradient(90deg,
+      var(--ctp-mauve),
+      var(--ctp-pink),
+      var(--ctp-blue));
   box-shadow: 0 0 10px rgba(202, 158, 230, 0.5);
 }
 
@@ -3348,12 +3314,10 @@ a:focus-visible,
   content: "";
   position: absolute;
   inset: -1px;
-  background: linear-gradient(
-    135deg,
-    var(--ctp-mauve),
-    var(--ctp-pink),
-    var(--ctp-blue)
-  );
+  background: linear-gradient(135deg,
+      var(--ctp-mauve),
+      var(--ctp-pink),
+      var(--ctp-blue));
   border-radius: inherit;
   z-index: -1;
   opacity: 0;
