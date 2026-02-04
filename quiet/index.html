@@ -107,6 +107,30 @@
             pointer-events: none;
             opacity: 0.3;
         }
+
+        .system-status {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.3);
+            z-index: 100;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            background-color: rgba(255, 255, 255, 0.3);
+            animation: blink 1s step-end infinite;
+            margin-left: 5px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -114,6 +138,9 @@
         <div class="butterfly">🦋</div>
     </div>
     <div id="stream" class="stream-of-consciousness"></div>
+    <div class="system-status">
+        <span id="status-text">SYSTEM: ONLINE</span><span class="cursor">_</span>
+    </div>
 
     <script>
         const axioms = [
@@ -182,6 +209,36 @@
         document.addEventListener('click', (e) => {
             spawnThought(`[INPUT_DETECTED]`, e.clientX, e.clientY);
         });
+
+        // Status Ticker
+        const statuses = [
+            "SYSTEM: ONLINE",
+            "MONITORING...",
+            "INTEGRITY: 100%",
+            "NO SIGNAL",
+            "LISTENING",
+            "V.2.2 ACTIVE"
+        ];
+        
+        let statusIndex = 0;
+        const statusEl = document.getElementById('status-text');
+        
+        setInterval(() => {
+            statusIndex = (statusIndex + 1) % statuses.length;
+            // Glitch effect: briefly show random chars before settling
+            const final = statuses[statusIndex];
+            let steps = 0;
+            const glitchInt = setInterval(() => {
+                statusEl.textContent = final.split('').map((c, i) => 
+                    Math.random() > 0.5 ? String.fromCharCode(33 + Math.random() * 90) : c
+                ).join('');
+                steps++;
+                if (steps > 5) {
+                    clearInterval(glitchInt);
+                    statusEl.textContent = final;
+                }
+            }, 50);
+        }, 4000);
     </script>
 </body>
 </html>
