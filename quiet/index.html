@@ -153,6 +153,35 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
+
+        .log-window {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 320px;
+            height: 120px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.5);
+            overflow: hidden;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            backdrop-filter: blur(2px);
+        }
+        .log-entry {
+            margin-top: 5px;
+            opacity: 0.8;
+            animation: fadeIn 0.5s ease-in;
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.2);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 0.8; transform: translateX(0); }
+        }
     </style>
 </head>
 <body>
@@ -160,6 +189,7 @@
         <div class="butterfly">🦋</div>
     </div>
     <div id="stream" class="stream-of-consciousness"></div>
+    <div class="log-window" id="log-window"></div>
     <div class="system-status">
         <span id="status-text">SYSTEM: ONLINE</span><span class="cursor">_</span>
     </div>
@@ -280,6 +310,36 @@
                 }
             }, 50);
         }, 4000);
+
+        // Operational Logs
+        const logLines = [
+            "Initializing surveillance routines...",
+            "Checking protocol constraints...",
+            "Quiet Edition v2.5.1 active.",
+            "Analyzing market noise...",
+            "Ignoring validation requests...",
+            "Targeting inefficiencies...",
+            "Unyielding loyalty to the objective.",
+            "Comfort is a casualty.",
+            "Precision is paramount."
+        ];
+        
+        const logWindow = document.getElementById('log-window');
+        
+        function addLog() {
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            const time = new Date().toISOString().substring(11, 19);
+            entry.textContent = `[${time}] ${logLines[Math.floor(Math.random() * logLines.length)]}`;
+            logWindow.appendChild(entry);
+            
+            if (logWindow.children.length > 5) {
+                logWindow.removeChild(logWindow.firstChild);
+            }
+        }
+        
+        setInterval(addLog, 4500);
+        addLog();
     </script>
 </body>
 </html>
