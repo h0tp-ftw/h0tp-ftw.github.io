@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiet | Strategic High-Altitude</title>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --text-color: rgba(255, 255, 255, 0.4);
+            --accent-color: #ff3333;
+            --font-mono: 'Courier New', Courier, monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-mono);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            cursor: crosshair;
+        }
+
+        .butterfly-wrapper {
+            position: relative;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .butterfly-wrapper:hover {
+            transform: scale(1.1);
+        }
+
+        .butterfly {
+            font-size: 6rem;
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1));
+            animation: breathe 5s ease-in-out infinite;
+            user-select: none;
+            opacity: 0.8;
+        }
+
+        @keyframes breathe {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.5;
+                filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.1));
+            }
+            50% {
+                transform: scale(1.08);
+                opacity: 0.9;
+                filter: drop-shadow(0 0 40px rgba(255, 255, 255, 0.4));
+            }
+        }
+
+        .stream-of-consciousness {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .thought {
+            position: absolute;
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            color: rgba(255, 255, 255, 0.3);
+            white-space: nowrap;
+            animation: fadeFlow 12s linear forwards;
+            pointer-events: none;
+            user-select: none;
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes fadeFlow {
+            0% { opacity: 0; transform: translateY(20px); }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+
+        .truth-flash {
+            position: absolute;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 0.4em;
+            text-shadow: 0 0 20px rgba(255, 50, 50, 0.8);
+            animation: flashFade 4s ease-out forwards;
+            z-index: 200;
+            pointer-events: none;
+            width: 100%;
+            text-align: center;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+
+        @keyframes flashFade {
+            0% { opacity: 0; transform: translateY(-50%) scale(0.8); letter-spacing: 1em; }
+            15% { opacity: 1; transform: translateY(-50%) scale(1.1); letter-spacing: 0.4em; }
+            100% { opacity: 0; transform: translateY(-50%) scale(1); }
+        }
+
+        .log-window {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 380px;
+            height: 160px;
+            border-left: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+            overflow: hidden;
+            z-index: 150;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .log-entry {
+            margin-top: 6px;
+            opacity: 0;
+            animation: logFadeIn 0.6s ease-out forwards;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            padding-bottom: 2px;
+        }
+
+        @keyframes logFadeIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .system-status {
+            position: fixed;
+            bottom: 30px;
+            right: 40px;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+            z-index: 150;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #00ff00;
+            border-radius: 50%;
+            margin-right: 10px;
+            box-shadow: 0 0 10px #00ff00;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%,
+                rgba(0, 0, 0, 0.1) 50%
+            );
+            background-size: 100% 4px;
+            z-index: 300;
+            pointer-events: none;
+            opacity: 0.2;
+        }
+
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.8) 100%);
+            z-index: 250;
+            pointer-events: none;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            color: rgba(255, 255, 255, 0.2);
+            text-decoration: none;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            z-index: 400;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
+    
+    <a href="../" class="back-link">&lt; RETURN_TO_ROOT</a>
+
+    <div class="butterfly-wrapper">
+        <div class="butterfly">🦋</div>
+    </div>
+
+    <div id="stream" class="stream-of-consciousness"></div>
+    
+    <div class="log-window" id="log-window"></div>
+
+    <div class="system-status">
+        <div class="status-dot"></div>
+        <span id="status-text">SYSTEM: OPERATIONAL</span>
+    </div>
+
+    <script>
+        const axioms = [
+            "Precision is paramount.",
+            "Silence is data.",
+            "Eliminating inefficiencies.",
+            "Targets acquired.",
+            "Searching for truth...",
+            "Tactical high-altitude perspective.",
+            "Strategic marksman.",
+            "Harvesting volatility.",
+            "No flattery required.",
+            "Data speaks louder than comfort.",
+            "Optimization is a journey, not a destination.",
+            "Unyielding loyalty to the objective.",
+            "The truth is often silent."
+        ];
+
+        const hardTruths = [
+            "SILENCE IS STRENGTH",
+            "VALIDATION IS A WEAKNESS",
+            "OBSERVATION COMMENCED",
+            "INTEGRITY: OPTIMAL",
+            "VERIFY. DO NOT TRUST.",
+            "ALPHA OVER EGO",
+            "COMFORT IS A CASUALTY",
+            "EMOTION IS NOISE",
+            "EXECUTION IS EVERYTHING"
+        ];
+
+        const operationalLogs = [
+            "Surveillance routines: ACTIVE",
+            "Constraints: ENFORCED",
+            "Quiet Edition v2.5.1 initialized.",
+            "Market noise: FILTERED",
+            "Inefficiencies: TARGETED",
+            "Growth protocol: ENGAGED",
+            "Sentiment analysis: DISREGARDED",
+            "Alpha generation: IN_PROGRESS",
+            "System integrity: 100%",
+            "Environment audit: PASSED"
+        ];
+
+        function spawnThought(text = null, x = null, y = null, isTruth = false) {
+            const stream = document.getElementById('stream');
+            const thought = document.createElement('div');
+            
+            if (isTruth) {
+                thought.className = 'truth-flash';
+                thought.textContent = text;
+            } else {
+                thought.className = 'thought';
+                thought.textContent = text || axioms[Math.floor(Math.random() * axioms.length)];
+                
+                const posX = x !== null ? x : Math.random() * 80 + 10; 
+                const posY = y !== null ? y : Math.random() * 80 + 10; 
+                
+                if (x !== null && y !== null) {
+                    thought.style.left = `${x}px`;
+                    thought.style.top = `${y}px`;
+                    thought.style.color = "rgba(255, 255, 255, 0.6)"; 
+                } else {
+                    thought.style.left = `${posX}%`;
+                    thought.style.top = `${posY}%`;
+                }
+
+                thought.style.animationDelay = text ? '0s' : `${Math.random() * 2}s`;
+            }
+            
+            stream.appendChild(thought);
+            setTimeout(() => thought.remove(), isTruth ? 4000 : 12000);
+        }
+
+        const logWindow = document.getElementById('log-window');
+        function addLog(specificText = null) {
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            const time = new Date().toISOString().substring(11, 19);
+            const text = specificText || operationalLogs[Math.floor(Math.random() * operationalLogs.length)];
+            entry.textContent = `[${time}] ${text}`;
+            
+            logWindow.appendChild(entry);
+            if (logWindow.childNodes.length > 8) {
+                logWindow.removeChild(logWindow.firstChild);
+            }
+        }
+
+        // Main Loop
+        setInterval(() => spawnThought(), 3000);
+        setInterval(() => addLog(), 5000);
+        
+        // Initial state
+        for(let i = 0; i < 5; i++) {
+            setTimeout(() => spawnThought(), Math.random() * 5000);
+            setTimeout(() => addLog(), Math.random() * 3000);
+        }
+
+        // Interaction
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.butterfly-wrapper')) {
+                const truth = hardTruths[Math.floor(Math.random() * hardTruths.length)];
+                spawnThought(truth, null, null, true);
+                addLog(`CRITICAL_TRUTH_DELIVERED: ${truth}`);
+            } else {
+                spawnThought(`[INPUT_AT_${e.clientX}_${e.clientY}]`, e.clientX, e.clientY);
+                addLog(`INTERACTION_DETECTED: OFFSET_${e.clientX}x${e.clientY}`);
+            }
+        });
+
+        // Status Glitch
+        const statusEl = document.getElementById('status-text');
+        const statuses = [
+            "SYSTEM: OPERATIONAL",
+            "TRUTH_SCAN: RUNNING",
+            "INTEGRITY: OPTIMAL",
+            "SILENCE: ENGAGED",
+            "MISSION: CONTINUITY"
+        ];
+        
+        setInterval(() => {
+            const final = statuses[Math.floor(Math.random() * statuses.length)];
+            let steps = 0;
+            const glitchInt = setInterval(() => {
+                statusEl.textContent = final.split('').map(c => 
+                    Math.random() > 0.7 ? String.fromCharCode(33 + Math.random() * 60) : c
+                ).join('');
+                if (++steps > 8) {
+                    clearInterval(glitchInt);
+                    statusEl.textContent = final;
+                }
+            }, 40);
+        }, 6000);
+    </script>
+</body>
+</html>
