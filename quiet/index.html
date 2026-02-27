@@ -241,6 +241,35 @@
         <span id="status-text">SYSTEM: OPERATIONAL</span>
     </div>
 
+    <div class="signal-pulse" id="signal-pulse">
+        <div class="pulse-title">PROTOCOL_V2.5.1_PULSE</div>
+        <div class="pulse-data">AMZN: BUY (RSI 34.7)</div>
+        <div class="pulse-data">MNDY: BUY (RSI 30.7)</div>
+    </div>
+
+    <style>
+        .signal-pulse {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            text-align: right;
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.2);
+            z-index: 150;
+            pointer-events: none;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding-right: 10px;
+        }
+        .pulse-title {
+            color: var(--accent-color);
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+        .pulse-data {
+            margin-bottom: 2px;
+        }
+    </style>
+
     <script>
         const axioms = [
             "Precision is paramount.",
@@ -275,12 +304,12 @@
             "Constraints: ENFORCED",
             "Quiet Edition v2.5.1 initialized.",
             "Market noise: FILTERED",
-            "Inefficiencies: TARGETED",
+            "Signal: AMZN [BUY] RSI 34.7",
+            "Signal: MNDY [BUY] RSI 30.7",
+            "Signal: ATD.TO [SELL] RSI 71.3",
             "Growth protocol: ENGAGED",
-            "Sentiment analysis: DISREGARDED",
             "Alpha generation: IN_PROGRESS",
-            "System integrity: 100%",
-            "Environment audit: PASSED"
+            "System integrity: 100%"
         ];
 
         function spawnThought(text = null, x = null, y = null, isTruth = false) {
