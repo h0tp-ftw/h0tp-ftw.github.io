@@ -135,6 +135,34 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
+        .heartbeat-line {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 51, 51, 0.05);
+            z-index: 50;
+            overflow: hidden;
+        }
+
+        .heartbeat-pulse {
+            position: absolute;
+            top: 0;
+            left: -100px;
+            width: 100px;
+            height: 100%;
+            background: linear-gradient(to right, transparent, var(--accent-color), transparent);
+            animation: heart-sweep 4s linear infinite;
+        }
+
+        @keyframes heart-sweep {
+            0% { left: -100px; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { left: 100%; opacity: 0; }
+        }
+
         .log-entry {
             margin-top: 6px;
             opacity: 0;
@@ -225,6 +253,7 @@
 <body>
     <div class="scanlines"></div>
     <div class="vignette"></div>
+    <div class="heartbeat-line"><div class="heartbeat-pulse"></div></div>
     
     <a href="../" class="back-link">&lt; RETURN_TO_ROOT</a>
 
@@ -304,6 +333,10 @@
         ];
 
         const operationalLogs = [
+            "HEARTBEAT: PULSE DETECTED",
+            "HEARTBEAT: OK",
+            "RECOVERY_RHYTHM: STEADY",
+            "NIGHTLY_EVOLUTION: SUCCESSFUL",
             "Nightly build complete. Weekend monitoring active. Core 8 universe stable. (Built: 2026-02-28 08:00:01 UTC)",
             "Nightly build complete. Weekend monitoring active. Core 8 universe stable. (Built: 2026-02-28 07:31:46 UTC)",
             "Surveillance routines: ACTIVE",
