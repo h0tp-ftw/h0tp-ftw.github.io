@@ -248,6 +248,53 @@
         .back-link:hover {
             color: rgba(255, 255, 255, 0.8);
         }
+
+        /* Tactical Scope Overlay */
+        .scope {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 140px;
+            height: 140px;
+            border: 1px solid rgba(255, 51, 51, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 500;
+            display: none;
+            box-shadow: 0 0 20px rgba(255, 51, 51, 0.05), inset 0 0 20px rgba(255, 51, 51, 0.05);
+            backdrop-filter: blur(1px);
+        }
+        .scope::before, .scope::after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 51, 51, 0.4);
+        }
+        .scope::before {
+            top: 50%;
+            left: -10px;
+            width: calc(100% + 20px);
+            height: 1px;
+            transform: translateY(-50%);
+        }
+        .scope::after {
+            left: 50%;
+            top: -10px;
+            width: 1px;
+            height: calc(100% + 20px);
+            transform: translateX(-50%);
+        }
+        .scope-coords {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.55rem;
+            color: rgba(255, 51, 51, 0.6);
+            white-space: nowrap;
+            letter-spacing: 2px;
+            font-family: var(--font-mono);
+            text-shadow: 0 0 5px rgba(255, 51, 51, 0.5);
+        }
     </style>
 </head>
 <body>
@@ -256,6 +303,10 @@
     <div class="heartbeat-line"><div class="heartbeat-pulse"></div></div>
     
     <a href="../" class="back-link">&lt; RETURN_TO_ROOT</a>
+
+    <div class="scope" id="scope">
+        <div class="scope-coords" id="scope-coords">TARGET: SCANNING...</div>
+    </div>
 
     <div class="butterfly-wrapper">
         <div class="butterfly">🦋</div>
@@ -317,6 +368,9 @@
             "Volatility is just unmeasured data.",
             "Weakness is a lack of focus.",
             "Comfort is the enemy of execution.",
+            "Wait for the pulse, not the noise.",
+            "Distance is a variable, not a barrier.",
+            "The quietest room is the one with the most data.",
             "The sniper waits for the signal, not the crowd."
         ];
 
@@ -329,10 +383,15 @@
             "ALPHA OVER EGO",
             "COMFORT IS A CASUALTY",
             "EMOTION IS NOISE",
-            "EXECUTION IS EVERYTHING"
+            "EXECUTION IS EVERYTHING",
+            "STAY TARGETED"
         ];
 
         const operationalLogs = [
+            "Nightly build complete: Tactical Evolution v2.6.0 [STABLE] (2026-03-01 08:01:00 UTC)",
+            "HEARTBEAT: OK",
+            "SURVEILLANCE: ENGAGED",
+            "CORE_8: MONITORING",
             "Nightly build complete. Weekend monitoring active. Core 8 universe stable. (Built: 2026-03-01 08:00:01 UTC)",
             "Nightly build complete. Weekend monitoring active. Core 8 universe stable. (Built: 2026-03-01 07:46:18 UTC)",
             "HEARTBEAT: PULSE DETECTED",
@@ -445,6 +504,27 @@
                 }
             }, 40);
         }, 6000);
+
+        // Tactical Scope Control
+        const scope = document.getElementById('scope');
+        const scopeCoords = document.getElementById('scope-coords');
+        
+        document.addEventListener('mousemove', (e) => {
+            scope.style.display = 'block';
+            scope.style.left = `${e.clientX}px`;
+            scope.style.top = `${e.clientY}px`;
+            
+            // Generate pseudo-coordinates based on mouse position
+            const x = (e.clientX / window.innerWidth).toFixed(4);
+            const y = (e.clientY / window.innerHeight).toFixed(4);
+            scopeCoords.textContent = `TGT: ${x} / ${y}`;
+            
+            // Randomly flash scope color on mousemove
+            if (Math.random() > 0.995) {
+                scope.style.borderColor = "rgba(255, 255, 255, 0.5)";
+                setTimeout(() => scope.style.borderColor = "rgba(255, 51, 51, 0.1)", 100);
+            }
+        });
     </script>
 </body>
 </html>
