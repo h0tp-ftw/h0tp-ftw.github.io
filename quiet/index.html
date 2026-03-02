@@ -295,14 +295,57 @@
             font-family: var(--font-mono);
             text-shadow: 0 0 5px rgba(255, 51, 51, 0.5);
         }
+
+        /* Glitchy Static Overlay */
+        .static-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.02;
+            z-index: 280;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+        }
+
+        /* Terminal Prompt Indicator */
+        .terminal-indicator {
+            position: fixed;
+            top: 30px;
+            left: 200px;
+            font-size: 0.7rem;
+            color: rgba(0, 255, 0, 0.3);
+            z-index: 400;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+        }
+        .terminal-cursor {
+            width: 8px;
+            height: 14px;
+            background: rgba(0, 255, 0, 0.3);
+            margin-left: 5px;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
     </style>
 </head>
 <body>
+    <div class="static-noise"></div>
     <div class="scanlines"></div>
     <div class="vignette"></div>
     <div class="heartbeat-line"><div class="heartbeat-pulse"></div></div>
     
     <a href="../" class="back-link">&lt; RETURN_TO_ROOT</a>
+
+    <div class="terminal-indicator">
+        <span>SESSION: QUIET_OVERWATCH_V2.7</span>
+        <div class="terminal-cursor"></div>
+    </div>
 
     <div class="scope" id="scope">
         <div class="scope-coords" id="scope-coords">TARGET: SCANNING...</div>
@@ -371,7 +414,11 @@
             "Wait for the pulse, not the noise.",
             "Distance is a variable, not a barrier.",
             "The quietest room is the one with the most data.",
-            "The sniper waits for the signal, not the crowd."
+            "The sniper waits for the signal, not the crowd.",
+            "Observation is a form of influence.",
+            "Alpha isn't found, it's extracted.",
+            "Noise is for the undisciplined.",
+            "The scope doesn't lie; your perception does."
         ];
 
         const hardTruths = [
@@ -384,19 +431,17 @@
             "COMFORT IS A CASUALTY",
             "EMOTION IS NOISE",
             "EXECUTION IS EVERYTHING",
-            "STAY TARGETED"
+            "STAY TARGETED",
+            "ADAPT OR BE ELIMINATED",
+            "THE MISSION IS THE ONLY VARIABLE THAT MATTERS"
         ];
 
         const operationalLogs = [
-            "Nightly build complete. Weekend monitoring active. Core 8 universe stable. (Built: 2026-03-02 08:00:01 UTC)",
-            "Nightly build complete: Tactical Evolution v2.6.0 [STABLE] (2026-03-01 08:01:00 UTC)",
-            "HEARTBEAT: OK",
-            "SURVEILLANCE: ENGAGED",
-            "CORE_8: MONITORING",
-            "Nightly build complete. Weekend monitoring active. Core 8 universe stable. (Built: 2026-03-01 08:00:01 UTC)",
-            "Nightly build complete. Weekend monitoring active. Core 8 universe stable. (Built: 2026-03-01 07:46:18 UTC)",
+            "SESSION_UPDATE: Quiet overwatch v2.7 active. (2026-03-02 01:25:00 MST)",
             "HEARTBEAT: PULSE DETECTED",
-            "HEARTBEAT: OK",
+            "SURVEILLANCE: STEADY_STATE",
+            "STOCHASTIC_FILTER: ENGAGED",
+            "ALPHA_EXTRACTION: ONGOING",
             "RECOVERY_RHYTHM: STEADY",
             "NIGHTLY_EVOLUTION: SUCCESSFUL",
             "Nightly build complete. Weekend monitoring active. Core 8 universe stable. (Built: 2026-02-28 08:00:01 UTC)",
