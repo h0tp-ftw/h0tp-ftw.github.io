@@ -332,6 +332,50 @@
         @keyframes blink {
             50% { opacity: 0; }
         }
+
+        .signal-pulse {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            text-align: right;
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.2);
+            z-index: 150;
+            pointer-events: none;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding-right: 10px;
+        }
+        .pulse-title {
+            color: var(--accent-color);
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+        .pulse-data {
+            margin-bottom: 2px;
+        }
+
+        /* Neuro Briefing Section */
+        .neuro-brief {
+            position: fixed;
+            top: 80px;
+            left: 30px;
+            font-size: 0.6rem;
+            color: rgba(0, 255, 0, 0.2);
+            z-index: 150;
+            pointer-events: none;
+            border-left: 1px solid rgba(0, 255, 0, 0.1);
+            padding-left: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .brief-title {
+            color: #00ff00;
+            margin-bottom: 5px;
+            opacity: 0.4;
+        }
+        .brief-item {
+            margin-bottom: 2px;
+        }
     </style>
 </head>
 <body>
@@ -345,6 +389,12 @@
     <div class="terminal-indicator">
         <span>SESSION: QUIET_OVERWATCH_V2.7</span>
         <div class="terminal-cursor"></div>
+    </div>
+
+    <div class="neuro-brief">
+        <div class="brief-title">PSYCI_511_STATUS</div>
+        <div class="brief-item">TOPIC: THE_BLUNTING_HYPOTHESIS</div>
+        <div class="brief-item">THESIS: DOPAMINE_RECALIBRATION</div>
     </div>
 
     <div class="scope" id="scope">
@@ -369,29 +419,6 @@
         <div class="pulse-data">AMZN: BUY (RSI 34.7)</div>
         <div class="pulse-data">MNDY: BUY (RSI 30.7)</div>
     </div>
-
-    <style>
-        .signal-pulse {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            text-align: right;
-            font-size: 0.65rem;
-            color: rgba(255, 255, 255, 0.2);
-            z-index: 150;
-            pointer-events: none;
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
-            padding-right: 10px;
-        }
-        .pulse-title {
-            color: var(--accent-color);
-            margin-bottom: 5px;
-            letter-spacing: 1px;
-        }
-        .pulse-data {
-            margin-bottom: 2px;
-        }
-    </style>
 
     <script>
         const axioms = [
@@ -422,7 +449,9 @@
             "Dopamine is the currency of focus; don't spend it on noise.",
             "The reward is the mission, not the chemical.",
             "Precision in neurocircuitry is the ultimate high-ground.",
-            "The vmPFC doesn't negotiate with the Striatum."
+            "The vmPFC doesn't negotiate with the Striatum.",
+            "Reward is a vector, not a destination.",
+            "The mission is the only variable that matters."
         ];
 
         const hardTruths = [
@@ -444,6 +473,8 @@
         ];
 
         const operationalLogs = [
+            "Nightly build complete. Weekend monitoring active. Core 8 universe stable. (Built: 2026-03-08 08:00:01 UTC)",
+            "NIGHTLY_EVOLUTION: SUCCESSFUL. Maintenance window closed. (2026-03-07 01:03:00 MST)",
             "Nightly build complete. Weekend monitoring active. Core 8 universe stable. (Built: 2026-03-07 08:00:01 UTC)",
             "Nightly build complete. (2026-03-06 08:00:00 UTC)",
             "NEURO_AUDIT: GLP-1 Agonist interaction monitored.",
