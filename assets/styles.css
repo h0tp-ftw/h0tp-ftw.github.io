@@ -949,10 +949,20 @@ body::before {
 .project-top {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.65rem;
   padding: 0.85rem 1rem 0.6rem;
   position: relative;
   z-index: 1;
+}
+
+.project-top-left {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
 }
 
 .project-owner-avatar {
@@ -989,13 +999,11 @@ body::before {
   border-color: var(--accent);
 }
 
-/* Project info — bottom section, full width */
+/* Project info — bottom section, description only */
 .project-info {
   padding: 0 1rem 0.85rem;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  flex: 1;
   position: relative;
   overflow: hidden;
   min-width: 0;

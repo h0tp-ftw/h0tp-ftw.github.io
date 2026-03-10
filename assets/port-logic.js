@@ -459,18 +459,20 @@ async function loadFeaturedProjects() {
 
                 card.innerHTML = `
                     <div class="project-top">
-                        <img src="${ownerAvatar}" alt="${ownerLogin}" class="project-owner-avatar" />
-                        <h3 class="project-name">
-                            ${renderRepoName(repo.full_name)}
-                        </h3>
-                    </div>
-                    <div class="project-info">
-                        <p class="project-description">${description}</p>
+                        <div class="project-top-left">
+                            <img src="${ownerAvatar}" alt="${ownerLogin}" class="project-owner-avatar" />
+                            <h3 class="project-name">
+                                ${renderRepoName(repo.full_name)}
+                            </h3>
+                        </div>
                         <div class="project-stats">
                             <span class="stat">⭐ ${stars}</span>
                             <span class="stat">🍴 ${repo.forks_count}</span>
                             <span class="stat"><i class="stat-lang-icon ${iconClass}"></i>${language}</span>
                         </div>
+                    </div>
+                    <div class="project-info">
+                        <p class="project-description">${description}</p>
                     </div>
                 `;
 
@@ -929,17 +931,19 @@ function display5RandomCards(projects) {
 
         card.innerHTML = `
             <div class="project-top">
-                <img src="${ownerAvatar}" alt="${ownerLogin}" class="project-owner-avatar" />
-                <h3 class="project-name">
-                    ${renderRepoName(repo.full_name)}
-                </h3>
-            </div>
-            <div class="project-info">
-                <p class="project-description">${description}</p>
+                <div class="project-top-left">
+                    <img src="${ownerAvatar}" alt="${ownerLogin}" class="project-owner-avatar" />
+                    <h3 class="project-name">
+                        ${renderRepoName(repo.full_name)}
+                    </h3>
+                </div>
                 <div class="project-stats">
                     <span class="stat">⭐ ${stars}</span>
                     <span class="stat"><i class="stat-lang-icon ${iconClass}"></i>${language}</span>
                 </div>
+            </div>
+            <div class="project-info">
+                <p class="project-description">${description}</p>
             </div>
         `;
 
@@ -1020,17 +1024,19 @@ function displayMoreStars(filtered = allStars) {
 
         card.innerHTML = `
             <div class="project-top">
-                <img src="${ownerAvatar}" alt="${ownerLogin}" class="project-owner-avatar" />
-                <h3 class="project-name">
-                    ${renderRepoName(repo.full_name)}
-                </h3>
-            </div>
-            <div class="project-info">
-                <p class="project-description">${description}</p>
+                <div class="project-top-left">
+                    <img src="${ownerAvatar}" alt="${ownerLogin}" class="project-owner-avatar" />
+                    <h3 class="project-name">
+                        ${renderRepoName(repo.full_name)}
+                    </h3>
+                </div>
                 <div class="project-stats">
                     <span class="stat">⭐ ${stars}</span>
                     <span class="stat"><i class="stat-lang-icon ${iconClass}"></i>${language}</span>
                 </div>
+            </div>
+            <div class="project-info">
+                <p class="project-description">${description}</p>
             </div>
         `;
 
