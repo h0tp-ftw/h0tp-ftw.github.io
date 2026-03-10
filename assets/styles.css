@@ -712,169 +712,120 @@ body::before {
 
 .setup-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
 }
 
-.setup-category {
+/* Panel - replaces setup-category */
+.setup-panel {
   background: var(--glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
-  border-radius: 20px;
-  padding: 2rem;
-  transition: all 0.4s ease;
+  border-radius: 16px;
+  padding: 1.1rem 1.25rem 1.25rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
   position: relative;
   overflow: hidden;
 }
 
-.setup-category::before {
+.setup-panel::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg,
-      var(--ctp-mauve),
-      var(--ctp-pink),
-      var(--ctp-blue));
-  transform: scaleX(0);
-  transition: transform 0.4s ease;
-  transform-origin: left;
-}
-
-.setup-category:hover::before {
-  transform: scaleX(1);
-}
-
-.setup-category:hover {
-  border-color: var(--accent);
-  transform: translateY(-8px);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
-}
-
-.setup-icon {
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+  inset: 0;
   border-radius: 16px;
-  display: flex;
+  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.setup-panel:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+}
+
+.setup-panel:hover::before {
+  opacity: 0.04;
+}
+
+/* Inline label at top of panel */
+.setup-panel-label {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-}
-
-.setup-svg {
-  width: 32px;
-  height: 32px;
-  fill: var(--ctp-base);
-}
-
-.setup-title {
-  font-size: 1.35rem;
+  gap: 0.35rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  color: var(--ctp-text);
-  margin-bottom: 1.5rem;
-}
-
-.setup-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  background: var(--ctp-mantle);
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  color: inherit;
-}
-
-.setup-item.clickable {
-  cursor: pointer;
-}
-
-.setup-item:hover {
-  background: var(--ctp-surface1);
-  transform: translateX(8px);
-}
-
-.setup-logo {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
-  object-fit: contain;
-  flex-shrink: 0;
-}
-
-.setup-logo-icon {
-  font-size: 3rem;
-  flex-shrink: 0;
-}
-
-.setup-details {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.setup-name {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--ctp-text);
-}
-
-.setup-desc {
-  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   color: var(--ctp-subtext0);
-}
-
-/* Setup Items List */
-.setup-items-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.setup-item-mini {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
+  margin-bottom: 0.85rem;
+  padding: 0.2rem 0.6rem 0.2rem 0.4rem;
   background: var(--ctp-mantle);
-  border-radius: 10px;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  color: inherit;
+  border-radius: 6px;
 }
 
-.setup-item-mini.clickable {
+.setup-panel-label svg {
+  flex-shrink: 0;
+  opacity: 0.7;
+  fill: var(--ctp-subtext0);
+}
+
+/* Chip container - flex-wrap pill row */
+.setup-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+/* Individual pill chip */
+.setup-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.75rem 0.35rem 0.45rem;
+  background: var(--ctp-mantle);
+  border: 1px solid transparent;
+  border-radius: 50px;
+  text-decoration: none;
+  color: var(--ctp-text);
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  cursor: default;
+}
+
+a.setup-chip {
   cursor: pointer;
 }
 
-.setup-item-mini:hover {
+a.setup-chip:hover {
   background: var(--ctp-surface1);
-  transform: translateX(4px);
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.mini-logo {
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
+.chip-logo {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
   object-fit: contain;
   flex-shrink: 0;
 }
 
-.mini-logo-round {
+.chip-logo-round {
   border-radius: 50%;
 }
 
-.setup-item-mini span {
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--ctp-text);
+.setup-chip.no-link {
+  opacity: 0.9;
 }
+
 
 @media (prefers-reduced-motion: no-preference) {
   .gradient-orb {
