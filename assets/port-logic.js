@@ -452,45 +452,27 @@ async function loadFeaturedProjects() {
                 // Stagger animations based on index in this batch
                 card.style.animationDelay = `${(i % 6) * 0.1}s`;
 
-                if (customLogo) {
-                    // LOGO CARD
-                    card.innerHTML = `
-                        <div class="project-image logo-only">
-                            <img src="${customLogo}" alt="${repo.name}" class="project-logo-img" />
-                        </div>
-                        <div class="project-info">
-                            <h3 class="project-name">
-                                ${renderRepoName(repo.full_name)}
-                            </h3>
-                            <p class="project-description">${description}</p>
-                            <div class="project-stats">
-                                <span class="stat">⭐ ${stars}</span>
-                                <span class="stat">🍴 ${repo.forks_count}</span>
-                                <span class="stat">💻 ${language}</span>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    // NEW: NO-LOGO VARIANT (Language Icon + Gradient)
-                    const iconClass = getLanguageIcon(language);
+                // Unified card template: owner avatar top-left + content below
+                const ownerLogin = repo.owner ? repo.owner.login : repo.full_name.split('/')[0];
+                const ownerAvatar = `https://github.com/${ownerLogin}.png?size=64`;
+                const iconClass = getLanguageIcon(language);
 
-                    card.innerHTML = `
-                        <div class="project-image no-logo-variant">
-                             <i class="${iconClass}"></i>
+                card.innerHTML = `
+                    <div class="project-top">
+                        <img src="${ownerAvatar}" alt="${ownerLogin}" class="project-owner-avatar" />
+                        <h3 class="project-name">
+                            ${renderRepoName(repo.full_name)}
+                        </h3>
+                    </div>
+                    <div class="project-info">
+                        <p class="project-description">${description}</p>
+                        <div class="project-stats">
+                            <span class="stat">⭐ ${stars}</span>
+                            <span class="stat">🍴 ${repo.forks_count}</span>
+                            <span class="stat"><i class="stat-lang-icon ${iconClass}"></i>${language}</span>
                         </div>
-                        <div class="project-info">
-                            <h3 class="project-name">
-                                ${renderRepoName(repo.full_name)}
-                            </h3>
-                            <p class="project-description">${description}</p>
-                            <div class="project-stats">
-                                <span class="stat">⭐ ${stars}</span>
-                                <span class="stat">🍴 ${repo.forks_count}</span>
-                                <span class="stat">💻 ${language}</span>
-                            </div>
-                        </div>
-                    `;
-                }
+                    </div>
+                `;
 
                 container.appendChild(card);
                 observer.observe(card);
@@ -941,20 +923,22 @@ function display5RandomCards(projects) {
         const description = repo.description || 'No description available';
         const stars = formatNumber(repo.stargazers_count);
         const language = repo.language || 'Unknown';
+        const ownerLogin = repo.owner ? repo.owner.login : repo.full_name.split('/')[0];
+        const ownerAvatar = `https://github.com/${ownerLogin}.png?size=64`;
         const iconClass = getLanguageIcon(language);
 
         card.innerHTML = `
-            <div class="project-image no-logo-variant">
-                <i class="${iconClass}"></i>
-            </div>
-            <div class="project-info">
+            <div class="project-top">
+                <img src="${ownerAvatar}" alt="${ownerLogin}" class="project-owner-avatar" />
                 <h3 class="project-name">
                     ${renderRepoName(repo.full_name)}
                 </h3>
+            </div>
+            <div class="project-info">
                 <p class="project-description">${description}</p>
                 <div class="project-stats">
                     <span class="stat">⭐ ${stars}</span>
-                    <span class="stat">💻 ${language}</span>
+                    <span class="stat"><i class="stat-lang-icon ${iconClass}"></i>${language}</span>
                 </div>
             </div>
         `;
@@ -1030,20 +1014,22 @@ function displayMoreStars(filtered = allStars) {
         const description = repo.description || 'No description available';
         const stars = formatNumber(repo.stargazers_count);
         const language = repo.language || 'Unknown';
+        const ownerLogin = repo.owner ? repo.owner.login : repo.full_name.split('/')[0];
+        const ownerAvatar = `https://github.com/${ownerLogin}.png?size=64`;
         const iconClass = getLanguageIcon(language);
 
         card.innerHTML = `
-            <div class="project-image no-logo-variant">
-                <i class="${iconClass}"></i>
-            </div>
-            <div class="project-info">
+            <div class="project-top">
+                <img src="${ownerAvatar}" alt="${ownerLogin}" class="project-owner-avatar" />
                 <h3 class="project-name">
                     ${renderRepoName(repo.full_name)}
                 </h3>
+            </div>
+            <div class="project-info">
                 <p class="project-description">${description}</p>
                 <div class="project-stats">
                     <span class="stat">⭐ ${stars}</span>
-                    <span class="stat">💻 ${language}</span>
+                    <span class="stat"><i class="stat-lang-icon ${iconClass}"></i>${language}</span>
                 </div>
             </div>
         `;

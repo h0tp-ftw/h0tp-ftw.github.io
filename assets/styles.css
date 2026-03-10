@@ -892,11 +892,11 @@ body::before {
 
 /* Logo - FIXED 180px SIZE! */
 
-/* PROJECT CARDS - FIXED LOGO SIZE! */
+/* PROJECT CARDS - HORIZONTAL ICON STYLE */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1rem;
   padding: 0.5rem;
 }
 
@@ -906,15 +906,15 @@ body::before {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
-  border-radius: 20px;
-  overflow: visible;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   position: relative;
   text-decoration: none;
   color: inherit;
-  height: 500px;
+  height: auto;
 }
 
 .project-card.clickable-card {
@@ -924,175 +924,92 @@ body::before {
 .project-card::before {
   content: "";
   position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, var(--accent), var(--accent-hover));
-  border-radius: 20px;
+  inset: 0;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
   opacity: 0;
-  transition: opacity 0.4s ease;
-  z-index: -1;
+  transition: opacity 0.3s ease;
+  z-index: 0;
   pointer-events: none;
 }
 
 .project-card:hover::before {
-  opacity: 0.5;
+  opacity: 0.07;
 }
 
 .project-card:hover {
   border-color: var(--accent);
-  transform: translateY(-12px) scale(1.02);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
 }
 
-.project-image {
-  width: 100%;
-  padding-top: 100%;
+/* ===================================================
+   CARD TOP ROW — owner avatar + repo name
+   =================================================== */
+.project-top {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1rem 0.6rem;
   position: relative;
-  overflow: hidden;
-  background: var(--ctp-mantle);
-  flex-shrink: 0;
-  border-radius: 20px 20px 0 0;
-}
-
-.project-image img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.project-card:hover .project-image img {
-  transform: scale(1.1);
-}
-
-.project-image.logo-only {
-  padding-top: 0;
-  height: 260px;
-  width: 100%;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  padding: 2.5rem !important;
-  flex-shrink: 0;
-}
-
-.project-logo-img {
-  width: 140px !important;
-  height: 140px !important;
-  max-width: 140px !important;
-  max-height: 140px !important;
-  object-fit: contain !important;
-  display: block !important;
-  margin: 0 auto !important;
-  position: relative !important;
-  transform: none !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  z-index: 100 !important;
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
-}
-
-/* NO ANIMATION ON HOVER - STAYS STATIC! */
-.project-card:hover .project-logo-img {
-  transform: none !important;
-  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.4));
-}
-
-/* Remove pseudo-elements */
-.project-image.logo-only::before,
-.project-image.logo-only::after {
-  content: none !important;
-  display: none !important;
-}
-
-/* Force img visibility */
-img.project-logo-img {
-  opacity: 1 !important;
-  visibility: visible !important;
-  display: block !important;
-}
-
-/* ============================================
-   NO IMAGE VARIANT (Language Icon)
-   ============================================ */
-.project-image.no-logo-variant {
-  padding-top: 0;
-  height: 220px;
-  width: 100%;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: linear-gradient(135deg, var(--ctp-surface0), var(--ctp-mantle));
-  position: relative;
-  overflow: hidden;
-  color: var(--ctp-subtext0);
-  transition: all 0.4s ease;
-}
-
-.project-image.no-logo-variant i {
-  font-size: 6rem;
-  z-index: 2;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.project-card:hover .project-image.no-logo-variant {
-  background: linear-gradient(135deg, var(--ctp-surface1), var(--ctp-base));
-  color: var(--accent);
-}
-
-.project-card:hover .project-image.no-logo-variant i {
-  transform: scale(1.1) rotate(-5deg);
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
-  color: var(--accent);
-}
-
-/* Add a subtle background pattern or glow */
-.project-image.no-logo-variant::after {
-  content: '';
-  position: absolute;
-  width: 120%;
-  height: 120%;
-  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
   z-index: 1;
 }
 
-.project-card:hover .project-image.no-logo-variant::after {
-  opacity: 0.2;
+.project-owner-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+  border: 1.5px solid var(--glass-border);
+  transition: border-color 0.3s ease, transform 0.3s ease;
 }
 
-/* Project info */
+.project-card:hover .project-owner-avatar {
+  border-color: var(--accent);
+  transform: scale(1.08);
+}
+
+/* emoji avatars (static Quiet card) */
+.project-owner-emoji {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--ctp-surface0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+  border: 1.5px solid var(--glass-border);
+  transition: border-color 0.3s ease;
+}
+
+.project-card:hover .project-owner-emoji {
+  border-color: var(--accent);
+}
+
+/* Project info — bottom section, full width */
 .project-info {
-  padding: 1.25rem;
-  padding-bottom: 1.5rem;
+  padding: 0 1rem 0.85rem;
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.4rem;
   flex: 1;
   position: relative;
-  min-height: 180px;
-  overflow: visible;
+  overflow: hidden;
+  min-width: 0;
+  z-index: 1;
 }
 
 .project-name {
-  font-size: 1.15rem;
+  font-size: 1rem;
   font-weight: 700;
   margin: 0;
-  line-height: 1.25;
+  line-height: 1.3;
   overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  white-space: normal;
-  word-break: break-all;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .repo-owner {
@@ -1125,41 +1042,46 @@ img.project-logo-img {
 
 .project-description {
   color: var(--ctp-subtext0);
-  font-size: 0.88rem;
-  line-height: 1.45;
+  font-size: 0.82rem;
+  line-height: 1.4;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   margin: 0;
-  flex: 1;
-  max-height: 3.9rem;
 }
 
 .project-stats {
   display: flex;
-  gap: 1rem;
-  font-size: 0.85rem;
+  gap: 0.5rem;
+  font-size: 0.78rem;
   color: var(--ctp-subtext1);
   flex-wrap: wrap;
-  margin-top: auto;
-  padding-top: 0.5rem;
+  margin-top: 0.2rem;
+  align-items: center;
 }
 
 .project-stats .stat {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  padding: 0.25rem 0.5rem;
+  padding: 0.15rem 0.5rem;
   background: var(--ctp-mantle);
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+  white-space: nowrap;
+}
+
+/* Devicon inside the language chip */
+.stat-lang-icon {
+  font-size: 0.9rem;
+  line-height: 1;
+  opacity: 0.85;
 }
 
 .project-stats .stat:hover {
   background: var(--ctp-surface1);
-  transform: translateY(-2px);
 }
 
 /* GitHub link button (only for My Projects) */
