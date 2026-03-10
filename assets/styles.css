@@ -1058,6 +1058,7 @@ body::before {
   -webkit-box-orient: vertical;
   overflow: hidden;
   margin: 0;
+  min-height: calc(0.82rem * 1.4 * 2); /* always reserve 2 lines */
 }
 
 .project-stats {
