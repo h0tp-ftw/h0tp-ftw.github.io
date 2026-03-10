@@ -941,10 +941,11 @@ function display5RandomCards(projects) {
         const description = repo.description || 'No description available';
         const stars = formatNumber(repo.stargazers_count);
         const language = repo.language || 'Unknown';
+        const iconClass = getLanguageIcon(language);
 
         card.innerHTML = `
-            <div class="project-image">
-                <img src="${getRepoImage(repo)}" alt="${repo.full_name}" />
+            <div class="project-image no-logo-variant">
+                <i class="${iconClass}"></i>
             </div>
             <div class="project-info">
                 <h3 class="project-name">
@@ -1029,10 +1030,11 @@ function displayMoreStars(filtered = allStars) {
         const description = repo.description || 'No description available';
         const stars = formatNumber(repo.stargazers_count);
         const language = repo.language || 'Unknown';
+        const iconClass = getLanguageIcon(language);
 
         card.innerHTML = `
-            <div class="project-image">
-                <img src="${getRepoImage(repo)}" alt="${repo.full_name}" loading="lazy" />
+            <div class="project-image no-logo-variant">
+                <i class="${iconClass}"></i>
             </div>
             <div class="project-info">
                 <h3 class="project-name">
