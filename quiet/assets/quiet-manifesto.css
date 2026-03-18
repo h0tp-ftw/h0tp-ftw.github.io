@@ -249,24 +249,93 @@
     transform: translateX(-4px);
 }
 
+/* Overwatch Feed Styles */
+#overwatch-feed-container {
+    background: rgba(48, 52, 70, 0.4);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    margin-top: 3rem;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.overwatch-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+}
+
+.overwatch-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ctp-mauve);
+    font-weight: 700;
+}
+
+.overwatch-meter-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    color: var(--ctp-subtext0);
+}
+
+.meter-bar {
+    width: 60px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.meter-fill {
+    height: 100%;
+    background: var(--ctp-green);
+    transition: width 1s linear, background-color 0.5s ease;
+}
+
+.meter-fill.warning {
+    background: var(--ctp-red);
+}
+
+.overwatch-log {
+    height: 180px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.log-entry {
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+    line-height: 1.4;
+    animation: slide-in 0.3s ease-out;
+}
+
+@keyframes slide-in {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.log-time {
+    color: var(--ctp-overlay1);
+}
+
+.log-text {
+    color: var(--ctp-text);
+}
+
 @media (max-width: 768px) {
-    .manifesto-container {
-        padding-top: 8rem;
+    #overwatch-feed-container {
+        padding: 1rem;
     }
     
-    .manifesto-title {
-        font-size: 3.5rem;
-    }
-    
-    .manifesto-card {
-        padding: 2rem;
-    }
-    
-    .manifesto-text p {
-        font-size: 1.15rem;
-    }
-    
-    .manifesto-stats-grid {
-        grid-template-columns: 1fr;
+    .overwatch-log {
+        height: 150px;
     }
 }
+
