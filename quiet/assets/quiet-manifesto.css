@@ -329,6 +329,22 @@
     color: var(--ctp-text);
 }
 
+.overwatch-status-line {
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--ctp-mauve);
+    font-size: 0.75rem;
+    color: var(--ctp-mauve);
+    font-weight: 700;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.status-marker {
+    animation: blink-cursor 1s infinite;
+}
+
 @media (max-width: 768px) {
     #overwatch-feed-container {
         padding: 1rem;

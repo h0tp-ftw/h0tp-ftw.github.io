@@ -45,9 +45,14 @@ class OverwatchFeed {
                 </div>
             </div>
             <div class="overwatch-log" id="overwatch-log"></div>
+            <div class="overwatch-status-line">
+                <span class="status-marker">></span> 
+                <span id="overwatch-status-text">CALIBRATING...</span>
+            </div>
         `;
         this.logElement = document.getElementById('overwatch-log');
         this.meterElement = document.getElementById('drift-meter');
+        this.statusElement = document.getElementById('overwatch-status-text');
     }
 
     addLog(text) {
@@ -61,6 +66,11 @@ class OverwatchFeed {
         // Keep only last 8 entries
         while (this.logElement.children.length > 8) {
             this.logElement.lastChild.remove();
+        }
+        
+        // Update status text with the latest log message (shortened)
+        if (this.statusElement) {
+            this.statusElement.innerText = text.toUpperCase();
         }
     }
 
