@@ -21,8 +21,8 @@ else
     git commit -m "feat(quiet): nightly evolution $DATE"
     
     # Push to origin (h0tp-ftw.github.io)
-    echo "[DEPLOY] Pushing to origin/master..."
-    git push origin master
+    echo "[DEPLOY] Pushing to origin/main..."
+    git push origin main
     
     if [ $? -eq 0 ]; then
         echo "[SUCCESS] Deployment complete. Evolution manifested at /quiet/."
