@@ -37,10 +37,14 @@
 </head>
 <body class="quiet-page">
     <div class="top-nav-container">
-        <a href="#" class="back-btn">
+        <a href="#" class="nav-btn secondary">
             <span class="icon">🎯</span>
-            <span>BACK TO BASELINE</span>
+            <span class="btn-label">BACK TO BASELINE</span>
         </a>
+        <button id="lockdown-toggle" class="nav-btn">
+            <span class="icon">⚡</span>
+            <span class="btn-label">SIGNAL LOCKDOWN</span>
+        </button>
     </div>
 
     <main class="manifesto-container">
@@ -92,10 +96,11 @@
                 <span class="typing-text">awaiting next directive...</span>
                 <span class="typing-cursor"></span>
             </div>
-            <p class="footer-disclaimer">SECURE CONNECTION ESTABLISHED // SYSTEM TIME: 2026-03-20</p>
+            <p id="system-time" class="footer-disclaimer">SECURE CONNECTION ESTABLISHED // SYSTEM TIME: --:--:-- UTC</p>
         </footer>
     </main>
 
     <script src="assets/overwatch.js"></script>
+    <script src="assets/interface.js"></script>
 </body>
 </html>

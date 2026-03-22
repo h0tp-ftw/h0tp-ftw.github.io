@@ -225,9 +225,11 @@
     top: 2rem;
     left: 2rem;
     z-index: 100;
+    display: flex;
+    gap: 1rem;
 }
 
-.back-btn {
+.nav-btn {
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -239,53 +241,121 @@
     color: var(--ctp-text);
     text-decoration: none;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
 }
 
-.back-btn:hover {
+.nav-btn:hover {
     background: var(--ctp-surface1);
     border-color: var(--ctp-mauve);
     color: var(--ctp-mauve);
-    transform: translateX(-4px);
+    transform: translateY(-2px);
 }
 
-/* Overwatch Feed Styles */
+.nav-btn.active {
+    background: var(--ctp-mauve);
+    color: var(--ctp-crust);
+    border-color: var(--ctp-mauve);
+    box-shadow: 0 0 20px rgba(202, 158, 230, 0.4);
+}
+
+.nav-btn.secondary {
+    opacity: 0.6;
+}
+
+.nav-btn.secondary:hover {
+    opacity: 1;
+}
+
+/* Lockdown Mode Logic */
+body.lockdown-active .manifesto-stats-grid,
+body.lockdown-active #overwatch-feed-container,
+body.lockdown-active .manifesto-header,
+body.lockdown-active .manifesto-footer .terminal-footer {
+    opacity: 0.05;
+    filter: grayscale(1) blur(4px);
+    pointer-events: none;
+    transition: all 0.8s ease;
+}
+
+body.lockdown-active .manifesto-card {
+    transform: scale(1.02);
+    box-shadow: 0 0 100px rgba(202, 158, 230, 0.1);
+    border-color: var(--ctp-mauve);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.lockdown-active .manifesto-text p {
+    color: #fff;
+    text-shadow: 0 0 1px rgba(255,255,255,0.5);
+}
+
+body.lockdown-active::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, transparent 0%, var(--ctp-crust) 80%);
+    pointer-events: none;
+    z-index: 5;
+    animation: pulse-overlay 10s ease-in-out infinite;
+}
+
+@keyframes pulse-overlay {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.8; }
+}
+
 #overwatch-feed-container {
-    background: rgba(48, 52, 70, 0.4);
-    border-radius: 16px;
+    background: rgba(35, 38, 52, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 1.5rem;
-    margin-top: 3rem;
-    font-family: 'Courier New', Courier, monospace;
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 6rem;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    transition: all 0.3s ease;
+}
+
+#overwatch-feed-container:hover {
+    border-color: var(--ctp-mauve);
+    background: rgba(48, 52, 70, 0.5);
 }
 
 .overwatch-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .overwatch-title {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.2em;
     color: var(--ctp-mauve);
-    font-weight: 700;
 }
 
 .overwatch-meter-container {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
+}
+
+.meter-label {
     font-size: 0.7rem;
+    text-transform: uppercase;
     color: var(--ctp-subtext0);
 }
 
 .meter-bar {
-    width: 60px;
+    width: 100px;
     height: 4px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 2px;
@@ -294,35 +364,41 @@
 
 .meter-fill {
     height: 100%;
-    background: var(--ctp-green);
-    transition: width 1s linear, background-color 0.5s ease;
+    background: var(--ctp-mauve);
+    width: 0%;
+    transition: width 0.5s ease, background 0.3s ease;
 }
 
 .meter-fill.warning {
     background: var(--ctp-red);
+    box-shadow: 0 0 10px var(--ctp-red);
 }
 
 .overwatch-log {
-    height: 180px;
-    overflow: hidden;
+    height: 200px;
+    overflow-y: hidden;
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .log-entry {
-    font-size: 0.85rem;
-    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
     line-height: 1.4;
-    animation: slide-in 0.3s ease-out;
+    display: flex;
+    gap: 1rem;
+    animation: fade-in-up 0.3s ease-out;
 }
 
-@keyframes slide-in {
-    from { opacity: 0; transform: translateY(-5px); }
+@keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(5px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
 .log-time {
     color: var(--ctp-overlay1);
+    flex-shrink: 0;
 }
 
 .log-text {
@@ -330,24 +406,20 @@
 }
 
 .overwatch-status-line {
-    margin-top: 1rem;
-    padding: 0.5rem;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--ctp-mauve);
-    font-size: 0.75rem;
-    color: var(--ctp-mauve);
-    font-weight: 700;
     display: flex;
-    gap: 0.5rem;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--ctp-mauve);
 }
 
 .status-marker {
-    animation: blink-cursor 1s infinite;
+    animation: blink-status 1s infinite;
 }
 
 @media (max-width: 768px) {
     #overwatch-feed-container {
-        padding: 1rem;
+        padding: 1.5rem;
     }
     
     .overwatch-log {
