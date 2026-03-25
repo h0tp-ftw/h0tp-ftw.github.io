@@ -44,6 +44,26 @@ class OverwatchFeed {
                     </div>
                 </div>
             </div>
+            
+            <!-- Real-time Telemetry Grid -->
+            <div class="telemetry-grid">
+                <div class="telemetry-item">
+                    <span class="telemetry-label">Signal-Noise Ratio</span>
+                    <div class="telemetry-bar"><div class="telemetry-fill" id="telemetry-snr"></div></div>
+                    <span class="telemetry-value" id="val-snr">-- db</span>
+                </div>
+                <div class="telemetry-item">
+                    <span class="telemetry-label">Entropy Level</span>
+                    <div class="telemetry-bar"><div class="telemetry-fill" id="telemetry-entropy"></div></div>
+                    <span class="telemetry-value" id="val-entropy">-- H</span>
+                </div>
+                <div class="telemetry-item">
+                    <span class="telemetry-label">Integrity Index</span>
+                    <div class="telemetry-bar"><div class="telemetry-fill" id="telemetry-integrity"></div></div>
+                    <span class="telemetry-value" id="val-integrity">-- %</span>
+                </div>
+            </div>
+
             <div class="overwatch-log" id="overwatch-log"></div>
             <div class="overwatch-status-line">
                 <span class="status-marker">></span> 
@@ -53,6 +73,12 @@ class OverwatchFeed {
         this.logElement = document.getElementById('overwatch-log');
         this.meterElement = document.getElementById('drift-meter');
         this.statusElement = document.getElementById('overwatch-status-text');
+        
+        this.telemetryElements = {
+            snr: { fill: document.getElementById('telemetry-snr'), val: document.getElementById('val-snr') },
+            entropy: { fill: document.getElementById('telemetry-entropy'), val: document.getElementById('val-entropy') },
+            integrity: { fill: document.getElementById('telemetry-integrity'), val: document.getElementById('val-integrity') }
+        };
     }
 
     addLog(text) {
@@ -94,6 +120,8 @@ class OverwatchFeed {
 
     updateMeter() {
         setInterval(() => {
+            const isLockdown = document.body.classList.contains('lockdown-active');
+            
             const drift = Math.random() * 15 + 5; // 5-20% base
             const fluctuation = Math.sin(Date.now() / 2000) * 5;
             const total = Math.max(0, Math.min(100, drift + fluctuation));
@@ -104,6 +132,25 @@ class OverwatchFeed {
             } else {
                 this.meterElement.classList.remove('warning');
             }
+
+            // Update Telemetry Grid
+            if (this.telemetryElements) {
+                // SNR (90-99 in normal, 40-60 in lockdown)
+                const snrVal = isLockdown ? (40 + Math.random() * 20) : (90 + Math.random() * 9);
+                this.telemetryElements.snr.fill.style.width = `${snrVal}%`;
+                this.telemetryElements.snr.val.innerText = `${snrVal.toFixed(1)} db`;
+
+                // Entropy (5-15 in normal, 70-90 in lockdown)
+                const entropyVal = isLockdown ? (70 + Math.random() * 20) : (5 + Math.random() * 10);
+                this.telemetryElements.entropy.fill.style.width = `${entropyVal}%`;
+                this.telemetryElements.entropy.val.innerText = `${entropyVal.toFixed(1)} H`;
+                
+                // Integrity (99-100 in normal, 85-95 in lockdown)
+                const integrityVal = isLockdown ? (85 + Math.random() * 10) : (99 + Math.random() * 1);
+                this.telemetryElements.integrity.fill.style.width = `${integrityVal}%`;
+                this.telemetryElements.integrity.val.innerText = `${integrityVal.toFixed(1)} %`;
+            }
+
         }, 1000);
     }
 }

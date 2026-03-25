@@ -1,6 +1,6 @@
 #!/bin/bash
 # Quiet Website - Tactical Deployment Script
-# Purpose: Stage, commit, and push updates to the h0tp-ftw main site.
+# Purpose: Stage, commit, and push updates to h0tp-ftw.github.io.
 
 PROJECT_DIR="/home/ubuntu/.openclaw/workspace/website_repo"
 DATE=$(date +"%Y-%m-%d %H:%M:%S")
@@ -9,6 +9,9 @@ echo "[DEPLOY] Initializing tactical deployment: $DATE"
 
 # Move to the root repository
 cd "$PROJECT_DIR" || { echo "[ERROR] Failed to access repository root."; exit 1; }
+
+# Ensure we're on the main branch
+git checkout main
 
 # Stage all changes (root + quiet subfolder)
 git add .
