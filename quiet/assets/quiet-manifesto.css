@@ -413,6 +413,43 @@ body.lockdown-active::after {
     color: var(--ctp-mauve);
 }
 
+/* Waveform Visualizer */
+.waveform-wrapper {
+    position: relative;
+    width: 100%;
+    height: 120px;
+    margin-bottom: 2rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    overflow: hidden;
+}
+
+#signal-waveform {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.waveform-overlay {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    pointer-events: none;
+}
+
+.overlay-label {
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: var(--ctp-overlay1);
+    text-transform: uppercase;
+}
+
+#compression-val {
+    color: var(--ctp-mauve);
+}
+
 /* Telemetry Grid */
 .telemetry-grid {
     display: grid;

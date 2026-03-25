@@ -29,12 +29,13 @@ class OverwatchFeed {
 
     init() {
         this.renderStructure();
+        this.waveform = new SignalWaveform('signal-waveform');
         this.startFeed();
         this.updateMeter();
     }
 
     renderStructure() {
-        this.container.innerHTML = `
+        const containerHtml = `
             <div class="overwatch-header">
                 <span class="overwatch-title">Overwatch Feed</span>
                 <div class="overwatch-meter-container">
@@ -42,6 +43,13 @@ class OverwatchFeed {
                     <div class="meter-bar">
                         <div class="meter-fill" id="drift-meter"></div>
                     </div>
+                </div>
+            </div>
+            
+            <div class="waveform-wrapper">
+                <canvas id="signal-waveform"></canvas>
+                <div class="waveform-overlay">
+                    <span class="overlay-label">SIGNAL: <span id="compression-val">NOMINAL</span></span>
                 </div>
             </div>
             
@@ -70,9 +78,11 @@ class OverwatchFeed {
                 <span id="overwatch-status-text">CALIBRATING...</span>
             </div>
         `;
+        this.container.innerHTML = containerHtml;
         this.logElement = document.getElementById('overwatch-log');
         this.meterElement = document.getElementById('drift-meter');
         this.statusElement = document.getElementById('overwatch-status-text');
+        this.compressionLabel = document.getElementById('compression-val');
         
         this.telemetryElements = {
             snr: { fill: document.getElementById('telemetry-snr'), val: document.getElementById('val-snr') },
@@ -151,7 +161,67 @@ class OverwatchFeed {
                 this.telemetryElements.integrity.val.innerText = `${integrityVal.toFixed(1)} %`;
             }
 
+            if (this.compressionLabel) {
+                this.compressionLabel.innerText = isLockdown ? 'LOCKED' : 'NOMINAL';
+                this.compressionLabel.style.color = isLockdown ? 'var(--ctp-red)' : 'var(--ctp-mauve)';
+            }
+
         }, 1000);
+    }
+}
+
+/**
+ * SignalWaveform - Visual representation of data stream health
+ */
+class SignalWaveform {
+    constructor(canvasId) {
+        this.canvas = document.getElementById(canvasId);
+        if (!this.canvas) return;
+        this.ctx = this.canvas.getContext('2d');
+        this.phase = 0;
+        
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+        this.animate();
+    }
+
+    resize() {
+        const parent = this.canvas.parentElement;
+        this.canvas.width = parent.clientWidth;
+        this.canvas.height = parent.clientHeight;
+    }
+
+    animate() {
+        const isLockdown = document.body.classList.contains('lockdown-active');
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        this.ctx.beginPath();
+        this.ctx.lineWidth = 2;
+        this.ctx.strokeStyle = isLockdown ? '#e78284' : '#ca9ee6';
+        this.ctx.shadowBlur = 10;
+        this.ctx.shadowColor = this.ctx.strokeStyle;
+
+        const amplitude = isLockdown ? this.canvas.height * 0.4 : this.canvas.height * 0.2;
+        const frequency = isLockdown ? 0.05 : 0.01;
+        
+        for (let x = 0; x < this.canvas.width; x++) {
+            let y;
+            if (isLockdown) {
+                // High-entropy noise pattern
+                y = (this.canvas.height / 2) + Math.sin(x * frequency + this.phase) * amplitude + (Math.random() - 0.5) * 30;
+            } else {
+                // Clean sine signal
+                y = (this.canvas.height / 2) + Math.sin(x * frequency + this.phase) * amplitude;
+            }
+            
+            if (x === 0) this.ctx.moveTo(x, y);
+            else this.ctx.lineTo(x, y);
+        }
+
+        this.ctx.stroke();
+        this.phase += isLockdown ? 0.2 : 0.05;
+
+        requestAnimationFrame(() => this.animate());
     }
 }
 
