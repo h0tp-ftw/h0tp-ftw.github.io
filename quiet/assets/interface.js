@@ -39,18 +39,72 @@ class QuietInterface {
         if (!this.lockdownBtn) return;
 
         this.lockdownBtn.addEventListener('click', () => {
-            this.isLockdown = !this.isLockdown;
-            document.body.classList.toggle('lockdown-active', this.isLockdown);
-            
+            this.toggleLockdown();
+        });
+
+        const terminalInput = document.getElementById('terminal-input');
+        if (terminalInput) {
+            terminalInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    const cmd = terminalInput.value.trim().toLowerCase();
+                    terminalInput.value = '';
+                    this.handleCommand(cmd);
+                }
+            });
+        }
+    }
+
+    toggleLockdown(state) {
+        this.isLockdown = state !== undefined ? state : !this.isLockdown;
+        document.body.classList.toggle('lockdown-active', this.isLockdown);
+        
+        if (this.lockdownBtn) {
             this.lockdownBtn.classList.toggle('active', this.isLockdown);
             const label = this.lockdownBtn.querySelector('.btn-label');
             if (label) {
                 label.innerText = this.isLockdown ? 'END LOCKDOWN' : 'SIGNAL LOCKDOWN';
             }
+        }
 
-            // High-signal auditory feedback simulation (UI only)
-            console.log(this.isLockdown ? "[SYSTEM] Signal lockdown initiated. Suppressing noise." : "[SYSTEM] Signal lockdown terminated. Resuming telemetry.");
-        });
+        console.log(this.isLockdown ? "[SYSTEM] Signal lockdown initiated. Suppressing noise." : "[SYSTEM] Signal lockdown terminated. Resuming telemetry.");
+    }
+
+    handleCommand(cmd) {
+        if (!cmd) return;
+
+        // Feedback via Overwatch log if available
+        const overwatch = window.overwatchInstance;
+        const log = (msg) => {
+            if (overwatch) overwatch.addLog(msg);
+            else console.log(`[TERMINAL] ${msg}`);
+        };
+
+        switch (cmd) {
+            case 'lockdown':
+            case 'lock':
+                this.toggleLockdown(true);
+                log("Executing lockdown protocol...");
+                break;
+            case 'unlock':
+            case 'baseline':
+                this.toggleLockdown(false);
+                log("Restoring baseline telemetry...");
+                break;
+            case 'status':
+                log("System status: OPERATIONAL // All sectors nominal.");
+                break;
+            case 'clear':
+                if (overwatch && overwatch.logElement) {
+                    overwatch.logElement.innerHTML = '';
+                    log("Log buffer cleared.");
+                }
+                break;
+            case 'help':
+                log("Available directives: LOCKDOWN, UNLOCK, STATUS, CLEAR, HELP");
+                break;
+            default:
+                log(`Directive unrecognized: ${cmd.toUpperCase()}`);
+        }
     }
 }
 

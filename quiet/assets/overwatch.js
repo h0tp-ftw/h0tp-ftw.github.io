@@ -226,5 +226,5 @@ class SignalWaveform {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    new OverwatchFeed('overwatch-feed-container');
+    window.overwatchInstance = new OverwatchFeed('overwatch-feed-container');
 });
