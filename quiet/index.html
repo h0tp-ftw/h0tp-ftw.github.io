@@ -8,7 +8,22 @@
     <link rel="stylesheet" href="assets/quiet-manifesto.css">
     <link rel="stylesheet" href="assets/main.css">
     <style>
-        /* Embedded styles removed for main.css */
+        /* Tactical Overrides */
+        .directive-log-card { margin-top: 1rem; }
+        .directive-list { list-style: none; padding: 0.5rem; margin: 0; font-family: monospace; font-size: 0.85rem; color: var(--ctp-subtext1); }
+        .directive-entry { padding: 0.25rem 0.5rem; border-left: 2px solid var(--ctp-mauve); margin-bottom: 0.25rem; background: rgba(0,0,0,0.1); }
+        .directive-entry .time { color: var(--ctp-overlay1); margin-right: 0.5rem; }
+        .directive-entry .cmd { color: var(--ctp-mauve); font-weight: bold; }
+        .directive-entry.placeholder { border-left: 2px solid var(--ctp-overlay0); opacity: 0.5; }
+
+        /* Telemetry Grid Styles */
+        .telemetry-grid { display: flex; flex-direction: column; gap: 0.5rem; padding: 0.5rem; font-family: monospace; font-size: 0.85rem; }
+        .telemetry-item { display: grid; grid-template-columns: 80px 1fr 40px; align-items: center; gap: 1rem; }
+        .telemetry-label { color: var(--ctp-subtext0); }
+        .telemetry-bar-bg { height: 4px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; overflow: hidden; }
+        .telemetry-bar { height: 100%; background: var(--ctp-blue); transition: width 0.3s ease; }
+        .telemetry-value { color: var(--ctp-blue); text-align: right; }
+        .status-indicator.blue { background: var(--ctp-blue); box-shadow: 0 0 5px var(--ctp-blue); }
     </style>
 </head>
 <body class="quiet-page">
@@ -72,6 +87,44 @@
                 </div>
             </div>
         </div>
+
+        <!-- NEW: Directive Log for terminal history persistence (UI) -->
+        <section id="directive-history" class="manifesto-card directive-log-card">
+            <div class="card-header">
+                <div class="status-indicator yellow"></div>
+                <span class="manifesto-label">DIRECTIVE LOG</span>
+            </div>
+            <div class="directive-container">
+                <ul id="directive-list" class="directive-list">
+                    <li class="directive-entry placeholder">AWAITING SYSTEM COMMANDS...</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- NEW: System Telemetry Grid -->
+        <section id="telemetry-grid" class="manifesto-card">
+            <div class="card-header">
+                <div class="status-indicator blue"></div>
+                <span class="manifesto-label">SYSTEM TELEMETRY</span>
+            </div>
+            <div class="telemetry-grid">
+                <div class="telemetry-item">
+                    <span class="telemetry-label">CPU_LOAD</span>
+                    <div class="telemetry-bar-bg"><div id="cpu-bar" class="telemetry-bar" style="width: 12%"></div></div>
+                    <span id="cpu-val" class="telemetry-value">12%</span>
+                </div>
+                <div class="telemetry-item">
+                    <span class="telemetry-label">MEM_USAGE</span>
+                    <div class="telemetry-bar-bg"><div id="mem-bar" class="telemetry-bar" style="width: 44%"></div></div>
+                    <span id="mem-val" class="telemetry-value">44%</span>
+                </div>
+                <div class="telemetry-item">
+                    <span class="telemetry-label">NET_LATENCY</span>
+                    <div class="telemetry-bar-bg"><div id="net-bar" class="telemetry-bar" style="width: 28%"></div></div>
+                    <span id="net-val" class="telemetry-value">28ms</span>
+                </div>
+            </div>
+        </section>
 
         <footer class="manifesto-footer">
             <div class="terminal-footer">
