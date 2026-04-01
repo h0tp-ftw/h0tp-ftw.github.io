@@ -20,8 +20,11 @@
         .telemetry-grid { display: flex; flex-direction: column; gap: 0.5rem; padding: 0.5rem; font-family: monospace; font-size: 0.85rem; }
         .telemetry-item { display: grid; grid-template-columns: 80px 1fr 40px; align-items: center; gap: 1rem; }
         .telemetry-label { color: var(--ctp-subtext0); }
-        .telemetry-bar-bg { height: 4px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; overflow: hidden; }
+        .telemetry-bar-bg { height: 4px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; overflow: hidden; position: relative; }
         .telemetry-bar { height: 100%; background: var(--ctp-blue); transition: width 0.3s ease; }
+        .telemetry-threshold { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ctp-red); opacity: 0.5; display: none; }
+        .telemetry-item.alert .telemetry-bar { background: var(--ctp-red); box-shadow: 0 0 5px var(--ctp-red); }
+        .telemetry-item.alert .telemetry-value { color: var(--ctp-red); font-weight: bold; }
         .telemetry-value { color: var(--ctp-blue); text-align: right; }
         .status-indicator.blue { background: var(--ctp-blue); box-shadow: 0 0 5px var(--ctp-blue); }
     </style>

@@ -28,13 +28,34 @@ class QuietInterface {
         this.netVal = document.getElementById('net-val');
 
         const updateTelemetry = () => {
-            const cpu = Math.floor(Math.random() * 40) + 5;
-            const mem = Math.floor(Math.random() * 60) + 10;
-            const net = Math.floor(Math.random() * 50) + 5;
+            const cpu = Math.floor(Math.random() * 95) + 2;
+            const mem = Math.floor(Math.random() * 85) + 10;
+            const net = Math.floor(Math.random() * 200) + 5;
 
-            if (this.cpuBar) { this.cpuBar.style.width = `${cpu}%`; this.cpuVal.innerText = `${cpu}%`; }
-            if (this.memBar) { this.memBar.style.width = `${mem}%`; this.memVal.innerText = `${mem}%`; }
-            if (this.netBar) { this.netBar.style.width = `${net}%`; this.netVal.innerText = `${net}ms`; }
+            const updateItem = (bar, val, amount, threshold, suffix = '%') => {
+                if (!bar || !val) return;
+                
+                // Scale bar for display
+                const barWidth = Math.min(amount, 100);
+                bar.style.width = `${barWidth}%`;
+                val.innerText = `${amount}${suffix}`;
+
+                const parent = bar.closest('.telemetry-item');
+                if (parent) {
+                    if (amount > threshold) {
+                        parent.classList.add('alert');
+                        if (Math.random() > 0.8) {
+                            console.warn(`[SYSTEM] TELEMETRY ALERT: THRESHOLD EXCEEDED (${amount}${suffix})`);
+                        }
+                    } else {
+                        parent.classList.remove('alert');
+                    }
+                }
+            };
+
+            updateItem(this.cpuBar, this.cpuVal, cpu, 80);
+            updateItem(this.memBar, this.memVal, mem, 85);
+            updateItem(this.netBar, this.netVal, net, 100, 'ms');
         };
 
         setInterval(updateTelemetry, 3000);
