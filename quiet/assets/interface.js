@@ -17,6 +17,84 @@ class QuietInterface {
         this.setupClock();
         this.setupLockdown();
         this.setupTelemetry();
+        this.setupSignalMonitor();
+    }
+
+    setupSignalMonitor() {
+        this.signalCanvas = document.getElementById('signal-integrity-canvas');
+        if (!this.signalCanvas) return;
+
+        const ctx = this.signalCanvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        const rect = this.signalCanvas.getBoundingClientRect();
+
+        this.signalCanvas.width = rect.width * dpr;
+        this.signalCanvas.height = rect.height * dpr;
+        ctx.scale(dpr, dpr);
+
+        const snrVal = document.getElementById('snr-val');
+        const noiseVal = document.getElementById('noise-val');
+        let points = Array.from({ length: 60 }, (_, i) => ({ x: (rect.width / 59) * i, y: rect.height / 2 }));
+
+        const draw = () => {
+            ctx.clearRect(0, 0, rect.width, rect.height);
+            
+            // Background grid
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i < rect.width; i += 20) {
+                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, rect.height); ctx.stroke();
+            }
+            for (let i = 0; i < rect.height; i += 10) {
+                ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(rect.width, i); ctx.stroke();
+            }
+
+            // Signal Path
+            ctx.beginPath();
+            ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--ctp-mauve') || '#cba6f7';
+            ctx.lineWidth = 2;
+            ctx.lineJoin = 'round';
+            
+            points.shift();
+            const lastY = points[points.length - 1].y;
+            const drift = (Math.random() - 0.5) * 4;
+            const noise = (Math.random() - 0.5) * (this.isLockdown ? 1 : 10);
+            let nextY = lastY + drift + noise;
+            
+            // Contain within canvas
+            nextY = Math.max(10, Math.min(rect.height - 10, nextY));
+            points.push({ x: rect.width, y: nextY });
+
+            // Re-calculate X positions for all points to keep them spaced
+            points.forEach((p, i) => {
+                p.x = (rect.width / (points.length - 1)) * i;
+            });
+
+            ctx.moveTo(points[0].x, points[0].y);
+            for (let i = 1; i < points.length; i++) {
+                ctx.lineTo(points[i].x, points[i].y);
+            }
+            ctx.stroke();
+
+            // Glow effect
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = ctx.strokeStyle;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            if (snrVal && Math.random() > 0.9) {
+                const snr = (80 + Math.random() * 15 + (this.isLockdown ? 5 : 0)).toFixed(1);
+                snrVal.innerText = snr;
+                if (noiseVal) {
+                    noiseVal.innerText = snr > 90 ? 'MINIMAL' : (snr > 85 ? 'LOW' : 'MODERATE');
+                    noiseVal.style.color = snr > 90 ? 'var(--ctp-green)' : (snr > 85 ? 'var(--ctp-overlay1)' : 'var(--ctp-yellow)');
+                }
+            }
+
+            requestAnimationFrame(draw);
+        };
+
+        draw();
     }
 
     setupTelemetry() {
