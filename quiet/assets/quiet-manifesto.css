@@ -548,6 +548,66 @@ body.lockdown-active .telemetry-value {
     animation: blink-status 1s infinite;
 }
 
+/* Action Grid */
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem 0;
+}
+
+.action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1.5rem 1rem;
+    background: rgba(48, 52, 70, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    color: var(--ctp-text);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: var(--font-body);
+}
+
+.action-btn:hover {
+    background: rgba(202, 158, 230, 0.1);
+    border-color: var(--ctp-mauve);
+    transform: translateY(-4px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.action-btn:active {
+    transform: translateY(0);
+}
+
+.action-btn .action-icon {
+    font-size: 1.5rem;
+}
+
+.action-btn .action-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ctp-subtext1);
+}
+
+.action-btn:hover .action-text {
+    color: var(--ctp-mauve);
+}
+
+.action-btn.alert:hover {
+    background: rgba(231, 130, 132, 0.1);
+    border-color: var(--ctp-red);
+}
+
+.action-btn.alert:hover .action-text {
+    color: var(--ctp-red);
+}
+
 @media (max-width: 768px) {
     #overwatch-feed-container {
         padding: 1.5rem;
@@ -557,4 +617,3 @@ body.lockdown-active .telemetry-value {
         height: 150px;
     }
 }
-

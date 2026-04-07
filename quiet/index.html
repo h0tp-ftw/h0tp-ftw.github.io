@@ -130,6 +130,32 @@
             </div>
         </section>
 
+        <!-- NEW: Tactical Action Grid -->
+        <section id="tactical-actions" class="manifesto-card">
+            <div class="card-header">
+                <div class="status-indicator purple"></div>
+                <span class="manifesto-label">TACTICAL OVERRIDES</span>
+            </div>
+            <div class="action-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; padding: 0.5rem;">
+                <button class="action-btn" data-cmd="status">
+                    <span class="action-icon">📊</span>
+                    <span class="action-text">PROBE STATUS</span>
+                </button>
+                <button class="action-btn" data-cmd="clear">
+                    <span class="action-icon">🧹</span>
+                    <span class="action-text">PURGE LOGS</span>
+                </button>
+                <button class="action-btn" data-cmd="help">
+                    <span class="action-icon">❓</span>
+                    <span class="action-text">QUERY DOCS</span>
+                </button>
+                <button class="action-btn alert" data-cmd="lockdown">
+                    <span class="action-icon">🔒</span>
+                    <span class="action-text">INIT LOCKDOWN</span>
+                </button>
+            </div>
+        </section>
+
         <!-- NEW: Signal Analysis Monitor -->
         <section id="signal-analysis" class="manifesto-card">
             <div class="card-header">
@@ -159,3 +185,5 @@
     <script src="assets/interface.js"></script>
 </body>
 </html>
+
+<!-- Tactical Evolution Stamp: 2026-04-07 08:00:01 UTC -->

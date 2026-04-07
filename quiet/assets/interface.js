@@ -18,6 +18,17 @@ class QuietInterface {
         this.setupLockdown();
         this.setupTelemetry();
         this.setupSignalMonitor();
+        this.setupActionGrid();
+    }
+
+    setupActionGrid() {
+        const actionBtns = document.querySelectorAll('.action-btn');
+        actionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const cmd = btn.getAttribute('data-cmd');
+                if (cmd) this.handleCommand(cmd);
+            });
+        });
     }
 
     setupSignalMonitor() {
