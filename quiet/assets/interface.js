@@ -33,6 +33,7 @@ class QuietInterface {
 
     setupSignalMonitor() {
         this.signalCanvas = document.getElementById('signal-integrity-canvas');
+        this.signalMonitor = document.getElementById('signal-monitor');
         if (!this.signalCanvas) return;
 
         const ctx = this.signalCanvas.getContext('2d');
@@ -46,6 +47,18 @@ class QuietInterface {
         const snrVal = document.getElementById('snr-val');
         const noiseVal = document.getElementById('noise-val');
         let points = Array.from({ length: 60 }, (_, i) => ({ x: (rect.width / 59) * i, y: rect.height / 2 }));
+
+        // Intercept interaction
+        if (this.signalMonitor) {
+            this.signalMonitor.addEventListener('mousedown', (e) => {
+                const mRect = this.signalMonitor.getBoundingClientRect();
+                const x = e.clientX - mRect.left;
+                const y = e.clientY - mRect.top;
+                
+                this.createIntercept(x, y);
+                this.handleCommand('intercept');
+            });
+        }
 
         const draw = () => {
             ctx.clearRect(0, 0, rect.width, rect.height);
@@ -224,6 +237,16 @@ class QuietInterface {
         console.log(this.isLockdown ? "[SYSTEM] Signal lockdown initiated. Suppressing noise." : "[SYSTEM] Signal lockdown terminated. Resuming telemetry.");
     }
 
+    createIntercept(x, y) {
+        if (!this.signalMonitor) return;
+        const marker = document.createElement('div');
+        marker.className = 'intercept-marker';
+        marker.style.left = `${x}px`;
+        marker.style.top = `${y}px`;
+        this.signalMonitor.appendChild(marker);
+        setTimeout(() => marker.remove(), 1000);
+    }
+
     handleCommand(cmd) {
         if (!cmd) return;
 
@@ -238,6 +261,9 @@ class QuietInterface {
         };
 
         switch (cmd) {
+            case 'intercept':
+                log("Signal packet intercepted. Analyzing payload...");
+                break;
             case 'lockdown':
             case 'lock':
                 this.toggleLockdown(true);
