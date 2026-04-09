@@ -19,6 +19,41 @@ class QuietInterface {
         this.setupTelemetry();
         this.setupSignalMonitor();
         this.setupActionGrid();
+        this.setupNeuralUplink();
+    }
+
+    setupNeuralUplink() {
+        const nodes = [
+            document.getElementById('node-alpha'),
+            document.getElementById('node-beta'),
+            document.getElementById('node-gamma')
+        ].filter(Boolean);
+
+        if (nodes.length === 0) return;
+
+        let currentNodeIndex = 0;
+
+        const cycleUplink = () => {
+            // Deactivate all nodes
+            nodes.forEach(node => {
+                node.classList.remove('active', 'syncing');
+            });
+
+            // Set the current node to active
+            const currentNode = nodes[currentNodeIndex];
+            currentNode.classList.add('active');
+
+            // Set the previous node to syncing
+            const prevNodeIndex = (currentNodeIndex - 1 + nodes.length) % nodes.length;
+            const prevNode = nodes[prevNodeIndex];
+            prevNode.classList.add('syncing');
+
+            // Move to the next node for the next cycle
+            currentNodeIndex = (currentNodeIndex + 1) % nodes.length;
+        };
+
+        cycleUplink(); // Initial call
+        setInterval(cycleUplink, 2000); // Cycle every 2 seconds
     }
 
     setupActionGrid() {
