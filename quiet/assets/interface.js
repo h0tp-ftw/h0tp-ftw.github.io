@@ -20,6 +20,41 @@ class QuietInterface {
         this.setupSignalMonitor();
         this.setupActionGrid();
         this.setupNeuralUplink();
+        this.setupResponseMatrix();
+    }
+
+    setupResponseMatrix() {
+        const nodes = Array.from({ length: 4 }, (_, i) => document.getElementById(`matrix-node-${i}`)).filter(Boolean);
+        if (nodes.length === 0) return;
+
+        const cycleMatrix = () => {
+            const randomNode = nodes[Math.floor(Math.random() * nodes.length)];
+            const statusEl = randomNode.querySelector('.matrix-status');
+            const valueEl = randomNode.querySelector('.matrix-value');
+            
+            if (Math.random() > 0.8) {
+                const isAlert = Math.random() > 0.6;
+                statusEl.innerText = isAlert ? 'STATUS: ANOMALY' : 'STATUS: SECURE';
+                statusEl.className = `matrix-status ${isAlert ? 'warning' : ''}`;
+                randomNode.classList.toggle('scan', !isAlert);
+                
+                if (isAlert) {
+                    this.handleCommand(`anomaly node-${nodes.indexOf(randomNode)}`);
+                }
+            }
+
+            // Occasional value fluctuation
+            if (Math.random() > 0.9) {
+                const versions = ['X', 'Y', 'Z', 'A', 'P'];
+                const currentVal = valueEl.innerText;
+                const base = currentVal.split('-').slice(0, -1).join('-') || currentVal.split(': ')[1].split('-').slice(0,-1).join('-');
+                const newVal = versions[Math.floor(Math.random() * versions.length)];
+                // Rough regex to update the last character/suffix
+                valueEl.innerText = currentVal.replace(/[A-Z]$/, newVal);
+            }
+        };
+
+        setInterval(cycleMatrix, 1500);
     }
 
     setupNeuralUplink() {
@@ -323,6 +358,10 @@ class QuietInterface {
                 break;
             case 'help':
                 log("Available directives: LOCKDOWN, UNLOCK, STATUS, CLEAR, HELP");
+                break;
+            case (cmd.startsWith('anomaly') ? cmd : 'none'):
+                log(`Analyzing anomaly in node: ${cmd.split(' ')[1] || 'ALL'}`);
+                log("Executing sub-system recalibration...");
                 break;
             default:
                 log(`Directive unrecognized: ${cmd.toUpperCase()}`);

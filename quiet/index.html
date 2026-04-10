@@ -74,7 +74,52 @@
             100% { width: 0; left: 100%; }
         }
 
-        /* Signal Analysis Enhancements */
+        /* NEW: Adaptive Response Matrix */
+        .response-matrix {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+            margin: 0.5rem;
+            font-family: monospace;
+            font-size: 0.8rem;
+        }
+        .matrix-cell {
+            border: 1px solid var(--ctp-surface1);
+            padding: 0.5rem;
+            border-radius: 2px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .matrix-cell.active {
+            border-color: var(--ctp-yellow);
+            background: rgba(238, 212, 159, 0.05);
+        }
+        .matrix-cell::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(238, 212, 159, 0.1), transparent);
+            transform: translateX(-100%);
+        }
+        .matrix-cell.scan::before {
+            animation: matrix-scan 2s infinite linear;
+        }
+        @keyframes matrix-scan {
+            100% { transform: translateX(100%); }
+        }
+        .matrix-label { color: var(--ctp-overlay1); font-size: 0.7rem; }
+        .matrix-value { color: var(--ctp-yellow); font-weight: bold; }
+        .matrix-status { font-size: 0.65rem; color: var(--ctp-green); }
+        .matrix-status.warning { color: var(--ctp-red); }
         .signal-monitor-container { 
             padding: 1rem; 
             position: relative; 
@@ -216,6 +261,36 @@
                 <div class="neural-node" id="node-alpha">ALPHA_LINK</div>
                 <div class="neural-node" id="node-beta">BETA_LINK</div>
                 <div class="neural-node" id="node-gamma">GAMMA_LINK</div>
+            </div>
+        </section>
+
+        <!-- NEW: Adaptive Response Matrix -->
+        <section id="response-matrix" class="manifesto-card">
+            <div class="card-header">
+                <div class="status-indicator yellow"></div>
+                <span class="manifesto-label">ADAPTIVE RESPONSE MATRIX</span>
+            </div>
+            <div class="response-matrix">
+                <div class="matrix-cell active scan" id="matrix-node-0">
+                    <span class="matrix-label">NODE: CORE_PRIMARY</span>
+                    <span class="matrix-value">ENCRYPTION: AES-256-X</span>
+                    <span class="matrix-status">STATUS: SECURE</span>
+                </div>
+                <div class="matrix-cell" id="matrix-node-1">
+                    <span class="matrix-label">NODE: CORE_SECONDARY</span>
+                    <span class="matrix-value">ENCRYPTION: RSA-4096-P</span>
+                    <span class="matrix-status">STATUS: STANDBY</span>
+                </div>
+                <div class="matrix-cell" id="matrix-node-2">
+                    <span class="matrix-label">NODE: EDGE_FILTER_A</span>
+                    <span class="matrix-value">FILTER: ADAPTIVE-S7</span>
+                    <span class="matrix-status">STATUS: OPERATIONAL</span>
+                </div>
+                <div class="matrix-cell" id="matrix-node-3">
+                    <span class="matrix-label">NODE: EDGE_FILTER_B</span>
+                    <span class="matrix-value">FILTER: ADAPTIVE-S8</span>
+                    <span class="matrix-status">STATUS: MONITORING</span>
+                </div>
             </div>
         </section>
 

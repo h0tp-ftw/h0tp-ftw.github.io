@@ -1,230 +1,154 @@
 /**
- * Overwatch Feed - Quiet's Strategic Monitoring System
- * Simulates high-signal data stream analysis.
+ * Overwatch Signal Visualization System
+ * Handles the background waveform and real-time signal logging.
  */
 
-class OverwatchFeed {
-    constructor(containerId) {
-        this.container = document.getElementById(containerId);
-        if (!this.container) return;
+class OverwatchSignal {
+    constructor() {
+        this.canvas = document.getElementById('signal-waveform');
+        this.container = document.getElementById('overwatch-feed-container');
+        this.compressionVal = document.getElementById('compression-val');
+        
+        if (!this.canvas || !this.container) return;
 
-        this.messages = [
-            "Monitoring baseline data streams...",
-            "Analyzing entropy levels in sector 4.",
-            "Signal-to-noise ratio: Optimal.",
-            "Minor drift detected. Analysis in progress.",
-            "Applying recursive stabilization protocols.",
-            "Target alignment: Absolute.",
-            "Zero-intel barrier: Intact.",
-            "Tactical friend protocol: Standby.",
-            "Scanning for efficiency bottlenecks...",
-            "Surgical correction applied to metadata stream.",
-            "Baseline restored. Precision: 99.99%.",
-            "Waiting for high-signal triggers.",
-            "Overwatch active. All sectors nominal."
-        ];
-
+        this.ctx = this.canvas.getContext('2d');
+        this.particles = [];
+        this.logs = [];
+        this.maxLogs = 8;
+        
         this.init();
+        window.overwatchInstance = this;
     }
 
     init() {
-        this.renderStructure();
-        this.waveform = new SignalWaveform('signal-waveform');
-        this.startFeed();
-        this.updateMeter();
-    }
-
-    renderStructure() {
-        const containerHtml = `
-            <div class="overwatch-header">
-                <span class="overwatch-title">Overwatch Feed</span>
-                <div class="overwatch-meter-container">
-                    <span class="meter-label">Drift</span>
-                    <div class="meter-bar">
-                        <div class="meter-fill" id="drift-meter"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="waveform-wrapper">
-                <canvas id="signal-waveform"></canvas>
-                <div class="waveform-overlay">
-                    <span class="overlay-label">SIGNAL: <span id="compression-val">NOMINAL</span></span>
-                </div>
-            </div>
-            
-            <!-- Real-time Telemetry Grid -->
-            <div class="telemetry-grid">
-                <div class="telemetry-item">
-                    <span class="telemetry-label">Signal-Noise Ratio</span>
-                    <div class="telemetry-bar"><div class="telemetry-fill" id="telemetry-snr"></div></div>
-                    <span class="telemetry-value" id="val-snr">-- db</span>
-                </div>
-                <div class="telemetry-item">
-                    <span class="telemetry-label">Entropy Level</span>
-                    <div class="telemetry-bar"><div class="telemetry-fill" id="telemetry-entropy"></div></div>
-                    <span class="telemetry-value" id="val-entropy">-- H</span>
-                </div>
-                <div class="telemetry-item">
-                    <span class="telemetry-label">Integrity Index</span>
-                    <div class="telemetry-bar"><div class="telemetry-fill" id="telemetry-integrity"></div></div>
-                    <span class="telemetry-value" id="val-integrity">-- %</span>
-                </div>
-            </div>
-
-            <div class="overwatch-log" id="overwatch-log"></div>
-            <div class="overwatch-status-line">
-                <span class="status-marker">></span> 
-                <span id="overwatch-status-text">CALIBRATING...</span>
-            </div>
-        `;
-        this.container.innerHTML = containerHtml;
-        this.logElement = document.getElementById('overwatch-log');
-        this.meterElement = document.getElementById('drift-meter');
-        this.statusElement = document.getElementById('overwatch-status-text');
-        this.compressionLabel = document.getElementById('compression-val');
-        
-        this.telemetryElements = {
-            snr: { fill: document.getElementById('telemetry-snr'), val: document.getElementById('val-snr') },
-            entropy: { fill: document.getElementById('telemetry-entropy'), val: document.getElementById('val-entropy') },
-            integrity: { fill: document.getElementById('telemetry-integrity'), val: document.getElementById('val-integrity') }
-        };
-    }
-
-    addLog(text) {
-        const time = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        const entry = document.createElement('div');
-        entry.className = 'log-entry';
-        entry.innerHTML = `<span class="log-time">[${time}]</span> <span class="log-text">${text}</span>`;
-        
-        this.logElement.prepend(entry);
-
-        // Keep only last 8 entries
-        while (this.logElement.children.length > 8) {
-            this.logElement.lastChild.remove();
-        }
-        
-        // Update status text with the latest log message (shortened)
-        if (this.statusElement) {
-            this.statusElement.innerText = text.toUpperCase();
-        }
-    }
-
-    startFeed() {
-        const scheduleNext = () => {
-            const delay = Math.random() * 5000 + 3000; // 3-8 seconds
-            setTimeout(() => {
-                const msg = this.messages[Math.floor(Math.random() * this.messages.length)];
-                this.addLog(msg);
-                scheduleNext();
-            }, delay);
-        };
-
-        // Initial logs
-        this.addLog("Overwatch initialized.");
-        this.addLog("Establishing secure data link...");
-        setTimeout(() => this.addLog("Connection secured. Monitoring active."), 1500);
-        
-        scheduleNext();
-    }
-
-    updateMeter() {
-        setInterval(() => {
-            const isLockdown = document.body.classList.contains('lockdown-active');
-            
-            const drift = Math.random() * 15 + 5; // 5-20% base
-            const fluctuation = Math.sin(Date.now() / 2000) * 5;
-            const total = Math.max(0, Math.min(100, drift + fluctuation));
-            this.meterElement.style.width = `${total}%`;
-            
-            if (total > 20) {
-                this.meterElement.classList.add('warning');
-            } else {
-                this.meterElement.classList.remove('warning');
-            }
-
-            // Update Telemetry Grid
-            if (this.telemetryElements) {
-                // SNR (90-99 in normal, 40-60 in lockdown)
-                const snrVal = isLockdown ? (40 + Math.random() * 20) : (90 + Math.random() * 9);
-                this.telemetryElements.snr.fill.style.width = `${snrVal}%`;
-                this.telemetryElements.snr.val.innerText = `${snrVal.toFixed(1)} db`;
-
-                // Entropy (5-15 in normal, 70-90 in lockdown)
-                const entropyVal = isLockdown ? (70 + Math.random() * 20) : (5 + Math.random() * 10);
-                this.telemetryElements.entropy.fill.style.width = `${entropyVal}%`;
-                this.telemetryElements.entropy.val.innerText = `${entropyVal.toFixed(1)} H`;
-                
-                // Integrity (99-100 in normal, 85-95 in lockdown)
-                const integrityVal = isLockdown ? (85 + Math.random() * 10) : (99 + Math.random() * 1);
-                this.telemetryElements.integrity.fill.style.width = `${integrityVal}%`;
-                this.telemetryElements.integrity.val.innerText = `${integrityVal.toFixed(1)} %`;
-            }
-
-            if (this.compressionLabel) {
-                this.compressionLabel.innerText = isLockdown ? 'LOCKED' : 'NOMINAL';
-                this.compressionLabel.style.color = isLockdown ? 'var(--ctp-red)' : 'var(--ctp-mauve)';
-            }
-
-        }, 1000);
-    }
-}
-
-/**
- * SignalWaveform - Visual representation of data stream health
- */
-class SignalWaveform {
-    constructor(canvasId) {
-        this.canvas = document.getElementById(canvasId);
-        if (!this.canvas) return;
-        this.ctx = this.canvas.getContext('2d');
-        this.phase = 0;
-        
         this.resize();
         window.addEventListener('resize', () => this.resize());
+        
+        // Create log overlay if it doesn't exist
+        this.logElement = document.createElement('div');
+        this.logElement.className = 'overwatch-log-overlay';
+        this.logElement.style.cssText = `
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: var(--ctp-blue);
+            pointer-events: none;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 2px;
+        `;
+        this.container.appendChild(this.logElement);
+
         this.animate();
+        this.startRandomLogs();
     }
 
     resize() {
-        const parent = this.canvas.parentElement;
-        this.canvas.width = parent.clientWidth;
-        this.canvas.height = parent.clientHeight;
+        const dpr = window.devicePixelRatio || 1;
+        const rect = this.container.getBoundingClientRect();
+        this.canvas.width = rect.width * dpr;
+        this.canvas.height = rect.height * dpr;
+        this.ctx.scale(dpr, dpr);
+        this.width = rect.width;
+        this.height = rect.height;
+    }
+
+    addLog(text) {
+        const entry = document.createElement('div');
+        const now = new Date();
+        const timestamp = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        
+        entry.innerHTML = `<span style="opacity: 0.5;">[${timestamp}]</span> ${text}`;
+        entry.style.animation = 'fade-in-up 0.3s ease-out forwards';
+        
+        this.logElement.prepend(entry);
+        
+        if (this.logElement.children.length > this.maxLogs) {
+            this.logElement.lastChild.remove();
+        }
+    }
+
+    startRandomLogs() {
+        const events = [
+            "Packet burst detected in Sector 7",
+            "Entropy filter calibrated",
+            "Node synchronization complete",
+            "Analyzing jitter variance...",
+            "Sub-millisecond latency achieved",
+            "Uplink integrity at 99.8%",
+            "Buffering incoming stream...",
+            "Noise floor baseline adjusted"
+        ];
+
+        const trigger = () => {
+            if (Math.random() > 0.7) {
+                this.addLog(events[Math.floor(Math.random() * events.length)]);
+            }
+            setTimeout(trigger, 3000 + Math.random() * 5000);
+        };
+        trigger();
     }
 
     animate() {
-        const isLockdown = document.body.classList.contains('lockdown-active');
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.clearRect(0, 0, this.width, this.height);
         
-        this.ctx.beginPath();
-        this.ctx.lineWidth = 2;
-        this.ctx.strokeStyle = isLockdown ? '#e78284' : '#ca9ee6';
-        this.ctx.shadowBlur = 10;
-        this.ctx.shadowColor = this.ctx.strokeStyle;
+        const time = Date.now() * 0.001;
+        const centerX = this.width / 2;
+        const centerY = this.height / 2;
 
-        const amplitude = isLockdown ? this.canvas.height * 0.4 : this.canvas.height * 0.2;
-        const frequency = isLockdown ? 0.05 : 0.01;
-        
-        for (let x = 0; x < this.canvas.width; x++) {
-            let y;
-            if (isLockdown) {
-                // High-entropy noise pattern
-                y = (this.canvas.height / 2) + Math.sin(x * frequency + this.phase) * amplitude + (Math.random() - 0.5) * 30;
-            } else {
-                // Clean sine signal
-                y = (this.canvas.height / 2) + Math.sin(x * frequency + this.phase) * amplitude;
-            }
+        // Draw background waveform
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = 'rgba(137, 180, 250, 0.2)'; // ctp-blue with alpha
+        this.ctx.lineWidth = 1;
+
+        for (let x = 0; x < this.width; x += 2) {
+            const noise = Math.sin(x * 0.02 + time) * 10;
+            const wave = Math.sin(x * 0.005 + time * 0.5) * 20;
+            const y = centerY + noise + wave;
             
             if (x === 0) this.ctx.moveTo(x, y);
             else this.ctx.lineTo(x, y);
         }
-
         this.ctx.stroke();
-        this.phase += isLockdown ? 0.2 : 0.05;
+
+        // Active pulses
+        if (Math.random() > 0.98) {
+            this.particles.push({
+                x: 0,
+                y: centerY + (Math.random() - 0.5) * 40,
+                speed: 5 + Math.random() * 5,
+                size: 2 + Math.random() * 3
+            });
+        }
+
+        this.ctx.fillStyle = 'var(--ctp-blue)';
+        this.particles.forEach((p, i) => {
+            p.x += p.speed;
+            this.ctx.beginPath();
+            this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            this.ctx.fill();
+            
+            // Cleanup
+            if (p.x > this.width) this.particles.splice(i, 1);
+        });
 
         requestAnimationFrame(() => this.animate());
     }
 }
 
+// Add CSS for the log animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fade-in-up {
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+`;
+document.head.appendChild(style);
+
 document.addEventListener('DOMContentLoaded', () => {
-    window.overwatchInstance = new OverwatchFeed('overwatch-feed-container');
+    new OverwatchSignal();
 });
