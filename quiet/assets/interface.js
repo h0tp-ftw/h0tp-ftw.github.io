@@ -21,6 +21,50 @@ class QuietInterface {
         this.setupActionGrid();
         this.setupNeuralUplink();
         this.setupResponseMatrix();
+        this.setupThreatLandscape();
+    }
+
+    setupThreatLandscape() {
+        const landscape = document.getElementById('threat-landscape');
+        const scanLine = document.getElementById('threat-scan-line');
+        const threatCountEl = document.getElementById('threat-count');
+        if (!landscape || !scanLine) return;
+
+        let threats = [];
+        let scanX = 0;
+        const rect = landscape.getBoundingClientRect();
+
+        const createThreat = (x, y) => {
+            const node = document.createElement('div');
+            node.className = 'threat-node detected';
+            node.style.left = `${x}px`;
+            node.style.top = `${y}px`;
+            landscape.appendChild(node);
+            setTimeout(() => node.remove(), 2000);
+            this.handleCommand('threat_detected');
+        };
+
+        const update = () => {
+            scanX = (scanX + 2) % rect.width;
+            scanLine.style.left = `${scanX}px`;
+
+            // Randomly spawn threats near the scan line
+            if (Math.random() > 0.98) {
+                const y = Math.random() * rect.height;
+                createThreat(scanX, y);
+                threats.push(Date.now());
+            }
+
+            // Cleanup threat list (for stats)
+            threats = threats.filter(t => Date.now() - t < 5000);
+            if (threatCountEl) {
+                threatCountEl.innerText = `DETECTED THREATS: ${threats.length}`;
+            }
+
+            requestAnimationFrame(update);
+        };
+
+        update();
     }
 
     setupResponseMatrix() {

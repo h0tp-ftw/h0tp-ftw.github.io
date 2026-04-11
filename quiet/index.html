@@ -149,6 +149,55 @@
             0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
             100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
         }
+        /* Threat Landscape Map */
+        .threat-landscape {
+            height: 150px;
+            background: rgba(0,0,0,0.3);
+            margin: 0.5rem;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--ctp-surface1);
+        }
+        .threat-node {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--ctp-red);
+            border-radius: 50%;
+            box-shadow: 0 0 5px var(--ctp-red);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .threat-node.detected {
+            opacity: 1;
+            animation: threat-ping 2s infinite;
+        }
+        @keyframes threat-ping {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+        .scan-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(137, 180, 250, 0.3);
+            box-shadow: 0 0 15px var(--ctp-blue);
+            pointer-events: none;
+        }
+        .threat-stats {
+            position: absolute;
+            bottom: 0.5rem;
+            left: 0.5rem;
+            font-family: monospace;
+            font-size: 0.65rem;
+            color: var(--ctp-overlay1);
+            background: rgba(0,0,0,0.5);
+            padding: 0.2rem 0.4rem;
+            border-radius: 2px;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body class="quiet-page">
@@ -332,6 +381,18 @@
                     <div style="color: var(--ctp-mauve);">SNR: <span id="snr-val">84.2</span> dB</div>
                     <div style="color: var(--ctp-overlay1);">INTERFERENCE: <span id="noise-val">LOW</span></div>
                 </div>
+            </div>
+        </section>
+
+        <!-- NEW: Threat Landscape Map -->
+        <section id="threat-landscape-section" class="manifesto-card">
+            <div class="card-header">
+                <div class="status-indicator red"></div>
+                <span class="manifesto-label">THREAT LANDSCAPE</span>
+            </div>
+            <div class="threat-landscape" id="threat-landscape">
+                <div class="scan-line" id="threat-scan-line"></div>
+                <div class="threat-stats" id="threat-count">DETECTED THREATS: 0</div>
             </div>
         </section>
 
