@@ -71,11 +71,31 @@ class QuietInterface {
         const nodes = Array.from({ length: 4 }, (_, i) => document.getElementById(`matrix-node-${i}`)).filter(Boolean);
         if (nodes.length === 0) return;
 
+        nodes.forEach(node => {
+            node.addEventListener('mousedown', (e) => {
+                const statusEl = node.querySelector('.matrix-status');
+                if (statusEl.classList.contains('warning')) {
+                    statusEl.innerText = 'STATUS: MITIGATING...';
+                    statusEl.className = 'matrix-status mitigating';
+                    this.handleCommand(`mitigation ${node.id}`);
+                    
+                    setTimeout(() => {
+                        statusEl.innerText = 'STATUS: SECURE';
+                        statusEl.className = 'matrix-status';
+                        node.classList.add('scan');
+                    }, 2000);
+                }
+            });
+        });
+
         const cycleMatrix = () => {
             const randomNode = nodes[Math.floor(Math.random() * nodes.length)];
             const statusEl = randomNode.querySelector('.matrix-status');
             const valueEl = randomNode.querySelector('.matrix-value');
             
+            // Skip if currently being mitigated
+            if (statusEl.classList.contains('mitigating')) return;
+
             if (Math.random() > 0.8) {
                 const isAlert = Math.random() > 0.6;
                 statusEl.innerText = isAlert ? 'STATUS: ANOMALY' : 'STATUS: SECURE';
@@ -83,7 +103,7 @@ class QuietInterface {
                 randomNode.classList.toggle('scan', !isAlert);
                 
                 if (isAlert) {
-                    this.handleCommand(`anomaly node-${nodes.indexOf(randomNode)}`);
+                    this.handleCommand(`anomaly ${randomNode.id.split('-').pop()}`);
                 }
             }
 
@@ -91,9 +111,7 @@ class QuietInterface {
             if (Math.random() > 0.9) {
                 const versions = ['X', 'Y', 'Z', 'A', 'P'];
                 const currentVal = valueEl.innerText;
-                const base = currentVal.split('-').slice(0, -1).join('-') || currentVal.split(': ')[1].split('-').slice(0,-1).join('-');
                 const newVal = versions[Math.floor(Math.random() * versions.length)];
-                // Rough regex to update the last character/suffix
                 valueEl.innerText = currentVal.replace(/[A-Z]$/, newVal);
             }
         };
@@ -402,6 +420,9 @@ class QuietInterface {
                 break;
             case 'help':
                 log("Available directives: LOCKDOWN, UNLOCK, STATUS, CLEAR, HELP");
+                break;
+            case (cmd.startsWith('mitigation') ? cmd : 'none'):
+                log(`Initiating manual mitigation for ${cmd.split(' ')[1] || 'CORE'}...`);
                 break;
             case (cmd.startsWith('anomaly') ? cmd : 'none'):
                 log(`Analyzing anomaly in node: ${cmd.split(' ')[1] || 'ALL'}`);

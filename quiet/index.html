@@ -95,6 +95,11 @@
             gap: 0.25rem;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+        .matrix-cell:active {
+            transform: scale(0.98);
         }
         .matrix-cell.active {
             border-color: var(--ctp-yellow);
@@ -120,6 +125,8 @@
         .matrix-value { color: var(--ctp-yellow); font-weight: bold; }
         .matrix-status { font-size: 0.65rem; color: var(--ctp-green); }
         .matrix-status.warning { color: var(--ctp-red); }
+        .matrix-status.mitigating { color: var(--ctp-blue); animation: blink 0.5s infinite alternate; }
+        @keyframes blink { from { opacity: 1; } to { opacity: 0.5; } }
         .signal-monitor-container { 
             padding: 1rem; 
             position: relative; 
