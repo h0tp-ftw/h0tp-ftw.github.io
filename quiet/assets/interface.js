@@ -22,6 +22,31 @@ class QuietInterface {
         this.setupNeuralUplink();
         this.setupResponseMatrix();
         this.setupThreatLandscape();
+        this.setupTabs();
+    }
+
+    setupTabs() {
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.getAttribute('data-target');
+
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+
+                tab.classList.add('active');
+                const content = document.getElementById(target);
+                if (content) {
+                    content.classList.add('active');
+                    this.handleCommand(`switch_tab ${target}`);
+                }
+                
+                // Trigger resize for canvases if hidden/shown
+                window.dispatchEvent(new Event('resize'));
+            });
+        });
     }
 
     setupThreatLandscape() {

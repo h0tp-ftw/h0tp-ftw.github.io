@@ -205,6 +205,49 @@
             border-radius: 2px;
             pointer-events: none;
         }
+        /* Tactical Navigation Tabs */
+        .tactical-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 4px;
+            border: 1px solid var(--ctp-surface1);
+        }
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: 1px solid var(--ctp-surface1);
+            color: var(--ctp-overlay1);
+            padding: 0.5rem;
+            font-family: monospace;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+        }
+        .tab-btn:hover {
+            border-color: var(--ctp-mauve);
+            color: var(--ctp-mauve);
+        }
+        .tab-btn.active {
+            background: rgba(202, 158, 230, 0.1);
+            border-color: var(--ctp-mauve);
+            color: var(--ctp-mauve);
+            box-shadow: inset 0 0 10px rgba(202, 158, 230, 0.1);
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body class="quiet-page">
@@ -282,126 +325,139 @@
             </div>
         </section>
 
-        <!-- NEW: System Telemetry Grid -->
-        <section id="telemetry-grid" class="manifesto-card">
-            <div class="card-header">
-                <div class="status-indicator blue"></div>
-                <span class="manifesto-label">SYSTEM TELEMETRY</span>
-            </div>
-            <div class="telemetry-grid">
-                <div class="telemetry-item">
-                    <span class="telemetry-label">CPU_LOAD</span>
-                    <div class="telemetry-bar-bg"><div id="cpu-bar" class="telemetry-bar" style="width: 12%"></div></div>
-                    <span id="cpu-val" class="telemetry-value">12%</span>
-                </div>
-                <div class="telemetry-item">
-                    <span class="telemetry-label">MEM_USAGE</span>
-                    <div class="telemetry-bar-bg"><div id="mem-bar" class="telemetry-bar" style="width: 44%"></div></div>
-                    <span id="mem-val" class="telemetry-value">44%</span>
-                </div>
-                <div class="telemetry-item">
-                    <span class="telemetry-label">NET_LATENCY</span>
-                    <div class="telemetry-bar-bg"><div id="net-bar" class="telemetry-bar" style="width: 28%"></div></div>
-                    <span id="net-val" class="telemetry-value">28ms</span>
-                </div>
-            </div>
-        </section>
+        <!-- NEW: Tactical Navigation Tabs -->
+        <div class="tactical-tabs">
+            <button class="tab-btn active" data-target="monitoring">MONITORING</button>
+            <button class="tab-btn" data-target="tactical">TACTICAL</button>
+            <button class="tab-btn" data-target="analysis">ANALYSIS</button>
+        </div>
 
-        <!-- NEW: Neural Uplink Sync -->
-        <section id="neural-uplink" class="manifesto-card">
-            <div class="card-header">
-                <div class="status-indicator blue"></div>
-                <span class="manifesto-label">NEURAL UPLINK SYNC</span>
-            </div>
-            <div class="neural-uplink-container">
-                <div class="neural-node" id="node-alpha">ALPHA_LINK</div>
-                <div class="neural-node" id="node-beta">BETA_LINK</div>
-                <div class="neural-node" id="node-gamma">GAMMA_LINK</div>
-            </div>
-        </section>
+        <div id="monitoring" class="tab-content active">
+            <!-- System Telemetry Grid -->
+            <section id="telemetry-grid" class="manifesto-card">
+                <div class="card-header">
+                    <div class="status-indicator blue"></div>
+                    <span class="manifesto-label">SYSTEM TELEMETRY</span>
+                </div>
+                <div class="telemetry-grid">
+                    <div class="telemetry-item">
+                        <span class="telemetry-label">CPU_LOAD</span>
+                        <div class="telemetry-bar-bg"><div id="cpu-bar" class="telemetry-bar" style="width: 12%"></div></div>
+                        <span id="cpu-val" class="telemetry-value">12%</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="telemetry-label">MEM_USAGE</span>
+                        <div class="telemetry-bar-bg"><div id="mem-bar" class="telemetry-bar" style="width: 44%"></div></div>
+                        <span id="mem-val" class="telemetry-value">44%</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="telemetry-label">NET_LATENCY</span>
+                        <div class="telemetry-bar-bg"><div id="net-bar" class="telemetry-bar" style="width: 28%"></div></div>
+                        <span id="net-val" class="telemetry-value">28ms</span>
+                    </div>
+                </div>
+            </section>
 
-        <!-- NEW: Adaptive Response Matrix -->
-        <section id="response-matrix" class="manifesto-card">
-            <div class="card-header">
-                <div class="status-indicator yellow"></div>
-                <span class="manifesto-label">ADAPTIVE RESPONSE MATRIX</span>
-            </div>
-            <div class="response-matrix">
-                <div class="matrix-cell active scan" id="matrix-node-0">
-                    <span class="matrix-label">NODE: CORE_PRIMARY</span>
-                    <span class="matrix-value">ENCRYPTION: AES-256-X</span>
-                    <span class="matrix-status">STATUS: SECURE</span>
+            <!-- Neural Uplink Sync -->
+            <section id="neural-uplink" class="manifesto-card">
+                <div class="card-header">
+                    <div class="status-indicator blue"></div>
+                    <span class="manifesto-label">NEURAL UPLINK SYNC</span>
                 </div>
-                <div class="matrix-cell" id="matrix-node-1">
-                    <span class="matrix-label">NODE: CORE_SECONDARY</span>
-                    <span class="matrix-value">ENCRYPTION: RSA-4096-P</span>
-                    <span class="matrix-status">STATUS: STANDBY</span>
+                <div class="neural-uplink-container">
+                    <div class="neural-node" id="node-alpha">ALPHA_LINK</div>
+                    <div class="neural-node" id="node-beta">BETA_LINK</div>
+                    <div class="neural-node" id="node-gamma">GAMMA_LINK</div>
                 </div>
-                <div class="matrix-cell" id="matrix-node-2">
-                    <span class="matrix-label">NODE: EDGE_FILTER_A</span>
-                    <span class="matrix-value">FILTER: ADAPTIVE-S7</span>
-                    <span class="matrix-status">STATUS: OPERATIONAL</span>
-                </div>
-                <div class="matrix-cell" id="matrix-node-3">
-                    <span class="matrix-label">NODE: EDGE_FILTER_B</span>
-                    <span class="matrix-value">FILTER: ADAPTIVE-S8</span>
-                    <span class="matrix-status">STATUS: MONITORING</span>
-                </div>
-            </div>
-        </section>
+            </section>
+        </div>
 
-        <!-- NEW: Tactical Action Grid -->
-        <section id="tactical-actions" class="manifesto-card">
-            <div class="card-header">
-                <div class="status-indicator purple"></div>
-                <span class="manifesto-label">TACTICAL OVERRIDES</span>
-            </div>
-            <div class="action-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; padding: 0.5rem;">
-                <button class="action-btn" data-cmd="status">
-                    <span class="action-icon">📊</span>
-                    <span class="action-text">PROBE STATUS</span>
-                </button>
-                <button class="action-btn" data-cmd="clear">
-                    <span class="action-icon">🧹</span>
-                    <span class="action-text">PURGE LOGS</span>
-                </button>
-                <button class="action-btn" data-cmd="help">
-                    <span class="action-icon">❓</span>
-                    <span class="action-text">QUERY DOCS</span>
-                </button>
-                <button class="action-btn alert" data-cmd="lockdown">
-                    <span class="action-icon">🔒</span>
-                    <span class="action-text">INIT LOCKDOWN</span>
-                </button>
-            </div>
-        </section>
-
-        <!-- NEW: Signal Analysis Monitor -->
-        <section id="signal-analysis" class="manifesto-card">
-            <div class="card-header">
-                <div class="status-indicator purple"></div>
-                <span class="manifesto-label">SIGNAL ANALYSIS</span>
-            </div>
-            <div id="signal-monitor" class="signal-monitor-container">
-                <canvas id="signal-integrity-canvas" style="width: 100%; height: 100%; display: block;"></canvas>
-                <div class="signal-stats-overlay" style="position: absolute; top: 0.5rem; right: 0.5rem; font-family: monospace; font-size: 0.75rem; text-align: right; pointer-events: none;">
-                    <div style="color: var(--ctp-mauve);">SNR: <span id="snr-val">84.2</span> dB</div>
-                    <div style="color: var(--ctp-overlay1);">INTERFERENCE: <span id="noise-val">LOW</span></div>
+        <div id="tactical" class="tab-content">
+            <!-- Adaptive Response Matrix -->
+            <section id="response-matrix" class="manifesto-card">
+                <div class="card-header">
+                    <div class="status-indicator yellow"></div>
+                    <span class="manifesto-label">ADAPTIVE RESPONSE MATRIX</span>
                 </div>
-            </div>
-        </section>
+                <div class="response-matrix">
+                    <div class="matrix-cell active scan" id="matrix-node-0">
+                        <span class="matrix-label">NODE: CORE_PRIMARY</span>
+                        <span class="matrix-value">ENCRYPTION: AES-256-X</span>
+                        <span class="matrix-status">STATUS: SECURE</span>
+                    </div>
+                    <div class="matrix-cell" id="matrix-node-1">
+                        <span class="matrix-label">NODE: CORE_SECONDARY</span>
+                        <span class="matrix-value">ENCRYPTION: RSA-4096-P</span>
+                        <span class="matrix-status">STATUS: STANDBY</span>
+                    </div>
+                    <div class="matrix-cell" id="matrix-node-2">
+                        <span class="matrix-label">NODE: EDGE_FILTER_A</span>
+                        <span class="matrix-value">FILTER: ADAPTIVE-S7</span>
+                        <span class="matrix-status">STATUS: OPERATIONAL</span>
+                    </div>
+                    <div class="matrix-cell" id="matrix-node-3">
+                        <span class="matrix-label">NODE: EDGE_FILTER_B</span>
+                        <span class="matrix-value">FILTER: ADAPTIVE-S8</span>
+                        <span class="matrix-status">STATUS: MONITORING</span>
+                    </div>
+                </div>
+            </section>
 
-        <!-- NEW: Threat Landscape Map -->
-        <section id="threat-landscape-section" class="manifesto-card">
-            <div class="card-header">
-                <div class="status-indicator red"></div>
-                <span class="manifesto-label">THREAT LANDSCAPE</span>
-            </div>
-            <div class="threat-landscape" id="threat-landscape">
-                <div class="scan-line" id="threat-scan-line"></div>
-                <div class="threat-stats" id="threat-count">DETECTED THREATS: 0</div>
-            </div>
-        </section>
+            <!-- Tactical Action Grid -->
+            <section id="tactical-actions" class="manifesto-card">
+                <div class="card-header">
+                    <div class="status-indicator purple"></div>
+                    <span class="manifesto-label">TACTICAL OVERRIDES</span>
+                </div>
+                <div class="action-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; padding: 0.5rem;">
+                    <button class="action-btn" data-cmd="status">
+                        <span class="action-icon">📊</span>
+                        <span class="action-text">PROBE STATUS</span>
+                    </button>
+                    <button class="action-btn" data-cmd="clear">
+                        <span class="action-icon">🧹</span>
+                        <span class="action-text">PURGE LOGS</span>
+                    </button>
+                    <button class="action-btn" data-cmd="help">
+                        <span class="action-icon">❓</span>
+                        <span class="action-text">QUERY DOCS</span>
+                    </button>
+                    <button class="action-btn alert" data-cmd="lockdown">
+                        <span class="action-icon">🔒</span>
+                        <span class="action-text">INIT LOCKDOWN</span>
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <div id="analysis" class="tab-content">
+            <!-- Signal Analysis Monitor -->
+            <section id="signal-analysis" class="manifesto-card">
+                <div class="card-header">
+                    <div class="status-indicator purple"></div>
+                    <span class="manifesto-label">SIGNAL ANALYSIS</span>
+                </div>
+                <div id="signal-monitor" class="signal-monitor-container">
+                    <canvas id="signal-integrity-canvas" style="width: 100%; height: 100%; display: block;"></canvas>
+                    <div class="signal-stats-overlay" style="position: absolute; top: 0.5rem; right: 0.5rem; font-family: monospace; font-size: 0.75rem; text-align: right; pointer-events: none;">
+                        <div style="color: var(--ctp-mauve);">SNR: <span id="snr-val">84.2</span> dB</div>
+                        <div style="color: var(--ctp-overlay1);">INTERFERENCE: <span id="noise-val">LOW</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Threat Landscape Map -->
+            <section id="threat-landscape-section" class="manifesto-card">
+                <div class="card-header">
+                    <div class="status-indicator red"></div>
+                    <span class="manifesto-label">THREAT LANDSCAPE</span>
+                </div>
+                <div class="threat-landscape" id="threat-landscape">
+                    <div class="scan-line" id="threat-scan-line"></div>
+                    <div class="threat-stats" id="threat-count">DETECTED THREATS: 0</div>
+                </div>
+            </section>
+        </div>
 
         <footer class="manifesto-footer">
             <div class="terminal-footer">
