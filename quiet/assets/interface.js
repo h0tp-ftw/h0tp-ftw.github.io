@@ -14,6 +14,7 @@ class QuietInterface {
     }
 
     init() {
+        this.notificationOverlay = document.getElementById('notification-overlay');
         this.setupClock();
         this.setupLockdown();
         this.setupTelemetry();
@@ -23,6 +24,24 @@ class QuietInterface {
         this.setupResponseMatrix();
         this.setupThreatLandscape();
         this.setupTabs();
+    }
+
+    notify(message, type = 'info', duration = 3000) {
+        if (!this.notificationOverlay) return;
+
+        const toast = document.createElement('div');
+        toast.className = `notification-toast ${type}`;
+        
+        const timestamp = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        toast.innerHTML = `<span style="opacity: 0.5">[${timestamp}]</span> ${message}`;
+
+        this.notificationOverlay.appendChild(toast);
+
+        // Auto remove
+        setTimeout(() => {
+            toast.style.animation = 'fadeOut 0.5s ease forwards';
+            setTimeout(() => toast.remove(), 500);
+        }, duration);
     }
 
     setupTabs() {
@@ -67,6 +86,7 @@ class QuietInterface {
             landscape.appendChild(node);
             setTimeout(() => node.remove(), 2000);
             this.handleCommand('threat_detected');
+            this.notify(`THREAT DETECTED: Sector ${Math.floor(x/rect.width*100)}%:${Math.floor(y/rect.height*100)}%`, 'alert');
         };
 
         const update = () => {
@@ -304,6 +324,8 @@ class QuietInterface {
                     if (amount > threshold) {
                         parent.classList.add('alert');
                         if (Math.random() > 0.8) {
+                            const label = parent.querySelector('.telemetry-label').innerText;
+                            this.notify(`CRITICAL LOAD: ${label} at ${amount}${suffix}`, 'warning');
                             console.warn(`[SYSTEM] TELEMETRY ALERT: THRESHOLD EXCEEDED (${amount}${suffix})`);
                         }
                     } else {
@@ -343,6 +365,7 @@ class QuietInterface {
 
         this.lockdownBtn.addEventListener('click', () => {
             this.toggleLockdown();
+            this.notify(this.isLockdown ? "SIGNAL LOCKDOWN INITIATED" : "SIGNAL LOCKDOWN TERMINATED", this.isLockdown ? 'alert' : 'success');
         });
 
         const terminalInput = document.getElementById('terminal-input');
