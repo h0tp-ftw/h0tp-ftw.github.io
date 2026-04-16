@@ -24,6 +24,7 @@ class QuietInterface {
         this.setupResponseMatrix();
         this.setupThreatLandscape();
         this.setupTabs();
+        this.setupAutoDefense();
     }
 
     notify(message, type = 'info', duration = 3000) {
@@ -425,6 +426,20 @@ class QuietInterface {
         marker.style.top = `${y}px`;
         this.signalMonitor.appendChild(marker);
         setTimeout(() => marker.remove(), 1000);
+    }
+
+    setupAutoDefense() {
+        // Automatically triggers lockdown if threat count spikes
+        setInterval(() => {
+            const threatCountEl = document.getElementById('threat-count');
+            if (threatCountEl) {
+                const count = parseInt(threatCountEl.innerText.split(': ')[1] || 0);
+                if (count >= 5 && !this.isLockdown) {
+                    this.notify("THREAT OVERLOAD: AUTO-LOCKDOWN ENGAGED", "alert");
+                    this.handleCommand("lockdown");
+                }
+            }
+        }, 2000);
     }
 
     handleCommand(cmd) {
