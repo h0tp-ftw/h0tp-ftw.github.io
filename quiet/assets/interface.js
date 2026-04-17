@@ -25,6 +25,63 @@ class QuietInterface {
         this.setupThreatLandscape();
         this.setupTabs();
         this.setupAutoDefense();
+        this.setupDataStreams();
+    }
+
+    setupDataStreams() {
+        const rawStream = document.getElementById('raw-stream-content');
+        const filteredStream = document.getElementById('filtered-stream-content');
+        const rawRate = document.getElementById('raw-stream-rate');
+        const filteredRate = document.getElementById('filtered-stream-rate');
+
+        if (!rawStream || !filteredStream) return;
+
+        const dataTypes = ['PKT', 'SYN', 'ACK', 'PUSH', 'RST', 'FIN', 'URG', 'ECE', 'CWR'];
+        const systems = ['AUTH', 'DB', 'CACHE', 'GATE', 'EDGE', 'CORE', 'MESH', 'PROXY'];
+
+        const createStreamLine = (container, type = 'normal') => {
+            const line = document.createElement('div');
+            line.className = `stream-line ${type}`;
+            const sys = systems[Math.floor(Math.random() * systems.length)];
+            const dtype = dataTypes[Math.floor(Math.random() * dataTypes.length)];
+            const hex = Math.random().toString(16).substring(2, 8).toUpperCase();
+            line.innerText = `[${sys}] ${dtype} // 0x${hex} // ${Math.floor(Math.random() * 1000)}ms`;
+            
+            container.appendChild(line);
+            if (container.children.length > 20) {
+                container.removeChild(container.firstChild);
+            }
+            container.scrollTop = container.scrollHeight;
+        };
+
+        let rawBytes = 0;
+        let filteredBytes = 0;
+
+        const updateRates = () => {
+            if (rawRate) rawRate.innerText = `${(rawBytes / 1024).toFixed(1)} kbps`;
+            if (filteredRate) filteredRate.innerText = `${(filteredBytes / 1024).toFixed(1)} kbps`;
+            rawBytes = 0;
+            filteredBytes = 0;
+        };
+
+        setInterval(updateRates, 1000);
+
+        const cycleStreams = () => {
+            const rawCount = Math.floor(Math.random() * 3) + 1;
+            for (let i = 0; i < rawCount; i++) {
+                const isCritical = Math.random() > 0.95;
+                createStreamLine(rawStream, isCritical ? 'critical' : 'normal');
+                rawBytes += Math.floor(Math.random() * 512) + 64;
+                
+                // Filtering simulation
+                if (!isCritical && Math.random() > 0.6) {
+                    createStreamLine(filteredStream, 'success');
+                    filteredBytes += Math.floor(Math.random() * 128) + 32;
+                }
+            }
+        };
+
+        setInterval(cycleStreams, 200 + Math.random() * 300);
     }
 
     notify(message, type = 'info', duration = 3000) {

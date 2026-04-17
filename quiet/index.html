@@ -74,6 +74,55 @@
             100% { width: 0; left: 100%; }
         }
 
+        /* Tactical Data Streams */
+        .data-stream-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+            margin: 0.5rem;
+            font-family: monospace;
+            font-size: 0.75rem;
+            border: 1px solid var(--ctp-surface1);
+        }
+        .stream-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .stream-header {
+            color: var(--ctp-overlay1);
+            border-bottom: 1px solid var(--ctp-surface1);
+            padding-bottom: 0.25rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .stream-content {
+            height: 120px;
+            overflow-y: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            position: relative;
+        }
+        .stream-line {
+            padding: 2px 4px;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 2px solid var(--ctp-blue);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            animation: stream-in 0.2s ease-out;
+        }
+        .stream-line.critical { border-left-color: var(--ctp-red); color: var(--ctp-red); background: rgba(237, 135, 150, 0.05); }
+        .stream-line.success { border-left-color: var(--ctp-green); color: var(--ctp-green); }
+        @keyframes stream-in {
+            from { transform: translateX(-5px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
         /* NEW: Adaptive Response Matrix */
         .response-matrix {
             display: grid;
@@ -409,6 +458,34 @@
                     <div class="neural-node" id="node-alpha">ALPHA_LINK</div>
                     <div class="neural-node" id="node-beta">BETA_LINK</div>
                     <div class="neural-node" id="node-gamma">GAMMA_LINK</div>
+                </div>
+            </section>
+
+            <!-- Data Streams Panel -->
+            <section id="data-streams" class="manifesto-card">
+                <div class="card-header">
+                    <div class="status-indicator blue"></div>
+                    <span class="manifesto-label">TACTICAL DATA STREAMS</span>
+                </div>
+                <div class="data-stream-container">
+                    <div class="stream-panel">
+                        <div class="stream-header">
+                            <span>RAW_INPUT_STREAM</span>
+                            <span id="raw-stream-rate">0.0 kbps</span>
+                        </div>
+                        <div id="raw-stream-content" class="stream-content">
+                            <!-- Stream lines go here -->
+                        </div>
+                    </div>
+                    <div class="stream-panel">
+                        <div class="stream-header">
+                            <span>FILTERED_HEURISTICS</span>
+                            <span id="filtered-stream-rate">0.0 kbps</span>
+                        </div>
+                        <div id="filtered-stream-content" class="stream-content">
+                            <!-- Stream lines go here -->
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>
