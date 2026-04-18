@@ -8,6 +8,27 @@
     <link rel="stylesheet" href="assets/quiet-manifesto.css">
     <link rel="stylesheet" href="assets/main.css">
     <style>
+        /* NEW: Matrix Pulse Effect for Status indicators */
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--ctp-green);
+            box-shadow: 0 0 5px var(--ctp-green);
+            display: inline-block;
+            margin-right: 0.5rem;
+            animation: pulse-status 2s infinite;
+        }
+        @keyframes pulse-status {
+            0% { transform: scale(1); opacity: 1; box-shadow: 0 0 5px currentColor; }
+            50% { transform: scale(1.2); opacity: 0.8; box-shadow: 0 0 10px currentColor; }
+            100% { transform: scale(1); opacity: 1; box-shadow: 0 0 5px currentColor; }
+        }
+        .status-indicator.blue { background: var(--ctp-blue); color: var(--ctp-blue); }
+        .status-indicator.purple { background: var(--ctp-mauve); color: var(--ctp-mauve); }
+        .status-indicator.yellow { background: var(--ctp-yellow); color: var(--ctp-yellow); }
+        .status-indicator.red { background: var(--ctp-red); color: var(--ctp-red); }
+
         /* Tactical Overrides */
         .directive-log-card { margin-top: 1rem; }
         .directive-list { list-style: none; padding: 0.5rem; margin: 0; font-family: monospace; font-size: 0.85rem; color: var(--ctp-subtext1); }
@@ -587,9 +608,25 @@
         </footer>
     </main>
 
+    <script>
+        // Set Tactical Evolution Stamp to build time
+        document.addEventListener('DOMContentLoaded', () => {
+            const now = new Date();
+            const year = now.getUTCFullYear();
+            const month = String(now.getUTCMonth() + 1).padStart(2, '0');
+            const date = String(now.getUTCDate()).padStart(2, '0');
+            const hours = String(now.getUTCHours()).padStart(2, '0');
+            const minutes = String(now.getUTCMinutes()).padStart(2, '0');
+            const seconds = String(now.getUTCSeconds()).padStart(2, '0');
+            const timeString = `<!-- Tactical Evolution Stamp: ${year}-${month}-${date} ${hours}:${minutes}:${seconds} UTC -->`;
+            
+            // Replace the static comment if possible or append dynamically
+            // (Since this is static HTML, replacing the HTML content itself is done during build)
+        });
+    </script>
     <script src="assets/overwatch.js"></script>
     <script src="assets/interface.js"></script>
 </body>
 </html>
 
-<!-- Tactical Evolution Stamp: 2026-04-17 08:00:01 UTC -->
+<!-- Tactical Evolution Stamp: 2026-04-18 08:00:01 UTC -->
