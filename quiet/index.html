@@ -353,10 +353,22 @@
         .tab-content.active {
             display: block;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Pattern Recognition Styles */
+        .pattern-entry {
+            background: rgba(166, 227, 161, 0.05);
+            border: 1px solid var(--ctp-surface1);
+            border-left: 3px solid var(--ctp-green);
+            padding: 0.5rem;
+            display: grid;
+            grid-template-columns: 1fr 80px;
+            align-items: center;
+            animation: slideInRight 0.3s ease-out;
+            margin-bottom: 0.5rem;
         }
+        .pattern-name { color: var(--ctp-green); font-weight: bold; }
+        .pattern-confidence { color: var(--ctp-overlay1); text-align: right; font-size: 0.65rem; }
+        .pattern-entry.high-confidence { border-left-color: var(--ctp-mauve); }
+        .pattern-entry.high-confidence .pattern-name { color: var(--ctp-mauve); }
     </style>
 </head>
 <body class="quiet-page">
@@ -596,6 +608,20 @@
                     <div class="threat-stats" id="threat-count">DETECTED THREATS: 0</div>
                 </div>
             </section>
+
+            <!-- Heuristic Pattern Recognition -->
+            <section id="pattern-recognition" class="manifesto-card">
+                <div class="card-header">
+                    <div class="status-indicator green"></div>
+                    <span class="manifesto-label">HEURISTIC PATTERN RECOGNITION</span>
+                </div>
+                <div class="pattern-container" style="padding: 1rem; font-family: monospace; font-size: 0.75rem;">
+                    <div id="pattern-status" style="color: var(--ctp-overlay1); margin-bottom: 0.5rem; border-bottom: 1px solid var(--ctp-surface1); padding-bottom: 0.25rem;">SCANNING FOR COHERENT SIGNATURES...</div>
+                    <div id="pattern-list" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <div class="pattern-entry empty" style="color: var(--ctp-surface2); text-align: center; padding: 1rem;">NO PATTERNS IDENTIFIED</div>
+                    </div>
+                </div>
+            </section>
         </div>
 
         <footer class="manifesto-footer">
@@ -618,7 +644,7 @@
             const hours = String(now.getUTCHours()).padStart(2, '0');
             const minutes = String(now.getUTCMinutes()).padStart(2, '0');
             const seconds = String(now.getUTCSeconds()).padStart(2, '0');
-            const timeString = `<!-- Tactical Evolution Stamp: 2026-04-19 08:00:02 UTC -->`;
+            const timeString = `<!-- Tactical Evolution Stamp: 2026-04-20 08:00:00 UTC -->`;
             
             // Replace the static comment if possible or append dynamically
             // (Since this is static HTML, replacing the HTML content itself is done during build)
@@ -629,4 +655,4 @@
 </body>
 </html>
 
-<!-- Tactical Evolution Stamp: 2026-04-19 08:00:02 UTC -->
+<!-- Tactical Evolution Stamp: 2026-04-20 08:00:00 UTC -->

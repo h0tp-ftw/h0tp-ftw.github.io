@@ -26,6 +26,59 @@ class QuietInterface {
         this.setupTabs();
         this.setupAutoDefense();
         this.setupDataStreams();
+        this.setupPatternRecognition();
+    }
+
+    setupPatternRecognition() {
+        const patternList = document.getElementById('pattern-list');
+        const patternStatus = document.getElementById('pattern-status');
+        const snrVal = document.getElementById('snr-val');
+        
+        if (!patternList || !patternStatus) return;
+
+        const signatures = [
+            'GHOST_PROTOCOL', 'ENCRYPTED_BEACON', 'NEURAL_STUTTER', 'QUANTUM_DRIFT',
+            'VOID_ECHO', 'PULSE_FRAG', 'SYNTH_OVERLAY', 'VECTOR_BREADCRUMB'
+        ];
+
+        const addPattern = (name) => {
+            // Remove empty state
+            const empty = patternList.querySelector('.empty');
+            if (empty) empty.remove();
+
+            const confidence = (Math.random() * 20 + 75).toFixed(1);
+            const isHigh = confidence > 90;
+            
+            const entry = document.createElement('div');
+            entry.className = `pattern-entry ${isHigh ? 'high-confidence' : ''}`;
+            entry.innerHTML = `
+                <span class="pattern-name">${name}</span>
+                <span class="pattern-confidence">${confidence}% CONF</span>
+            `;
+
+            patternList.prepend(entry);
+            this.notify(`PATTERN IDENTIFIED: ${name} (${confidence}%)`, isHigh ? 'info' : 'success');
+
+            if (patternList.children.length > 4) {
+                patternList.lastChild.remove();
+            }
+        };
+
+        setInterval(() => {
+            const snr = parseFloat(snrVal?.innerText || 0);
+            if (snr > 88 && Math.random() > 0.9) {
+                const name = signatures[Math.floor(Math.random() * signatures.length)];
+                addPattern(name);
+                patternStatus.innerText = `ANALYSIS COMPLETE: SIGNATURE COHERENCE DETECTED`;
+                patternStatus.style.color = 'var(--ctp-green)';
+            } else if (snr < 85) {
+                patternStatus.innerText = `SCANNING... SNR TOO LOW FOR PATTERN LOCK`;
+                patternStatus.style.color = 'var(--ctp-yellow)';
+            } else {
+                patternStatus.innerText = `SCANNING FOR COHERENT SIGNATURES...`;
+                patternStatus.style.color = 'var(--ctp-overlay1)';
+            }
+        }, 4000);
     }
 
     setupDataStreams() {
