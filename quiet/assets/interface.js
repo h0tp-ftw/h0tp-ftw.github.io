@@ -27,6 +27,88 @@ class QuietInterface {
         this.setupAutoDefense();
         this.setupDataStreams();
         this.setupPatternRecognition();
+        this.setupSystemConsole();
+        this.setupSignalMeter();
+    }
+
+    setupSignalMeter() {
+        const meter = document.getElementById('global-signal-meter');
+        if (!meter) return;
+        const bars = meter.querySelectorAll('.signal-bar');
+        
+        setInterval(() => {
+            const snr = parseFloat(document.getElementById('snr-val')?.innerText || 0);
+            const strength = Math.floor((snr - 80) / 4); // 0 to 5 roughly
+            
+            bars.forEach((bar, i) => {
+                bar.classList.remove('active', 'warning', 'alert');
+                if (i <= strength) {
+                    if (snr < 85) bar.classList.add('alert');
+                    else if (snr < 90) bar.classList.add('warning');
+                    else bar.classList.add('active');
+                    bar.style.height = `${(i + 1) * 20}%`;
+                } else {
+                    bar.style.height = '20%';
+                }
+            });
+        }, 1000);
+    }
+
+    setupSystemConsole() {
+        this.consoleOutput = document.getElementById('console-output');
+        if (!this.consoleOutput) return;
+
+        const bootMsgs = [
+            { tag: 'BOOT', msg: 'Initializing QUIET v4.2.0-stable' },
+            { tag: 'KERN', msg: 'Loading tactical heuristics engine...' },
+            { tag: 'NET', msg: 'Establishing encrypted uplink to Nova...' },
+            { tag: 'SEC', msg: 'Integrity check: 100% (Signed by IONOSPHERE)' },
+            { tag: 'OK', msg: 'System operational.' }
+        ];
+
+        bootMsgs.forEach((m, i) => {
+            setTimeout(() => this.appendConsole(m.msg, m.tag), i * 200);
+        });
+
+        // Periodic system noise
+        const systemEvents = [
+            { tag: 'CRON', msg: 'Nightly build cycle initiated.', type: 'out' },
+            { tag: 'SEC', msg: 'Zero-trust handshake completed.', type: 'out' },
+            { tag: 'MEM', msg: 'Garbage collection: 142ms / 4.2MB cleared.', type: 'out' },
+            { tag: 'NET', msg: 'Ping baseline: 18ms.', type: 'out' },
+            { tag: 'WRN', msg: 'Minor signal jitter in Sector 7.', type: 'wrn' }
+        ];
+
+        setInterval(() => {
+            if (Math.random() > 0.8) {
+                const ev = systemEvents[Math.floor(Math.random() * systemEvents.length)];
+                this.appendConsole(ev.msg, ev.tag, ev.type);
+            }
+        }, 5000);
+    }
+
+    appendConsole(msg, tag = 'SYS', type = '') {
+        if (!this.consoleOutput) return;
+        
+        const line = document.createElement('div');
+        line.className = `console-line ${type}`;
+        
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        
+        line.innerHTML = `
+            <span class="console-time">[${timeStr}]</span>
+            <span class="console-tag">${tag}</span>
+            <span class="console-msg">${msg}</span>
+        `;
+
+        this.consoleOutput.appendChild(line);
+        this.consoleOutput.scrollTop = this.consoleOutput.scrollHeight;
+
+        // Limit buffer
+        if (this.consoleOutput.children.length > 50) {
+            this.consoleOutput.firstChild.remove();
+        }
     }
 
     setupPatternRecognition() {
@@ -557,6 +639,7 @@ class QuietInterface {
 
         // Visual feedback in the Directive Log
         this.logDirective(cmd);
+        this.appendConsole(`EXEC: ${cmd.toUpperCase()}`, 'USER', 'out');
 
         // Feedback via Overwatch log if available
         const overwatch = window.overwatchInstance;
