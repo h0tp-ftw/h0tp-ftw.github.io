@@ -299,6 +299,31 @@
         .console-line.wrn .console-msg { color: var(--ctp-yellow); }
         .console-line.out .console-msg { color: var(--ctp-blue); }
 
+        /* NEW: Strategic Intelligence Briefing */
+        .briefing-card {
+            border-left: 4px solid var(--ctp-blue);
+            animation: pulse-border 4s infinite;
+        }
+        @keyframes pulse-border {
+            0% { border-left-color: var(--ctp-blue); }
+            50% { border-left-color: var(--ctp-mauve); }
+            100% { border-left-color: var(--ctp-blue); }
+        }
+        .briefing-data {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        .briefing-stat {
+            background: rgba(0,0,0,0.1);
+            padding: 0.5rem;
+            border-radius: 2px;
+            border: 1px solid var(--ctp-surface0);
+        }
+        .briefing-stat-label { font-size: 0.65rem; color: var(--ctp-overlay1); display: block; text-transform: uppercase; }
+        .briefing-stat-value { font-size: 0.9rem; color: var(--ctp-blue); font-weight: bold; }
+
         .signal-monitor-container { 
             padding: 1rem; 
             position: relative; 
@@ -458,6 +483,38 @@
             <h1 class="manifesto-title">QUIET</h1>
             <p class="manifesto-subtitle">THE PRECISION IN THE NOISE</p>
         </header>
+
+        <!-- NEW: Strategic Intelligence Briefing -->
+        <section id="intelligence-briefing" class="manifesto-card briefing-card">
+            <div class="card-header">
+                <div class="status-indicator blue"></div>
+                <span class="manifesto-label">STRATEGIC INTELLIGENCE BRIEFING</span>
+                <span id="briefing-time" style="margin-left: auto; font-size: 0.7rem; color: var(--ctp-overlay0);">08:00:00 UTC</span>
+            </div>
+            <div class="briefing-content" style="padding: 1rem; font-family: monospace; font-size: 0.8rem; color: var(--ctp-text);">
+                <div id="briefing-summary" style="margin-bottom: 0.5rem; border-bottom: 1px solid var(--ctp-surface1); padding-bottom: 0.5rem;">
+                    SYSTEM POSTURE: <span style="color: var(--ctp-green); font-weight: bold;">[ NOMINAL ]</span>
+                </div>
+                <div class="briefing-data">
+                    <div class="briefing-stat">
+                        <span class="briefing-stat-label">Signal Coherence</span>
+                        <span class="briefing-stat-value">98.4%</span>
+                    </div>
+                    <div class="briefing-stat">
+                        <span class="briefing-stat-label">Threat Index</span>
+                        <span class="briefing-stat-value" style="color: var(--ctp-green);">0.02</span>
+                    </div>
+                    <div class="briefing-stat">
+                        <span class="briefing-stat-label">Heuristic Match</span>
+                        <span class="briefing-stat-value" style="color: var(--ctp-mauve);">ACTIVE</span>
+                    </div>
+                    <div class="briefing-stat">
+                        <span class="briefing-stat-label">Neural Sync</span>
+                        <span class="briefing-stat-value">LOCKED</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <section class="manifesto-card">
             <div class="card-header">
@@ -729,7 +786,7 @@
             const hours = String(now.getUTCHours()).padStart(2, '0');
             const minutes = String(now.getUTCMinutes()).padStart(2, '0');
             const seconds = String(now.getUTCSeconds()).padStart(2, '0');
-            const timeString = `<!-- Tactical Evolution Stamp: 2026-04-21 08:00:01 UTC -->`;
+            const timeString = `<!-- Tactical Evolution Stamp: 2026-04-22 08:00:00 UTC -->`;
             
             // Replace the static comment if possible or append dynamically
             // (Since this is static HTML, replacing the HTML content itself is done during build)
@@ -740,4 +797,4 @@
 </body>
 </html>
 
-<!-- Tactical Evolution Stamp: 2026-04-21 08:00:01 UTC -->
+<!-- Tactical Evolution Stamp: 2026-04-22 08:00:00 UTC -->
