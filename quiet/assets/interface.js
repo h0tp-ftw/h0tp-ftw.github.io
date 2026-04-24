@@ -15,6 +15,8 @@ class QuietInterface {
 
     init() {
         this.notificationOverlay = document.getElementById('notification-overlay');
+        this.scanOverlay = document.querySelector('.scan-overlay');
+        document.body.classList.add('scanning-active');
         this.setupClock();
         this.setupLockdown();
         this.setupTelemetry();
@@ -598,6 +600,7 @@ class QuietInterface {
     toggleLockdown(state) {
         this.isLockdown = state !== undefined ? state : !this.isLockdown;
         document.body.classList.toggle('lockdown-active', this.isLockdown);
+        document.body.classList.toggle('signal-lockdown', this.isLockdown);
         
         if (this.lockdownBtn) {
             this.lockdownBtn.classList.toggle('active', this.isLockdown);
