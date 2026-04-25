@@ -1,0 +1,1 @@
+[site-cron/sessions/4c3d502b-d6bc-4add-944b-bff29aa0f8d4.jsonl.deleted.2026-04-24T08-02-36.741Z#L5] User: [cron:145f0413-8cf8-47d3-90fb-72fc57bb41dd quiet-website-nightly-build] Open index.html in website_repo/quiet/ and implement a single, high-signal structural or functional improvement. Use absolute workspace paths. Improvements must be co
