@@ -236,6 +236,38 @@
             to { opacity: 0; transform: translateY(-10px); }
         }
 
+        /* NEW: Packet Capture Visualizer */
+        .packet-capture-grid {
+            display: grid;
+            grid-template-columns: repeat(16, 1fr);
+            gap: 2px;
+            padding: 1rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+            margin: 0.5rem;
+            font-family: monospace;
+            border: 1px solid var(--ctp-surface1);
+        }
+        .packet-cell {
+            aspect-ratio: 1;
+            background: var(--ctp-surface0);
+            border-radius: 1px;
+            font-size: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ctp-overlay0);
+            transition: all 0.2s ease;
+        }
+        .packet-cell.active {
+            background: var(--ctp-blue);
+            color: var(--ctp-crust);
+            box-shadow: 0 0 5px var(--ctp-blue);
+        }
+        .packet-cell.encrypted { background: var(--ctp-mauve); }
+        .packet-cell.malformed { background: var(--ctp-red); animation: pulse-red 0.5s infinite; }
+        .packet-cell.filtered { background: var(--ctp-green); opacity: 0.5; }
+
         /* Dynamic Scanning Overlay */
         .scan-overlay {
             position: absolute;
@@ -651,6 +683,18 @@
                 </div>
             </section>
 
+            <!-- Packet Capture Visualizer -->
+            <section id="packet-capture" class="manifesto-card">
+                <div class="card-header">
+                    <div class="status-indicator blue"></div>
+                    <span class="manifesto-label">LIVE PACKET CAPTURE</span>
+                    <span id="packet-count" style="margin-left: auto; font-size: 0.7rem; color: var(--ctp-overlay0);">SEQ: 0</span>
+                </div>
+                <div id="packet-grid" class="packet-capture-grid">
+                    <!-- 64 hex cells -->
+                </div>
+            </section>
+
             <!-- Data Streams Panel -->
             <section id="data-streams" class="manifesto-card">
                 <div class="card-header">
@@ -816,7 +860,7 @@
             const hours = String(now.getUTCHours()).padStart(2, '0');
             const minutes = String(now.getUTCMinutes()).padStart(2, '0');
             const seconds = String(now.getUTCSeconds()).padStart(2, '0');
-            const timeString = `<!-- Tactical Evolution Stamp: 2026-04-24 08:00:01 UTC -->`;
+            const timeString = `<!-- Tactical Evolution Stamp: 2026-04-25 08:00:00 UTC -->`;
             
             // Replace the static comment if possible or append dynamically
             // (Since this is static HTML, replacing the HTML content itself is done during build)
@@ -827,4 +871,4 @@
 </body>
 </html>
 
-<!-- Tactical Evolution Stamp: 2026-04-24 08:00:01 UTC -->
+<!-- Tactical Evolution Stamp: 2026-04-25 08:00:00 UTC -->

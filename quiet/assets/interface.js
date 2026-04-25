@@ -31,6 +31,49 @@ class QuietInterface {
         this.setupPatternRecognition();
         this.setupSystemConsole();
         this.setupSignalMeter();
+        this.setupPacketCapture();
+    }
+
+    setupPacketCapture() {
+        const grid = document.getElementById('packet-grid');
+        const countEl = document.getElementById('packet-count');
+        if (!grid) return;
+
+        // Initialize 64 cells
+        for (let i = 0; i < 64; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'packet-cell';
+            cell.innerText = '00';
+            grid.appendChild(cell);
+        }
+
+        const cells = grid.querySelectorAll('.packet-cell');
+        let sequence = 0;
+
+        setInterval(() => {
+            sequence++;
+            if (countEl) countEl.innerText = `SEQ: ${sequence.toString(16).toUpperCase()}`;
+
+            const burstSize = Math.floor(Math.random() * 8) + 1;
+            for (let i = 0; i < burstSize; i++) {
+                const idx = Math.floor(Math.random() * 64);
+                const cell = cells[idx];
+                const val = Math.floor(Math.random() * 256).toString(16).padStart(2, '0').toUpperCase();
+                
+                cell.innerText = val;
+                cell.classList.remove('active', 'encrypted', 'malformed', 'filtered');
+                
+                const rand = Math.random();
+                if (rand > 0.95) cell.classList.add('malformed');
+                else if (rand > 0.8) cell.classList.add('encrypted');
+                else if (rand > 0.4) cell.classList.add('active');
+                else cell.classList.add('filtered');
+
+                setTimeout(() => {
+                    cell.classList.remove('active', 'malformed', 'encrypted', 'filtered');
+                }, 400 + Math.random() * 600);
+            }
+        }, 150);
     }
 
     setupSignalMeter() {
