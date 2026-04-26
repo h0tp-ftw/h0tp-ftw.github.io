@@ -1664,8 +1664,7 @@ a.setup-chip:hover {
    ============================================ */
 
 .project-card,
-.person-card,
-.setup-category {
+.person-card {
   will-change: transform;
   transform: translateZ(0);
 }
@@ -1875,7 +1874,6 @@ a.setup-chip:hover {
 /* Glassmorphism kept on cards only — section-level blur removed for performance */
 
 /* Animated border gradients */
-.setup-category::after,
 .chart-wrapper::after,
 .person-card::after {
   content: "";
@@ -1894,7 +1892,6 @@ a.setup-chip:hover {
   animation: gradient-rotate 8s ease infinite;
 }
 
-.setup-category:hover::after,
 .chart-wrapper:hover::after,
 .person-card:hover::after {
   opacity: 0.5;
@@ -2123,11 +2120,6 @@ img {
   animation-delay: 0.5s;
 }
 
-/* Subtle bounce on hover */
-.setup-item:active,
-.setup-item-mini:active {
-  transform: translateX(8px) scale(0.98);
-}
 
 /* Remove transition from images to prevent lag */
 img {
@@ -2308,7 +2300,6 @@ body::before {
 /* Frosted glass effect */
 .project-card,
 .person-card,
-.setup-category,
 .chart-wrapper {
   background: rgba(var(--ctp-surface0-rgb), 0.7);
   backdrop-filter: blur(20px) saturate(180%);
@@ -2361,105 +2352,6 @@ body::before {
     0 16px 48px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     0 0 0 1px var(--accent);
-}
-
-/* ============================================
-   SKILLS SECTION - MODERN BADGES
-   ============================================ */
-
-.skills-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-.skill-badge {
-  position: relative;
-  padding: 1.5rem;
-  background: linear-gradient(135deg, var(--ctp-surface0), var(--ctp-mantle));
-  border: 1px solid var(--ctp-surface1);
-  border-radius: 16px;
-  text-align: center;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-}
-
-.skill-badge::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg,
-      var(--ctp-mauve),
-      var(--ctp-pink),
-      var(--ctp-blue));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s ease;
-}
-
-.skill-badge:hover::before {
-  transform: scaleX(1);
-}
-
-.skill-badge:hover {
-  transform: translateY(-8px) scale(1.02);
-  border-color: var(--accent);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
-}
-
-.skill-icon {
-  font-size: 2.5rem;
-  margin-bottom: 0.75rem;
-  display: block;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-}
-
-.skill-name {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--ctp-text);
-  margin-bottom: 0.25rem;
-}
-
-.skill-level {
-  font-size: 0.85rem;
-  color: var(--ctp-subtext0);
-}
-
-/* ============================================
-   COMBINED SETUP ITEM (OS + Editor)
-   ============================================ */
-
-.setup-item-dual {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  padding: 1rem;
-  background: var(--ctp-mantle);
-  border-radius: 12px;
-  transition: all 0.3s ease;
-}
-
-.setup-item-dual:hover {
-  background: var(--ctp-surface1);
-  transform: translateX(8px);
-}
-
-.setup-sub-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.setup-sub-item:hover {
-  background: rgba(var(--ctp-surface0-rgb), 0.5);
 }
 
 /* ============================================
@@ -2643,13 +2535,6 @@ p {
     display: none;
   }
 
-  .skill-badge {
-    padding: 1rem;
-  }
-
-  .setup-item-dual {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (hover: none) {
@@ -2681,69 +2566,6 @@ a:focus-visible,
 .project-card:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px var(--glow-color);
-}
-
-/* ============================================
-   FIXED SKILLS - ONE-LINER STYLE!
-   ============================================ */
-
-/* Skills use same style as AI Tools now! */
-.setup-items-list .setup-item-mini {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  background: var(--ctp-mantle);
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  border: 1px solid transparent;
-}
-
-.setup-items-list .setup-item-mini:hover {
-  background: var(--ctp-surface1);
-  border-color: var(--accent);
-  transform: translateX(8px);
-}
-
-/* Smaller emoji icons for one-liner style */
-.skill-icon-mini {
-  font-size: 1.5rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  flex-shrink: 0;
-}
-
-/* Ensure text doesn't wrap */
-.setup-item-mini span {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Remove old skills grid styles */
-.skills-grid {
-  display: none !important;
-}
-
-/* Remove old skill badge styles */
-.skill-badge {
-  display: none !important;
-}
-
-/* ============================================
-   COMPACT DUAL SETUP - REMOVED!
-   ============================================ */
-
-/* Remove dual setup styles - we're using vertical list now */
-.setup-item-dual {
-  display: none !important;
-}
-
-.setup-sub-item {
-  display: none !important;
 }
 
 /* ============================================
@@ -3112,13 +2934,6 @@ a:focus-visible,
   box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.4),
     0 0 40px rgba(202, 158, 230, 0.15);
-}
-
-/* Setup category enhanced glow */
-.setup-category:hover {
-  box-shadow:
-    0 16px 48px rgba(0, 0, 0, 0.3),
-    0 0 30px rgba(202, 158, 230, 0.2);
 }
 
 /* Premium footer with gradient accent */
