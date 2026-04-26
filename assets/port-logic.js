@@ -115,15 +115,16 @@ const observerOptions = {
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
+            const delay = entry.target.dataset.stagger || 0;
+            setTimeout(() => entry.target.classList.add('visible'), delay);
+            observer.unobserve(entry.target);
         }
     });
 }, observerOptions);
 
 function initScrollAnimations() {
-    // Scroll animations disabled for better performance
-    document.querySelectorAll('.fade-in-up, .fade-in-left, .fade-in-right, .project-card, .person-card').forEach(el => {
-        el.classList.add('visible');
+    document.querySelectorAll('.fade-in-up, .fade-in-left, .fade-in-right').forEach(el => {
+        observer.observe(el);
     });
 }
 
@@ -469,7 +470,7 @@ async function loadFeaturedProjects() {
                 card.rel = 'noopener';
                 card.className = 'project-card clickable-card';
                 // Stagger animations based on index in this batch
-                card.style.animationDelay = `${(i % 6) * 0.1}s`;
+                card.dataset.stagger = (i % 6) * 80;
 
                 // Unified card template: owner avatar top-left + content below
                 const ownerLogin = repo.owner ? repo.owner.login : repo.full_name.split('/')[0];
@@ -500,7 +501,7 @@ async function loadFeaturedProjects() {
             });
         };
 
-        const initialLimit = 6;
+        const initialLimit = 5;
         const initialRepos = filteredRepos.slice(0, initialLimit);
         const remainingRepos = filteredRepos.slice(initialLimit);
 
@@ -929,7 +930,7 @@ function display5RandomCards(projects) {
         card.target = '_blank';
         card.rel = 'noopener';
         card.className = 'project-card clickable-card';
-        card.style.animationDelay = `${index * 0.1}s`;
+        card.dataset.stagger = index * 80;
 
         const description = repo.description || 'No description available';
         const stars = formatNumber(repo.stargazers_count);
@@ -1121,12 +1122,13 @@ async function loadCoolPeople() {
 
         const peopleToShow = following.slice(0, 20);
 
-        peopleToShow.forEach((user) => {
+        peopleToShow.forEach((user, index) => {
             const card = document.createElement('a');
             card.className = 'person-card';
             card.href = user.html_url;
             card.target = '_blank';
             card.rel = 'noopener';
+            card.dataset.stagger = (index % 5) * 80;
 
             card.innerHTML = `
                 <div class="person-avatar">

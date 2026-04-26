@@ -2077,49 +2077,6 @@ img {
   }
 }
 
-/* Enhanced card shadows on scroll */
-.project-card.visible,
-.person-card.visible {
-  animation: float-in 0.8s ease forwards;
-}
-
-@keyframes float-in {
-  from {
-    opacity: 0;
-    transform: translateY(50px) rotateX(10deg);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) rotateX(0);
-  }
-}
-
-/* Staggered delays for grid items */
-.project-card:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.project-card:nth-child(2) {
-  animation-delay: 0.1s;
-}
-
-.project-card:nth-child(3) {
-  animation-delay: 0.2s;
-}
-
-.project-card:nth-child(4) {
-  animation-delay: 0.3s;
-}
-
-.project-card:nth-child(5) {
-  animation-delay: 0.4s;
-}
-
-.project-card:nth-child(6) {
-  animation-delay: 0.5s;
-}
-
 
 /* Remove transition from images to prevent lag */
 img {
