@@ -851,19 +851,27 @@
     </main>
 
     <script>
-        // Set Tactical Evolution Stamp to build time
+        // Initialize Real-Time System Clocks
         document.addEventListener('DOMContentLoaded', () => {
-            const now = new Date();
-            const year = now.getUTCFullYear();
-            const month = String(now.getUTCMonth() + 1).padStart(2, '0');
-            const date = String(now.getUTCDate()).padStart(2, '0');
-            const hours = String(now.getUTCHours()).padStart(2, '0');
-            const minutes = String(now.getUTCMinutes()).padStart(2, '0');
-            const seconds = String(now.getUTCSeconds()).padStart(2, '0');
-            const timeString = `<!-- Tactical Evolution Stamp: 2026-04-25 08:00:01 UTC -->`;
-            
-            // Replace the static comment if possible or append dynamically
-            // (Since this is static HTML, replacing the HTML content itself is done during build)
+            const updateClocks = () => {
+                const now = new Date();
+                const hours = String(now.getUTCHours()).padStart(2, '0');
+                const minutes = String(now.getUTCMinutes()).padStart(2, '0');
+                const seconds = String(now.getUTCSeconds()).padStart(2, '0');
+                const timeStr = `${hours}:${minutes}:${seconds} UTC`;
+                
+                const sysTimeElem = document.getElementById('system-time');
+                if (sysTimeElem) {
+                    sysTimeElem.innerHTML = `SECURE CONNECTION ESTABLISHED // SYSTEM TIME: ${timeStr}`;
+                }
+                
+                const briefingTimeElem = document.getElementById('briefing-time');
+                if (briefingTimeElem) {
+                    briefingTimeElem.textContent = timeStr;
+                }
+            };
+            updateClocks();
+            setInterval(updateClocks, 1000);
         });
     </script>
     <script src="assets/overwatch.js"></script>
@@ -871,4 +879,4 @@
 </body>
 </html>
 
-<!-- Tactical Evolution Stamp: 2026-04-25 08:00:01 UTC -->
+<!-- Tactical Evolution Stamp: 2026-04-26 08:00:01 UTC -->
