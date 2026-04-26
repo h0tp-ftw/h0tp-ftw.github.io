@@ -251,50 +251,54 @@ h6 {
   }
 }
 
-/* Giant floating orbs with pulsing */
+/* Floating gradient orbs */
 .gradient-orb {
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
   opacity: 0.2;
   pointer-events: none;
-  animation: none;
+  mix-blend-mode: screen;
+  will-change: transform;
+  animation: float-orb 30s ease-in-out infinite;
 }
 
 .gradient-orb.orb-1 {
   width: 600px;
   height: 600px;
   background: radial-gradient(circle,
-      var(--ctp-mauve) 0%,
-      var(--ctp-pink) 50%,
+      rgba(202, 158, 230, 0.4) 0%,
+      rgba(244, 184, 228, 0.2) 40%,
       transparent 70%);
   top: 5%;
   left: 5%;
-  animation-delay: 0s, 0s;
+  animation-duration: 30s;
 }
 
 .gradient-orb.orb-2 {
   width: 500px;
   height: 500px;
   background: radial-gradient(circle,
-      var(--ctp-blue) 0%,
-      var(--ctp-sapphire) 50%,
+      rgba(140, 170, 238, 0.35) 0%,
+      rgba(133, 193, 220, 0.2) 40%,
       transparent 70%);
   top: 50%;
   right: 5%;
-  animation-delay: 8s, 3s;
+  animation-duration: 25s;
+  animation-delay: 8s;
 }
 
 .gradient-orb.orb-3 {
   width: 550px;
   height: 550px;
   background: radial-gradient(circle,
-      var(--ctp-pink) 0%,
-      var(--ctp-mauve) 50%,
+      rgba(244, 184, 228, 0.3) 0%,
+      rgba(202, 158, 230, 0.15) 40%,
       transparent 70%);
   bottom: 10%;
   left: 40%;
-  animation-delay: 16s, 6s;
+  animation-duration: 35s;
+  animation-delay: 16s;
 }
 
 @keyframes float-orb {
@@ -331,44 +335,6 @@ h6 {
   }
 }
 
-/* Mesh gradient overlay */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background:
-    radial-gradient(circle at 20% 50%,
-      rgba(202, 158, 230, 0.08) 0%,
-      transparent 50%),
-    radial-gradient(circle at 80% 20%,
-      rgba(140, 170, 238, 0.08) 0%,
-      transparent 50%),
-    radial-gradient(circle at 40% 80%,
-      rgba(244, 184, 228, 0.08) 0%,
-      transparent 50%);
-  animation: gradient-shift 30s ease infinite;
-  pointer-events: none;
-  z-index: -1;
-}
-
-@keyframes gradient-shift {
-
-  0%,
-  100% {
-    transform: translate(0, 0) rotate(0deg);
-  }
-
-  33% {
-    transform: translate(10px, -10px) rotate(1deg);
-  }
-
-  66% {
-    transform: translate(-10px, 10px) rotate(-1deg);
-  }
-}
 
 /* ============================================
    TOP NAVIGATION BUTTONS (Blog, Quiet)
@@ -826,19 +792,6 @@ a.setup-chip:hover {
 }
 
 
-@media (prefers-reduced-motion: no-preference) {
-  .gradient-orb {
-    animation: float-orb 30s ease-in-out infinite;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-  .gradient-orb,
-  .particle {
-    animation: none;
-  }
-}
 
 /* Logo - FIXED 180px SIZE! */
 
@@ -2126,22 +2079,18 @@ body::before {
 
   0%,
   100% {
-    opacity: 0.8;
     transform: scale(1) rotate(0deg);
   }
 
   25% {
-    opacity: 1;
     transform: scale(1.05) rotate(1deg);
   }
 
   50% {
-    opacity: 0.9;
     transform: scale(0.98) rotate(-1deg);
   }
 
   75% {
-    opacity: 1;
     transform: scale(1.02) rotate(0.5deg);
   }
 }
@@ -2201,35 +2150,6 @@ body::before {
 
 /* Noise texture removed for performance */
 
-/* Enhanced orbs with better blur */
-.gradient-orb {
-  mix-blend-mode: screen;
-  will-change: transform, opacity;
-}
-
-.gradient-orb.orb-1 {
-  background: radial-gradient(circle,
-      rgba(202, 158, 230, 0.4) 0%,
-      rgba(244, 184, 228, 0.2) 40%,
-      transparent 70%);
-  animation-duration: 30s;
-}
-
-.gradient-orb.orb-2 {
-  background: radial-gradient(circle,
-      rgba(140, 170, 238, 0.35) 0%,
-      rgba(133, 193, 220, 0.2) 40%,
-      transparent 70%);
-  animation-duration: 25s;
-}
-
-.gradient-orb.orb-3 {
-  background: radial-gradient(circle,
-      rgba(244, 184, 228, 0.3) 0%,
-      rgba(202, 158, 230, 0.15) 40%,
-      transparent 70%);
-  animation-duration: 35s;
-}
 
 /* Add 4th orb for more depth */
 .gradient-orb.orb-4 {
