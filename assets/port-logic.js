@@ -296,12 +296,38 @@ async function fetchMyRepos() {
     }
 }
 
-async function fetchStarredRepos() {
+let starredFirstPageCache = null;
+
+async function fetchStarredFirstPage() {
+    if (starredFirstPageCache) return starredFirstPageCache;
     if (starredReposCache) return starredReposCache;
 
     try {
-        const repos = [];
-        let page = 1;
+        const response = await fetch(
+            `https://api.github.com/users/${GITHUB_USERNAME}/starred?per_page=100&page=1`,
+            { headers: { 'Accept': 'application/vnd.github.v3+json' } }
+        );
+        if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
+        starredFirstPageCache = await response.json();
+        return starredFirstPageCache;
+    } catch (error) {
+        console.error('Error fetching starred repos:', error);
+        return [];
+    }
+}
+
+async function fetchAllStarredRepos() {
+    if (starredReposCache) return starredReposCache;
+
+    try {
+        const firstPage = await fetchStarredFirstPage();
+        if (firstPage.length < 100) {
+            starredReposCache = firstPage;
+            return starredReposCache;
+        }
+
+        const repos = [...firstPage];
+        let page = 2;
         let hasMore = true;
 
         while (hasMore && page <= 20) {
@@ -309,9 +335,7 @@ async function fetchStarredRepos() {
                 `https://api.github.com/users/${GITHUB_USERNAME}/starred?per_page=100&page=${page}`,
                 { headers: { 'Accept': 'application/vnd.github.v3+json' } }
             );
-
             if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
-
             const data = await response.json();
             if (data.length === 0) {
                 hasMore = false;
@@ -325,7 +349,7 @@ async function fetchStarredRepos() {
         return repos;
     } catch (error) {
         console.error('Error fetching starred repos:', error);
-        return [];
+        return starredFirstPageCache || [];
     }
 }
 
@@ -873,12 +897,7 @@ const surpriseCardsGrid = document.getElementById('surprise-cards-grid');
 let starredProjects = [];
 
 async function initializeSurprise() {
-    starredProjects = await fetchStarredRepos();
-
-    const starsCountElement = document.getElementById('stars-count');
-    if (starsCountElement && starredProjects.length > 0) {
-        starsCountElement.textContent = `(${starredProjects.length})`;
-    }
+    starredProjects = await fetchStarredFirstPage();
 
     if (starredProjects.length > 0) {
         const initialProjects = getRandomProjects(6);
@@ -955,12 +974,24 @@ const showAllStarsBtn = document.getElementById('show-all-stars-btn');
 const allStarsInline = document.getElementById('all-stars-inline');
 let isStarsExpanded = false;
 
-showAllStarsBtn.addEventListener('click', () => {
+let allStarsLoaded = false;
+
+showAllStarsBtn.addEventListener('click', async () => {
     isStarsExpanded = !isStarsExpanded;
 
     if (isStarsExpanded) {
         allStarsInline.classList.remove('collapsed');
         showAllStarsBtn.querySelector('span:nth-of-type(1)').textContent = 'Hide All Stars';
+
+        if (!allStarsLoaded) {
+            allStarsLoaded = true;
+            await loadAllStars();
+            const starsCountElement = document.getElementById('stars-count');
+            if (starsCountElement && allStars.length > 0) {
+                starsCountElement.textContent = `(${allStars.length})`;
+            }
+            starredProjects = allStars;
+        }
     } else {
         allStarsInline.classList.add('collapsed');
         showAllStarsBtn.querySelector('span:nth-of-type(1)').textContent = 'Show All Stars';
@@ -976,7 +1007,7 @@ let displayedStars = 0;
 const STARS_PER_PAGE = 12;
 
 async function loadAllStars() {
-    allStars = await fetchStarredRepos();
+    allStars = await fetchAllStarredRepos();
 
     const container = document.getElementById('stars-grid');
     if (allStars.length === 0) {
@@ -1163,7 +1194,6 @@ async function init() {
         await Promise.allSettled([
             loadFeaturedProjects(),
             initializeSurprise(),
-            loadAllStars(),
             createPortfolioChart(),
             loadCoolPeople()
         ]);
