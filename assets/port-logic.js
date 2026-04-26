@@ -455,7 +455,7 @@ async function loadFeaturedProjects() {
                 card.innerHTML = `
                     <div class="project-top">
                         <div class="project-top-left">
-                            <img src="${ownerAvatar}" alt="${ownerLogin}" class="project-owner-avatar" />
+                            <img src="${ownerAvatar}" alt="${ownerLogin}" class="project-owner-avatar" loading="lazy" />
                             <h3 class="project-name">
                                 ${renderRepoName(repo.full_name)}
                             </h3>
@@ -927,7 +927,7 @@ function display5RandomCards(projects) {
         card.innerHTML = `
             <div class="project-top">
                 <div class="project-top-left">
-                    <img src="${ownerAvatar}" alt="${ownerLogin}" class="project-owner-avatar" />
+                    <img src="${ownerAvatar}" alt="${ownerLogin}" class="project-owner-avatar" loading="lazy" />
                     <h3 class="project-name">
                         ${renderRepoName(repo.full_name)}
                     </h3>
@@ -1020,7 +1020,7 @@ function displayMoreStars(filtered = allStars) {
         card.innerHTML = `
             <div class="project-top">
                 <div class="project-top-left">
-                    <img src="${ownerAvatar}" alt="${ownerLogin}" class="project-owner-avatar" />
+                    <img src="${ownerAvatar}" alt="${ownerLogin}" class="project-owner-avatar" loading="lazy" />
                     <h3 class="project-name">
                         ${renderRepoName(repo.full_name)}
                     </h3>
@@ -1106,7 +1106,7 @@ async function loadCoolPeople() {
 
             card.innerHTML = `
                 <div class="person-avatar">
-                    <img src="${user.avatar_url}" alt="${user.login}" />
+                    <img src="${user.avatar_url}" alt="${user.login}" loading="lazy" />
                 </div>
                 <div class="person-name">${user.login}</div>
                 <div class="person-bio">${bio}</div>
