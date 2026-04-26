@@ -1102,19 +1102,49 @@ async function loadCoolPeople() {
             card.target = '_blank';
             card.rel = 'noopener';
 
-            const bio = user.bio || user.name || user.login;
-
             card.innerHTML = `
                 <div class="person-avatar">
                     <img src="${user.avatar_url}" alt="${user.login}" loading="lazy" />
                 </div>
                 <div class="person-name">${user.login}</div>
-                <div class="person-bio">${bio}</div>
+                <div class="person-bio">${user.login}</div>
             `;
 
             container.appendChild(card);
             observer.observe(card);
         });
+
+        // Lazy-fetch bios once the section scrolls into view
+        const section = document.getElementById('cool-people');
+        const bioObserver = new IntersectionObserver(async (entries) => {
+            if (!entries[0].isIntersecting) return;
+            bioObserver.disconnect();
+
+            const cards = container.querySelectorAll('.person-card');
+            const batchSize = 5;
+            for (let i = 0; i < peopleToShow.length; i += batchSize) {
+                const batch = peopleToShow.slice(i, i + batchSize);
+                const details = await Promise.allSettled(
+                    batch.map(u =>
+                        fetch(`https://api.github.com/users/${u.login}`, {
+                            headers: { 'Accept': 'application/vnd.github.v3+json' }
+                        }).then(r => r.ok ? r.json() : null)
+                    )
+                );
+                details.forEach((result, j) => {
+                    if (result.status !== 'fulfilled' || !result.value) return;
+                    const userData = result.value;
+                    const card = cards[i + j];
+                    if (!card) return;
+                    const bioEl = card.querySelector('.person-bio');
+                    if (bioEl && (userData.bio || userData.name)) {
+                        bioEl.textContent = userData.bio || userData.name;
+                    }
+                });
+            }
+        }, { rootMargin: '200px' });
+
+        if (section) bioObserver.observe(section);
     } catch (error) {
         console.error('Error loading cool people:', error);
         container.innerHTML = `<div class="loading-state"><p>Error loading following list.</p></div>`;
