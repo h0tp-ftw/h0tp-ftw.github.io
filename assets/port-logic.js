@@ -561,12 +561,7 @@ async function loadPortfolioDataFromCSV() {
 
         console.log('📊 Loading CSV:', csvUrl);
 
-        const response = await fetch(csvUrl, {
-            cache: 'no-store',
-            headers: {
-                'Cache-Control': 'no-cache, no-store, must-revalidate'
-            }
-        });
+        const response = await fetch(csvUrl);
 
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
