@@ -513,7 +513,6 @@ body::before {
   justify-content: center;
   padding: 4rem 2rem 2rem;
   position: relative;
-  backdrop-filter: blur(10px);
 }
 
 .hero-content {
@@ -1873,14 +1872,7 @@ a.setup-chip:hover {
    MIND-BLOWING ENHANCEMENTS!
    ============================================ */
 
-/* Glassmorphism effects */
-.my-setup,
-.portfolio-performance,
-.featured-projects,
-.surprise-section,
-.cool-people {
-  backdrop-filter: blur(12px);
-}
+/* Glassmorphism kept on cards only — section-level blur removed for performance */
 
 /* Animated border gradients */
 .setup-category::after,
@@ -1954,19 +1946,7 @@ a.setup-chip:hover {
   height: 300px;
 }
 
-/* Cursor trail effect (subtle) */
-.hero::after {
-  content: "";
-  position: fixed;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--accent);
-  border-radius: 50%;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 9999;
-}
+/* Cursor trail removed for performance */
 
 /* Spotlight effect on hover */
 .project-card::after,
@@ -2149,14 +2129,6 @@ img {
   transform: translateX(8px) scale(0.98);
 }
 
-/* Smooth color transitions */
-* {
-  transition:
-    color 0.3s ease,
-    background-color 0.3s ease,
-    border-color 0.3s ease;
-}
-
 /* Remove transition from images to prevent lag */
 img {
   transition:
@@ -2278,16 +2250,7 @@ body::before {
   }
 }
 
-/* Noise texture overlay for depth */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.02;
-  pointer-events: none;
-  z-index: -1;
-}
+/* Noise texture removed for performance */
 
 /* Enhanced orbs with better blur */
 .gradient-orb {
@@ -2336,20 +2299,7 @@ body::after {
     pulse-orb 10s ease-in-out infinite;
 }
 
-/* Scanlines effect (subtle) */
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(0deg,
-      transparent,
-      transparent 2px,
-      rgba(255, 255, 255, 0.01) 2px,
-      rgba(255, 255, 255, 0.01) 4px);
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.5;
-}
+/* Scanlines removed for performance */
 
 /* ============================================
    ENHANCED CARD EFFECTS - PREMIUM FEEL
@@ -2659,7 +2609,38 @@ p {
 @media (max-width: 768px) {
   .gradient-orb {
     filter: blur(60px);
-    opacity: 0.3;
+    opacity: 0.15;
+  }
+
+  .gradient-orb.orb-3,
+  .gradient-orb.orb-4 {
+    display: none;
+  }
+
+  body::before {
+    animation: none;
+  }
+
+  .background-animation::after {
+    display: none;
+  }
+
+  .project-card,
+  .person-card,
+  .setup-panel,
+  .chart-wrapper {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .project-card::before,
+  .person-card::before {
+    display: none;
+  }
+
+  .project-card::after,
+  .person-card::after {
+    display: none;
   }
 
   .skill-badge {
@@ -2668,6 +2649,15 @@ p {
 
   .setup-item-dual {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (hover: none) {
+  .project-card::before,
+  .person-card::before,
+  .project-card::after,
+  .person-card::after {
+    display: none;
   }
 }
 

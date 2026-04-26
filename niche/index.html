@@ -11,6 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <script src="assets/blog-base.js"></script>
     <style>
       /* Blog List Styles */
       .blog-list {
@@ -237,54 +238,6 @@
   </head>
 
   <body data-theme="frappe">
-    <!-- Animated Background -->
-    <div class="guide-animated-bg">
-      <div class="gradient-orb orb-1"></div>
-      <div class="gradient-orb orb-2"></div>
-      <div class="gradient-orb orb-3"></div>
-    </div>
-
-    <!-- Theme Toggle -->
-    <button
-      class="guide-theme-toggle"
-      id="guide-theme-toggle"
-      aria-label="Toggle theme"
-    >
-      <div class="guide-theme-slider">
-        <svg
-          class="guide-slider-icon moon-icon"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-        >
-          <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
-        </svg>
-        <svg
-          class="guide-slider-icon sun-icon"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-        >
-          <circle cx="12" cy="12" r="5" />
-          <path
-            d="M12 1v2m0 18v2M23 12h-2M3 12H1m19.071-7.071l-1.414 1.414M5.343 18.657l-1.414 1.414m15.142 0l-1.414-1.414M5.343 5.343L3.929 3.929"
-          />
-        </svg>
-      </div>
-    </button>
-
-    <!-- Back Button -->
-    <div class="niche-back-nav">
-      <a href="../" class="back-btn">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M15 18l-6-6 6-6" />
-        </svg>
-        Back to Portfolio
-      </a>
-    </div>
-
     <!-- Main Content -->
     <div class="niche-container">
       <header class="niche-header">
@@ -318,45 +271,19 @@
     </div>
 
     <script>
-      // Theme toggle functionality
-      const themeToggle = document.getElementById("guide-theme-toggle");
-      const html = document.documentElement;
-
-      const savedTheme = localStorage.getItem("theme") || "frappe";
-      html.setAttribute("data-theme", savedTheme);
-
-      function updateTogglePosition() {
-        const currentTheme = html.getAttribute("data-theme");
-        const slider = document.querySelector(".guide-theme-slider");
-        if (slider) {
-          slider.classList.toggle("light-mode", currentTheme === "latte");
-        }
-      }
-
-      updateTogglePosition();
-
-      themeToggle.addEventListener("click", () => {
-        const currentTheme = html.getAttribute("data-theme");
-        const newTheme = currentTheme === "frappe" ? "latte" : "frappe";
-
-        html.setAttribute("data-theme", newTheme);
-        localStorage.setItem("theme", newTheme);
-        updateTogglePosition();
-      });
-
       // Load blog posts from projects.json
       async function loadBlogPosts() {
         const blogList = document.getElementById("blog-list");
-        
+
         try {
           const response = await fetch("./projects.json");
           if (!response.ok) throw new Error("Failed to load posts");
-          
+
           const { projects } = await response.json();
-          
+
           // Sort by date (most recent first)
           projects.sort((a, b) => new Date(b.date) - new Date(a.date));
-          
+
           const formatDate = (dateStr) => {
             const date = new Date(dateStr);
             return date.toLocaleDateString("en-US", {
@@ -365,14 +292,13 @@
               day: "numeric"
             });
           };
-          
+
           const postsHTML = projects.map(post => {
             const isExternal = post.file.startsWith("http");
-            const href = isExternal ? post.file : post.file;
             const target = isExternal ? '_blank' : '_self';
-            
+
             return `
-              <a href="${href}" class="blog-entry" target="${target}" rel="${isExternal ? 'noopener' : ''}" data-external="${isExternal}">
+              <a href="${post.file}" class="blog-entry" target="${target}" rel="${isExternal ? 'noopener' : ''}" data-external="${isExternal}">
                 <span class="blog-icon">${post.icon}</span>
                 <div class="blog-content">
                   <h2 class="blog-title">${post.title}</h2>
@@ -395,15 +321,15 @@
               </a>
             `;
           }).join("");
-          
+
           blogList.innerHTML = postsHTML;
-          
+
         } catch (error) {
           console.error("Failed to load blog posts:", error);
           blogList.innerHTML = '<p style="text-align: center; color: var(--ctp-red);">Failed to load posts. Please try again later.</p>';
         }
       }
-      
+
       // Load posts on page load
       document.addEventListener("DOMContentLoaded", loadBlogPosts);
     </script>

@@ -62,8 +62,20 @@ const LANGUAGE_ICONS = {
 };
 
 // ============================================
-// SCROLL PROGRESS INDICATOR
+// SCROLL PROGRESS INDICATOR (throttled)
 // ============================================
+
+let scrollTicking = false;
+function onScroll() {
+    if (!scrollTicking) {
+        requestAnimationFrame(() => {
+            updateScrollProgress();
+            updateActiveNav();
+            scrollTicking = false;
+        });
+        scrollTicking = true;
+    }
+}
 
 function updateScrollProgress() {
     const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
@@ -76,7 +88,7 @@ function updateScrollProgress() {
     }
 }
 
-window.addEventListener('scroll', updateScrollProgress);
+window.addEventListener('scroll', onScroll, { passive: true });
 
 // ============================================
 // UTILITY FUNCTIONS
@@ -196,7 +208,6 @@ function updateActiveNav() {
     }
 }
 
-window.addEventListener('scroll', updateActiveNav);
 updateActiveNav();
 
 // ============================================
@@ -338,23 +349,7 @@ async function fetchFollowing() {
             if (data.length === 0) {
                 hasMore = false;
             } else {
-                const usersWithDetails = await Promise.all(
-                    data.map(async (user) => {
-                        try {
-                            const detailResponse = await fetch(
-                                `https://api.github.com/users/${user.login}`,
-                                { headers: { 'Accept': 'application/vnd.github.v3+json' } }
-                            );
-                            if (detailResponse.ok) {
-                                return await detailResponse.json();
-                            }
-                        } catch (err) {
-                            console.error(`Error fetching details for ${user.login}:`, err);
-                        }
-                        return user;
-                    })
-                );
-                users.push(...usersWithDetails);
+                users.push(...data);
                 page++;
             }
         }
@@ -886,7 +881,7 @@ async function initializeSurprise() {
     }
 
     if (starredProjects.length > 0) {
-        const initialProjects = getRandomProjects(5);
+        const initialProjects = getRandomProjects(6);
         display5RandomCards(initialProjects);
     }
 }
@@ -902,7 +897,7 @@ surpriseBtn.addEventListener('click', () => {
         surpriseBtn.disabled = false;
     }, 800);
 
-    const randomProjects = getRandomProjects(5);
+    const randomProjects = getRandomProjects(6);
     display5RandomCards(randomProjects);
 });
 
@@ -1107,7 +1102,7 @@ async function loadCoolPeople() {
             card.target = '_blank';
             card.rel = 'noopener';
 
-            const bio = user.bio || user.name || 'GitHub Developer';
+            const bio = user.bio || user.name || user.login;
 
             card.innerHTML = `
                 <div class="person-avatar">
@@ -1130,32 +1125,22 @@ async function loadCoolPeople() {
 // ============================================
 
 async function init() {
-    console.log('🚀 Initializing spectacular portfolio...');
+    console.log('🚀 Initializing portfolio...');
 
     try {
         initScrollAnimations();
-        console.log('✓ Scroll animations initialized');
 
-        // Load in sequence for smooth experience
-        await loadFeaturedProjects();
-        console.log('✓ Featured projects loaded');
+        await Promise.allSettled([
+            loadFeaturedProjects(),
+            initializeSurprise(),
+            loadAllStars(),
+            createPortfolioChart(),
+            loadCoolPeople()
+        ]);
 
-        await initializeSurprise();
-        console.log('✓ Surprise section initialized');
-
-        await loadAllStars();
-        console.log('✓ All stars loaded');
-
-        await createPortfolioChart();
-        console.log('✓ Portfolio chart created');
-
-        await loadCoolPeople();
-        console.log('✓ Cool people loaded');
-
-        console.log('✅ Site fully loaded and spectacular!');
+        console.log('✅ Site fully loaded');
     } catch (error) {
         console.error('❌ Error during initialization:', error);
-        console.error('Stack trace:', error.stack);
     }
 }
 
@@ -1500,12 +1485,12 @@ class VanillaTilt {
     }
 }
 
-// Initialize New Features
+// Initialize tilt effects — skip on touch devices for performance
 function initCoolFeatures() {
-    console.log('✨ Initializing cool visual effects...');
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouchDevice) return;
 
-    // Init Tilt on Project Cards and Setup Categories
-    const tiltElements = document.querySelectorAll('.project-card, .setup-category, .profile-image');
+    const tiltElements = document.querySelectorAll('.project-card, .profile-image');
     tiltElements.forEach(el => {
         new VanillaTilt(el, {
             max: 5,
@@ -1516,35 +1501,27 @@ function initCoolFeatures() {
         });
     });
 
-    // Observe for new project cards (dynamic loading)
-    const observer = new MutationObserver((mutations) => {
+    const tiltObserver = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
-            if (mutation.addedNodes.length) {
-                mutation.addedNodes.forEach((node) => {
-                    if (node.nodeType === 1 && node.classList.contains('project-card')) {
-                        new VanillaTilt(node, {
-                            max: 5,
-                            speed: 400,
-                            glare: true,
-                            "max-glare": 0.2,
-                            scale: 1.02
-                        });
-                    }
-                });
-            }
+            mutation.addedNodes.forEach((node) => {
+                if (node.nodeType === 1 && node.classList.contains('project-card')) {
+                    new VanillaTilt(node, {
+                        max: 5,
+                        speed: 400,
+                        glare: true,
+                        "max-glare": 0.2,
+                        scale: 1.02
+                    });
+                }
+            });
         });
     });
 
-    const grid = document.getElementById('featured-projects-grid');
-    if (grid) observer.observe(grid, { childList: true });
-
-    const starsGrid = document.getElementById('stars-grid');
-    if (starsGrid) observer.observe(starsGrid, { childList: true });
-
-    const surpriseGrid = document.getElementById('surprise-cards-grid');
-    if (surpriseGrid) observer.observe(surpriseGrid, { childList: true });
+    ['featured-projects-grid', 'stars-grid', 'surprise-cards-grid'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) tiltObserver.observe(el, { childList: true });
+    });
 }
 
-// Run basic init
 initCoolFeatures();
 

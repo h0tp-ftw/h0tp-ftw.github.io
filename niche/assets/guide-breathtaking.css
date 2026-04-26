@@ -724,3 +724,185 @@ h1, h2, h3, .niche-header h1, .twr-panel h2, .blurb-title {
     /* Use font-family fallback for emoji rendering */
     font-family: 'Inter', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif;
 }
+
+/* ============================================
+   BLOG FOOTER (injected by blog-base.js)
+   ============================================ */
+
+.blog-footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--ctp-surface1);
+    text-align: center;
+    color: var(--ctp-subtext0);
+    font-size: 0.9rem;
+}
+
+.blog-footer-disclaimer {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    opacity: 0.8;
+}
+
+/* ============================================
+   COMMAND BLOCKS & COPY BUTTON
+   ============================================ */
+
+.cmd-block {
+    background: #111;
+    border-radius: 12px;
+    padding: 1.25rem;
+    font-family: 'Fira Code', monospace;
+    color: #d4d4d4;
+    margin: 1rem 0;
+    border: 1px solid #333;
+    position: relative;
+    overflow-x: auto;
+}
+
+.cmd-line {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.cmd-line:last-child {
+    margin-bottom: 0;
+}
+
+.cmd-prompt {
+    color: var(--ctp-green);
+    margin-right: 0.5rem;
+    user-select: none;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: #d4d4d4;
+    padding: 4px;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    opacity: 0;
+}
+
+.cmd-block:hover .copy-btn {
+    opacity: 1;
+}
+
+.copy-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.copy-btn.copied {
+    background: var(--ctp-green);
+    color: black;
+    border-color: var(--ctp-green);
+}
+
+/* ============================================
+   METHOD TABS
+   ============================================ */
+
+.method-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.method-tab {
+    padding: 0.75rem 1.5rem;
+    background: rgba(var(--ctp-surface0-rgb, 65, 69, 89), 0.5);
+    border: 2px solid var(--ctp-surface1);
+    border-radius: 50px;
+    color: var(--ctp-subtext1);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.method-tab:hover {
+    border-color: var(--ctp-mauve);
+    color: var(--ctp-text);
+}
+
+.method-tab.active {
+    background: var(--ctp-mauve);
+    color: var(--ctp-base);
+    border-color: var(--ctp-mauve);
+}
+
+/* ============================================
+   STEP ITEMS
+   ============================================ */
+
+.step-item {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.step-marker {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--ctp-surface1);
+    color: var(--ctp-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    border: 2px solid var(--ctp-surface2);
+}
+
+.step-content {
+    flex-grow: 1;
+}
+
+.step-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--ctp-text);
+}
+
+/* ============================================
+   FEATURE GRID & CARDS
+   ============================================ */
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.feature-card {
+    background: var(--ctp-surface0);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--ctp-surface1);
+    transition: transform 0.2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--ctp-mauve);
+}
+
+.feature-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
