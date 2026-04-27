@@ -555,8 +555,9 @@
                 <span id="briefing-time" style="margin-left: auto; font-size: 0.7rem; color: var(--ctp-overlay0);">08:00:00 UTC</span>
             </div>
             <div class="briefing-content" style="padding: 1rem; font-family: monospace; font-size: 0.8rem; color: var(--ctp-text);">
-                <div id="briefing-summary" style="margin-bottom: 0.5rem; border-bottom: 1px solid var(--ctp-surface1); padding-bottom: 0.5rem;">
-                    SYSTEM POSTURE: <span style="color: var(--ctp-green); font-weight: bold;">[ NOMINAL ]</span>
+                <div id="briefing-summary" style="margin-bottom: 0.5rem; border-bottom: 1px solid var(--ctp-surface1); padding-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div>SYSTEM POSTURE: <span style="color: var(--ctp-green); font-weight: bold;">[ NOMINAL ]</span></div>
+                    <button id="export-report-btn" style="background: rgba(137, 180, 250, 0.1); border: 1px solid var(--ctp-blue); color: var(--ctp-blue); padding: 0.2rem 0.5rem; font-family: monospace; font-size: 0.65rem; cursor: pointer; border-radius: 2px; transition: all 0.2s;">EXPORT REPORT_</button>
                 </div>
                 <div class="briefing-data">
                     <div class="briefing-stat">
@@ -873,6 +874,39 @@
             };
             updateClocks();
             setInterval(updateClocks, 1000);
+
+            // Export Intelligence Report Logic
+            const exportBtn = document.getElementById('export-report-btn');
+            if (exportBtn) {
+                exportBtn.addEventListener('click', () => {
+                    const stats = Array.from(document.querySelectorAll('.briefing-stat')).map(el => {
+                        return `${el.querySelector('.briefing-stat-label').textContent}: ${el.querySelector('.briefing-stat-value').textContent}`;
+                    });
+                    const report = `=== STRATEGIC INTELLIGENCE BRIEFING ===\nDATE: ${new Date().toISOString()}\nPOSTURE: NOMINAL\n\n[ TELEMETRY ]\n${stats.join('\n')}\n\n[ THREAT LOG ]\nExtracted 0 high-priority threats in the last 15 minutes.\n=== END OF REPORT ===`;
+                    
+                    const blob = new Blob([report], { type: 'text/plain' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `intelligence-report-${Date.now()}.txt`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    
+                    exportBtn.textContent = 'EXPORTED_';
+                    exportBtn.style.backgroundColor = 'rgba(166, 227, 161, 0.1)';
+                    exportBtn.style.color = 'var(--ctp-green)';
+                    exportBtn.style.borderColor = 'var(--ctp-green)';
+                    
+                    setTimeout(() => {
+                        exportBtn.textContent = 'EXPORT REPORT_';
+                        exportBtn.style.backgroundColor = 'rgba(137, 180, 250, 0.1)';
+                        exportBtn.style.color = 'var(--ctp-blue)';
+                        exportBtn.style.borderColor = 'var(--ctp-blue)';
+                    }, 2000);
+                });
+            }
         });
     </script>
     <script src="assets/overwatch.js"></script>
