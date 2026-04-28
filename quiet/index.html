@@ -882,7 +882,11 @@
                     const stats = Array.from(document.querySelectorAll('.briefing-stat')).map(el => {
                         return `${el.querySelector('.briefing-stat-label').textContent}: ${el.querySelector('.briefing-stat-value').textContent}`;
                     });
-                    const report = `=== STRATEGIC INTELLIGENCE BRIEFING ===\nDATE: ${new Date().toISOString()}\nPOSTURE: NOMINAL\n\n[ TELEMETRY ]\n${stats.join('\n')}\n\n[ THREAT LOG ]\nExtracted 0 high-priority threats in the last 15 minutes.\n=== END OF REPORT ===`;
+                    const threatText = document.getElementById('threat-count') ? document.getElementById('threat-count').innerText : '';
+                    const threatMatch = threatText.match(/\d+/);
+                    const threatCount = threatMatch ? parseInt(threatMatch[0], 10) : 0;
+                    const posture = threatCount > 0 ? 'ELEVATED' : 'NOMINAL';
+                    const report = `=== STRATEGIC INTELLIGENCE BRIEFING ===\nDATE: ${new Date().toISOString()}\nPOSTURE: ${posture}\n\n[ TELEMETRY ]\n${stats.join('\n')}\n\n[ THREAT LOG ]\nExtracted ${threatCount} high-priority threats in the current session.\n=== END OF REPORT ===`;
                     
                     const blob = new Blob([report], { type: 'text/plain' });
                     const url = URL.createObjectURL(blob);
