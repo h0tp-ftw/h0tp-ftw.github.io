@@ -607,12 +607,55 @@ class QuietInterface {
         });
 
         const terminalInput = document.getElementById('terminal-input');
+        const terminalHint = document.getElementById('terminal-hint');
+        this.commandHistory = [];
+        this.historyIndex = -1;
+        this.availableCommands = ['status', 'clear', 'help', 'lockdown', 'unlock', 'baseline', 'intercept'];
+
         if (terminalInput) {
             terminalInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
                     const cmd = terminalInput.value.trim().toLowerCase();
+                    if (cmd) {
+                        this.commandHistory.unshift(cmd);
+                        if (this.commandHistory.length > 20) this.commandHistory.pop();
+                        this.historyIndex = -1;
+                        this.handleCommand(cmd);
+                    }
                     terminalInput.value = '';
-                    this.handleCommand(cmd);
+                    if (terminalHint) terminalHint.innerText = '';
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (this.historyIndex < this.commandHistory.length - 1) {
+                        this.historyIndex++;
+                        terminalInput.value = this.commandHistory[this.historyIndex];
+                    }
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (this.historyIndex > 0) {
+                        this.historyIndex--;
+                        terminalInput.value = this.commandHistory[this.historyIndex];
+                    } else if (this.historyIndex === 0) {
+                        this.historyIndex = -1;
+                        terminalInput.value = '';
+                    }
+                } else if (e.key === 'Tab') {
+                    e.preventDefault();
+                    const val = terminalInput.value.toLowerCase();
+                    const match = this.availableCommands.find(c => c.startsWith(val));
+                    if (match) {
+                        terminalInput.value = match;
+                    }
+                }
+            });
+
+            terminalInput.addEventListener('input', () => {
+                const val = terminalInput.value.toLowerCase();
+                if (val && terminalHint) {
+                    const match = this.availableCommands.find(c => c.startsWith(val));
+                    terminalHint.innerText = match ? `SUGGESTION: ${match}` : '';
+                } else if (terminalHint) {
+                    terminalHint.innerText = '';
                 }
             });
         }
