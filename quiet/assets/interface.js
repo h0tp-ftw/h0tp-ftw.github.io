@@ -32,6 +32,20 @@ class QuietInterface {
         this.setupSystemConsole();
         this.setupSignalMeter();
         this.setupPacketCapture();
+        this.setupLoadoutSelector();
+    }
+
+    setupLoadoutSelector() {
+        const loadoutCards = document.querySelectorAll('.loadout-card');
+        loadoutCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const loadout = card.getAttribute('data-loadout');
+                loadoutCards.forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                this.handleCommand(`loadout ${loadout}`);
+                this.notify(`LOADOUT CHANGED: ${loadout.toUpperCase()}`, 'success');
+            });
+        });
     }
 
     setupPacketCapture() {
@@ -753,6 +767,11 @@ class QuietInterface {
                 break;
             case 'status':
                 log("System status: OPERATIONAL // All sectors nominal.");
+                break;
+            case (cmd.startsWith('loadout') ? cmd : 'none'):
+                const loadout = cmd.split(' ')[1] || 'STEALTH';
+                log(`Applying tactical loadout: ${loadout.toUpperCase()}...`);
+                this.appendConsole(`LOADOUT: ${loadout.toUpperCase()} ENGAGED`, 'SEC', 'out');
                 break;
             case 'clear':
                 if (overwatch && overwatch.logElement) {

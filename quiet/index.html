@@ -518,6 +518,47 @@
         .pattern-confidence { color: var(--ctp-overlay1); text-align: right; font-size: 0.65rem; }
         .pattern-entry.high-confidence { border-left-color: var(--ctp-mauve); }
         .pattern-entry.high-confidence .pattern-name { color: var(--ctp-mauve); }
+
+        /* Tactical Loadout Selector */
+        .loadout-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            padding: 1rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+            margin: 0.5rem;
+        }
+        .loadout-card {
+            background: var(--ctp-crust);
+            border: 1px solid var(--ctp-surface1);
+            padding: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .loadout-card:hover { border-color: var(--ctp-blue); background: rgba(137, 180, 250, 0.05); }
+        .loadout-card.active { border-color: var(--ctp-green); background: rgba(166, 227, 161, 0.05); box-shadow: 0 0 10px rgba(166, 227, 161, 0.1); }
+        .loadout-icon { font-size: 1.2rem; display: block; margin-bottom: 0.25rem; }
+        .loadout-label { font-family: monospace; font-size: 0.7rem; color: var(--ctp-overlay1); text-transform: uppercase; }
+        .loadout-card.active .loadout-label { color: var(--ctp-green); font-weight: bold; }
+        .loadout-card::after {
+            content: 'SELECTED';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-family: monospace;
+            font-size: 0.6rem;
+            color: var(--ctp-green);
+            font-weight: bold;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+        .loadout-card.active::after { transform: translate(-50%, -50%) scale(1); opacity: 0.2; }
     </style>
 </head>
 <body class="quiet-page">
@@ -780,6 +821,28 @@
                         <span class="action-icon">🔒</span>
                         <span class="action-text">INIT LOCKDOWN</span>
                     </button>
+                </div>
+            </section>
+
+            <!-- NEW: Tactical Loadout Selector -->
+            <section id="tactical-loadout" class="manifesto-card">
+                <div class="card-header">
+                    <div class="status-indicator green"></div>
+                    <span class="manifesto-label">ACTIVE LOADOUT CONFIGURATION</span>
+                </div>
+                <div class="loadout-selector">
+                    <div class="loadout-card active" data-loadout="stealth">
+                        <span class="loadout-icon">👤</span>
+                        <span class="loadout-label">STEALTH</span>
+                    </div>
+                    <div class="loadout-card" data-loadout="aggressive">
+                        <span class="loadout-icon">⚔️</span>
+                        <span class="loadout-label">AGGRESSIVE</span>
+                    </div>
+                    <div class="loadout-card" data-loadout="defensive">
+                        <span class="loadout-icon">🛡️</span>
+                        <span class="loadout-label">DEFENSIVE</span>
+                    </div>
                 </div>
             </section>
         </div>
