@@ -567,9 +567,10 @@
             <span class="icon">🎯</span>
             <span class="btn-label">BACK TO BASELINE</span>
         </a>
-        <button id="lockdown-toggle" class="nav-btn">
+        <button id="lockdown-toggle" class="nav-btn" title="Hotkey: L">
             <span class="icon">⚡</span>
             <span class="btn-label">SIGNAL LOCKDOWN</span>
+            <span class="hotkey-hint" style="opacity: 0.5; margin-left: 0.25rem; font-size: 0.7em;">[L]</span>
         </button>
     </div>
 
@@ -682,9 +683,9 @@
 
         <!-- NEW: Tactical Navigation Tabs -->
         <div class="tactical-tabs">
-            <button class="tab-btn active" data-target="monitoring">MONITORING</button>
-            <button class="tab-btn" data-target="tactical">TACTICAL</button>
-            <button class="tab-btn" data-target="analysis">ANALYSIS</button>
+            <button class="tab-btn active" data-target="monitoring" title="Hotkey: 1">MONITORING <span style="opacity:0.5;font-size:0.8em">[1]</span></button>
+            <button class="tab-btn" data-target="tactical" title="Hotkey: 2">TACTICAL <span style="opacity:0.5;font-size:0.8em">[2]</span></button>
+            <button class="tab-btn" data-target="analysis" title="Hotkey: 3">ANALYSIS <span style="opacity:0.5;font-size:0.8em">[3]</span></button>
         </div>
 
         <div id="monitoring" class="tab-content active">
@@ -908,7 +909,7 @@
         <footer class="manifesto-footer">
             <div class="terminal-footer">
                 <span class="prompt">></span>
-                <input type="text" id="terminal-input" placeholder="AWAITING DIRECTIVE..." autocomplete="off" spellcheck="false">
+                <input type="text" id="terminal-input" placeholder="AWAITING DIRECTIVE... (Press '/' to focus)" autocomplete="off" spellcheck="false">
                 <span class="typing-cursor"></span>
             </div>
             <div id="terminal-hint" style="font-family: monospace; font-size: 0.65rem; color: var(--ctp-overlay0); padding-left: 2rem; margin-top: -0.4rem; height: 1.2rem; pointer-events: none; text-transform: uppercase;"></div>
@@ -974,6 +975,36 @@
                         exportBtn.style.borderColor = 'var(--ctp-blue)';
                     }, 2000);
                 });
+            }
+        });
+
+        // Global Tactical Keyboard Shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ignore if typing in an input field
+            if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+                if (e.key === 'Escape') {
+                    document.activeElement.blur();
+                }
+                return;
+            }
+
+            // Quick command terminal focus
+            if (e.key === '/') {
+                e.preventDefault();
+                const term = document.getElementById('terminal-input');
+                if (term) term.focus();
+            }
+
+            // Quick Tab Navigation
+            const tabs = document.querySelectorAll('.tab-btn');
+            if (e.key === '1' && tabs[0]) tabs[0].click();
+            if (e.key === '2' && tabs[1]) tabs[1].click();
+            if (e.key === '3' && tabs[2]) tabs[2].click();
+            
+            // Toggle Lockdown
+            if (e.key.toLowerCase() === 'l') {
+                const lockdownBtn = document.getElementById('lockdown-toggle');
+                if (lockdownBtn) lockdownBtn.click();
             }
         });
     </script>
