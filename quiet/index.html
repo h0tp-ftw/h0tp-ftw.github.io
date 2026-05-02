@@ -567,6 +567,11 @@
             <span class="icon">🎯</span>
             <span class="btn-label">BACK TO BASELINE</span>
         </a>
+        <button id="fullscreen-toggle" class="nav-btn" title="Hotkey: F">
+            <span class="icon">🔳</span>
+            <span class="btn-label">FULLSCREEN</span>
+            <span class="hotkey-hint" style="opacity: 0.5; margin-left: 0.25rem; font-size: 0.7em;">[F]</span>
+        </button>
         <button id="lockdown-toggle" class="nav-btn" title="Hotkey: L">
             <span class="icon">⚡</span>
             <span class="btn-label">SIGNAL LOCKDOWN</span>
@@ -920,6 +925,17 @@
     <script>
         // Initialize Real-Time System Clocks
         document.addEventListener('DOMContentLoaded', () => {
+            const fsBtn = document.getElementById('fullscreen-toggle');
+            if (fsBtn) {
+                fsBtn.addEventListener('click', () => {
+                    if (!document.fullscreenElement) {
+                        document.documentElement.requestFullscreen().catch(err => console.log(err));
+                    } else {
+                        document.exitFullscreen();
+                    }
+                });
+            }
+
             const updateClocks = () => {
                 const now = new Date();
                 const hours = String(now.getUTCHours()).padStart(2, '0');
@@ -1005,6 +1021,12 @@
             if (e.key.toLowerCase() === 'l') {
                 const lockdownBtn = document.getElementById('lockdown-toggle');
                 if (lockdownBtn) lockdownBtn.click();
+            }
+            
+            // Toggle Fullscreen
+            if (e.key.toLowerCase() === 'f') {
+                const fullscreenBtn = document.getElementById('fullscreen-toggle');
+                if (fullscreenBtn) fullscreenBtn.click();
             }
         });
     </script>
