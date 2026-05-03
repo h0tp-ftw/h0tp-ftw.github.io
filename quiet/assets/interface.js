@@ -23,6 +23,7 @@ class QuietInterface {
         this.setupSignalMonitor();
         this.setupActionGrid();
         this.setupNeuralUplink();
+        this.setupNeuralSyncCanvas();
         this.setupResponseMatrix();
         this.setupThreatLandscape();
         this.setupTabs();
@@ -414,6 +415,56 @@ class QuietInterface {
         };
 
         setInterval(cycleMatrix, 1500);
+    }
+
+    setupNeuralSyncCanvas() {
+        const canvas = document.getElementById('neural-sync-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const container = canvas.parentElement;
+
+        const resize = () => {
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+        };
+        window.addEventListener('resize', resize);
+        resize();
+
+        let offset = 0;
+        const draw = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const points = 50;
+            const step = canvas.width / points;
+            
+            ctx.beginPath();
+            ctx.strokeStyle = '#89b4fa';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 5]);
+            
+            for (let i = 0; i <= points; i++) {
+                const x = i * step;
+                const y = (canvas.height / 2) + Math.sin(i * 0.2 + offset) * 15;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.strokeStyle = '#cba6f7';
+            ctx.setLineDash([]);
+            for (let i = 0; i <= points; i++) {
+                const x = i * step;
+                const y = (canvas.height / 2) + Math.cos(i * 0.15 - offset * 0.5) * 10;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            offset += 0.05;
+            requestAnimationFrame(draw);
+        };
+        draw();
     }
 
     setupNeuralUplink() {

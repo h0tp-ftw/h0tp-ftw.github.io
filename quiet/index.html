@@ -602,6 +602,10 @@
                 <span id="briefing-time" style="margin-left: auto; font-size: 0.7rem; color: var(--ctp-overlay0);">08:00:00 UTC</span>
             </div>
             <div class="briefing-content" style="padding: 1rem; font-family: monospace; font-size: 0.8rem; color: var(--ctp-text);">
+                <div id="neural-sync-container" style="height: 60px; background: rgba(0,0,0,0.2); border-radius: 4px; margin-bottom: 1rem; border: 1px solid var(--ctp-surface1); position: relative; overflow: hidden;">
+                    <canvas id="neural-sync-canvas" style="width: 100%; height: 100%;"></canvas>
+                    <div style="position: absolute; top: 5px; left: 10px; font-size: 0.6rem; color: var(--ctp-blue); text-transform: uppercase;">Neural Synchrony Baseline</div>
+                </div>
                 <div id="briefing-summary" style="margin-bottom: 0.5rem; border-bottom: 1px solid var(--ctp-surface1); padding-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
                     <div>SYSTEM POSTURE: <span style="color: var(--ctp-green); font-weight: bold;">[ NOMINAL ]</span></div>
                     <button id="export-report-btn" style="background: rgba(137, 180, 250, 0.1); border: 1px solid var(--ctp-blue); color: var(--ctp-blue); padding: 0.2rem 0.5rem; font-family: monospace; font-size: 0.65rem; cursor: pointer; border-radius: 2px; transition: all 0.2s;">EXPORT REPORT_</button>
