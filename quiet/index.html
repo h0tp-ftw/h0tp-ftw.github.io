@@ -562,7 +562,7 @@
     </style>
 </head>
 <body class="quiet-page">
-    <div class="top-nav-container">
+    <nav class="top-nav-container" aria-label="Primary Navigation">
         <a href="#" class="nav-btn secondary">
             <span class="icon">🎯</span>
             <span class="btn-label">BACK TO BASELINE</span>
@@ -577,9 +577,9 @@
             <span class="btn-label">SIGNAL LOCKDOWN</span>
             <span class="hotkey-hint" style="opacity: 0.5; margin-left: 0.25rem; font-size: 0.7em;">[L]</span>
         </button>
-    </div>
+    </nav>
 
-    <div id="notification-overlay"></div>
+    <div id="notification-overlay" role="region" aria-live="assertive" aria-label="System Notifications"></div>
 
     <div class="scan-overlay"></div>
 
@@ -684,18 +684,18 @@
                 <span class="manifesto-label">DIRECTIVE LOG</span>
             </div>
             <div class="directive-container">
-                <ul id="directive-list" class="directive-list">
+                <ul id="directive-list" class="directive-list" role="log" aria-live="polite" aria-atomic="false">
                     <li class="directive-entry placeholder">AWAITING SYSTEM COMMANDS...</li>
                 </ul>
             </div>
         </section>
 
         <!-- NEW: Tactical Navigation Tabs -->
-        <div class="tactical-tabs">
+        <nav class="tactical-tabs" aria-label="Tactical Views">
             <button class="tab-btn active" data-target="monitoring" title="Hotkey: 1">MONITORING <span style="opacity:0.5;font-size:0.8em">[1]</span></button>
             <button class="tab-btn" data-target="tactical" title="Hotkey: 2">TACTICAL <span style="opacity:0.5;font-size:0.8em">[2]</span></button>
             <button class="tab-btn" data-target="analysis" title="Hotkey: 3">ANALYSIS <span style="opacity:0.5;font-size:0.8em">[3]</span></button>
-        </div>
+        </nav>
 
         <div id="monitoring" class="tab-content active">
             <!-- System Telemetry Grid -->
