@@ -269,6 +269,72 @@
         .packet-cell.malformed { background: var(--ctp-red); animation: pulse-red 0.5s infinite; }
         .packet-cell.filtered { background: var(--ctp-green); opacity: 0.5; }
 
+        /* NEW: Decryption Workbench */
+        .decryption-workbench {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+            margin: 0.5rem;
+            font-family: monospace;
+            border: 1px solid var(--ctp-surface1);
+        }
+        .decryption-entry {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--ctp-surface1);
+            padding: 0.75rem;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .decryption-entry.decrypted {
+            border-left: 4px solid var(--ctp-green);
+        }
+        .decryption-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .decryption-id { color: var(--ctp-mauve); font-weight: bold; }
+        .decryption-status { font-size: 0.7rem; color: var(--ctp-overlay1); text-transform: uppercase; }
+        .decryption-progress-bg {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            display: none;
+        }
+        .decryption-progress {
+            height: 100%;
+            background: var(--ctp-blue);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+        .decryption-insight {
+            font-size: 0.8rem;
+            color: var(--ctp-green);
+            display: none;
+            padding-top: 0.5rem;
+            border-top: 1px dashed var(--ctp-surface1);
+        }
+        .decrypt-btn {
+            background: rgba(137, 180, 250, 0.1);
+            border: 1px solid var(--ctp-blue);
+            color: var(--ctp-blue);
+            padding: 0.25rem 0.75rem;
+            font-family: monospace;
+            font-size: 0.7rem;
+            cursor: pointer;
+            border-radius: 2px;
+            align-self: flex-end;
+        }
+        .decrypt-btn:hover { background: rgba(137, 180, 250, 0.2); }
+        .decrypt-btn:disabled { opacity: 0.5; cursor: default; }
+
         /* Dynamic Scanning Overlay */
         .scan-overlay {
             position: absolute;
@@ -896,6 +962,17 @@
                     <div id="pattern-list" style="display: flex; flex-direction: column; gap: 0.5rem;">
                         <div class="pattern-entry empty" style="color: var(--ctp-surface2); text-align: center; padding: 1rem;">NO PATTERNS IDENTIFIED</div>
                     </div>
+                </div>
+            </section>
+
+            <!-- NEW: Decryption Workbench -->
+            <section id="decryption-workbench-section" class="manifesto-card">
+                <div class="card-header">
+                    <div class="status-indicator blue"></div>
+                    <span class="manifesto-label">DECRYPTION WORKBENCH</span>
+                </div>
+                <div id="decryption-workbench" class="decryption-workbench">
+                    <div class="empty-workbench" style="color: var(--ctp-overlay1); text-align: center; padding: 1rem; font-size: 0.75rem;">AWAITING ENCRYPTED SIGNAL IDENTIFICATION...</div>
                 </div>
             </section>
 

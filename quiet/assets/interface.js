@@ -34,6 +34,78 @@ class QuietInterface {
         this.setupSignalMeter();
         this.setupPacketCapture();
         this.setupLoadoutSelector();
+        this.setupDecryptionWorkbench();
+    }
+
+    setupDecryptionWorkbench() {
+        this.workbench = document.getElementById('decryption-workbench');
+        if (!this.workbench) return;
+        
+        this.insights = [
+            "ANOMALY IN SECTOR 4 CONFIRMED AS PACKET DRIFT.",
+            "NEW ENDPOINT DETECTED: 192.168.1.104",
+            "SIGNAL COHERENCE DROPPING IN WESTERN UPLINK.",
+            "ENCRYPTED HANDSHAKE DETECTED FROM KNOWN SOURCE.",
+            "NEURAL SYNC RECALIBRATION REQUIRED FOR NODE GAMMA.",
+            "GHOST_PROTOCOL FRAGMENT RECOVERED: 'ALPHA-7-TANGENT'",
+            "UNAUTHORIZED ACCESS ATTEMPT REPELLED BY EDGE_FILTER_A.",
+            "HEURISTIC MATCH: LATENT SIGNAL COMPRESSION DETECTED."
+        ];
+    }
+
+    addPacketToWorkbench(name) {
+        if (!this.workbench) return;
+        const empty = this.workbench.querySelector('.empty-workbench');
+        if (empty) empty.remove();
+
+        const id = `PKT-${Math.floor(Math.random() * 9000) + 1000}`;
+        const entry = document.createElement('div');
+        entry.className = 'decryption-entry';
+        entry.innerHTML = `
+            <div class="decryption-header">
+                <span class="decryption-id">${id} // ${name}</span>
+                <span class="decryption-status">ENCRYPTED</span>
+            </div>
+            <div class="decryption-progress-bg"><div class="decryption-progress"></div></div>
+            <div class="decryption-insight"></div>
+            <button class="decrypt-btn">DECRYPT_</button>
+        `;
+
+        const btn = entry.querySelector('.decrypt-btn');
+        const progressBg = entry.querySelector('.decryption-progress-bg');
+        const progress = entry.querySelector('.decryption-progress');
+        const status = entry.querySelector('.decryption-status');
+        const insight = entry.querySelector('.decryption-insight');
+
+        btn.addEventListener('click', () => {
+            btn.disabled = true;
+            btn.innerText = 'PROCESSING...';
+            status.innerText = 'DECRYPTING...';
+            progressBg.style.display = 'block';
+            this.handleCommand(`decrypt ${id}`);
+
+            let p = 0;
+            const interval = setInterval(() => {
+                p += Math.random() * 10;
+                if (p >= 100) {
+                    p = 100;
+                    clearInterval(interval);
+                    status.innerText = 'DECRYPTED';
+                    btn.style.display = 'none';
+                    entry.classList.add('decrypted');
+                    insight.innerText = `[INSIGHT] ${this.insights[Math.floor(Math.random() * this.insights.length)]}`;
+                    insight.style.display = 'block';
+                    this.appendConsole(`DECRYPTION COMPLETE: ${id}`, 'SEC', 'out');
+                    this.notify(`DECRYPTION SUCCESSFUL: ${id}`, 'success');
+                }
+                progress.style.width = `${p}%`;
+            }, 200);
+        });
+
+        this.workbench.prepend(entry);
+        if (this.workbench.children.length > 3) {
+            this.workbench.lastChild.remove();
+        }
     }
 
     setupLoadoutSelector() {
@@ -200,6 +272,11 @@ class QuietInterface {
 
             patternList.prepend(entry);
             this.notify(`PATTERN IDENTIFIED: ${name} (${confidence}%)`, isHigh ? 'info' : 'success');
+            
+            // Push high-confidence patterns to Decryption Workbench
+            if (isHigh) {
+                this.addPacketToWorkbench(name);
+            }
 
             if (patternList.children.length > 4) {
                 patternList.lastChild.remove();
@@ -834,7 +911,11 @@ class QuietInterface {
                 }
                 break;
             case 'help':
-                log("Available directives: LOCKDOWN, UNLOCK, STATUS, CLEAR, HELP");
+                log("Available directives: LOCKDOWN, UNLOCK, STATUS, CLEAR, HELP, DECRYPT [ID]");
+                break;
+            case (cmd.startsWith('decrypt') ? cmd : 'none'):
+                const packetId = cmd.split(' ')[1] || 'UNKNOWN';
+                log(`Initiating decryption protocols for ${packetId}...`);
                 break;
             case (cmd.startsWith('mitigation') ? cmd : 'none'):
                 log(`Initiating manual mitigation for ${cmd.split(' ')[1] || 'CORE'}...`);
