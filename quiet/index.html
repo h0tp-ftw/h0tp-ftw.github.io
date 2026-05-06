@@ -976,6 +976,20 @@
                 </div>
             </section>
 
+            <!-- NEW: Threat Assessment Gauge -->
+            <section id="threat-assessment" class="manifesto-card">
+                <div class="card-header">
+                    <div class="status-indicator red"></div>
+                    <span class="manifesto-label">DYNAMIC THREAT ASSESSMENT</span>
+                </div>
+                <div style="padding: 1rem; text-align: center;">
+                    <div id="threat-gauge-container" style="height: 20px; background: rgba(0,0,0,0.3); border-radius: 10px; border: 1px solid var(--ctp-surface1); overflow: hidden; position: relative;">
+                        <div id="threat-gauge-fill" style="height: 100%; width: 0%; background: linear-gradient(90deg, var(--ctp-green), var(--ctp-yellow), var(--ctp-red)); transition: width 0.5s ease;"></div>
+                    </div>
+                    <div id="threat-level-text" style="margin-top: 0.5rem; font-family: monospace; font-size: 0.9rem; color: var(--ctp-overlay1);">THREAT LEVEL: NEGLIGIBLE</div>
+                </div>
+            </section>
+
             <!-- System Console -->
             <section id="system-console" class="manifesto-card">
                 <div class="card-header">
@@ -1110,6 +1124,35 @@
                 if (fullscreenBtn) fullscreenBtn.click();
             }
         });
+
+        // NEW: Dynamic Threat Assessment Logic
+        setInterval(() => {
+            const threatCountEl = document.getElementById('threat-count');
+            const gaugeFill = document.getElementById('threat-gauge-fill');
+            const levelText = document.getElementById('threat-level-text');
+            
+            if (threatCountEl && gaugeFill && levelText) {
+                const count = parseInt(threatCountEl.innerText.match(/\d+/) || 0);
+                const percentage = Math.min(count * 20, 100); // 5 threats = 100%
+                
+                gaugeFill.style.width = `${percentage}%`;
+                
+                if (percentage === 0) {
+                    levelText.innerText = "THREAT LEVEL: NEGLIGIBLE";
+                    levelText.style.color = "var(--ctp-green)";
+                } else if (percentage < 40) {
+                    levelText.innerText = "THREAT LEVEL: LOW";
+                    levelText.style.color = "var(--ctp-blue)";
+                } else if (percentage < 70) {
+                    levelText.innerText = "THREAT LEVEL: ELEVATED";
+                    levelText.style.color = "var(--ctp-yellow)";
+                } else {
+                    levelText.innerText = "THREAT LEVEL: CRITICAL";
+                    levelText.style.color = "var(--ctp-red)";
+                    levelText.style.fontWeight = "bold";
+                }
+            }
+        }, 1000);
     </script>
     <script src="assets/overwatch.js"></script>
     <script src="assets/interface.js"></script>
