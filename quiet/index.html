@@ -999,6 +999,7 @@
                 <div class="console-log">
                     <div class="console-header">
                         <span>STDOUT_RUNTIME</span>
+                        <input type="text" id="console-filter-input" placeholder="FILTER LOGS..." style="background: rgba(0,0,0,0.5); border: 1px solid var(--ctp-surface1); color: var(--ctp-text); padding: 0.1rem 0.4rem; font-family: monospace; font-size: 0.65rem; border-radius: 2px; margin-left: auto; margin-right: 1rem; width: 120px;" autocomplete="off" title="Filter terminal noise">
                         <span style="font-size: 0.6rem; color: var(--ctp-overlay0);">BUFFER: 1024B</span>
                     </div>
                     <div id="console-output"></div>
@@ -1153,6 +1154,44 @@
                 }
             }
         }, 1000);
+
+        // NEW: Real-time Console Log Filtering (High-Signal Extraction)
+        document.addEventListener('DOMContentLoaded', () => {
+            const filterInput = document.getElementById('console-filter-input');
+            const consoleOutput = document.getElementById('console-output');
+            
+            if (filterInput && consoleOutput) {
+                const applyFilter = () => {
+                    const term = filterInput.value.toLowerCase();
+                    const lines = consoleOutput.querySelectorAll('.console-line');
+                    lines.forEach(line => {
+                        if (!term || line.textContent.toLowerCase().includes(term)) {
+                            line.style.display = 'flex';
+                        } else {
+                            line.style.display = 'none';
+                        }
+                    });
+                };
+
+                filterInput.addEventListener('input', applyFilter);
+                
+                // Isolate input to avoid triggering global tactical shortcuts
+                filterInput.addEventListener('keydown', (e) => e.stopPropagation());
+
+                // MutationObserver to automatically filter incoming log streams
+                const observer = new MutationObserver((mutations) => {
+                    let shouldFilter = false;
+                    mutations.forEach((mutation) => {
+                        if (mutation.addedNodes.length > 0) shouldFilter = true;
+                    });
+                    if (shouldFilter && filterInput.value) {
+                        applyFilter();
+                    }
+                });
+                
+                observer.observe(consoleOutput, { childList: true });
+            }
+        });
     </script>
     <script src="assets/overwatch.js"></script>
     <script src="assets/interface.js"></script>
