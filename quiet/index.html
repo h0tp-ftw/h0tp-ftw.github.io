@@ -1192,6 +1192,28 @@
                 observer.observe(consoleOutput, { childList: true });
             }
         });
+
+        // Tactical Loadout Selector Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadoutCards = document.querySelectorAll('.loadout-card');
+            loadoutCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    loadoutCards.forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                    
+                    const consoleOutput = document.getElementById('console-output');
+                    if (consoleOutput) {
+                        const timeStr = new Date().toISOString().split('T')[1].split('.')[0] + ' UTC';
+                        const loadoutName = card.getAttribute('data-loadout').toUpperCase();
+                        const logLine = document.createElement('div');
+                        logLine.className = 'console-line';
+                        logLine.style.display = 'flex';
+                        logLine.innerHTML = `<span class="time" style="color: var(--ctp-overlay1); margin-right: 0.5rem;">[${timeStr}]</span> <span class="msg" style="color: var(--ctp-green);">SYS_CONFIG_UPDATE: LOADOUT SHIFTED TO [${loadoutName}] PROFILE.</span>`;
+                        consoleOutput.prepend(logLine);
+                    }
+                });
+            });
+        });
     </script>
     <script src="assets/overwatch.js"></script>
     <script src="assets/interface.js"></script>
