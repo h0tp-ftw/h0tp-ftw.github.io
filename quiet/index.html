@@ -643,6 +643,11 @@
             <span class="btn-label">SIGNAL LOCKDOWN</span>
             <span class="hotkey-hint" style="opacity: 0.5; margin-left: 0.25rem; font-size: 0.7em;">[L]</span>
         </button>
+        <button id="extract-snapshot-btn" class="nav-btn" title="Hotkey: X">
+            <span class="icon">💾</span>
+            <span class="btn-label">EXTRACT SNAPSHOT</span>
+            <span class="hotkey-hint" style="opacity: 0.5; margin-left: 0.25rem; font-size: 0.7em;">[X]</span>
+        </button>
     </nav>
 
     <div id="notification-overlay" role="region" aria-live="assertive" aria-label="System Notifications"></div>
@@ -1123,6 +1128,69 @@
             if (e.key.toLowerCase() === 'f') {
                 const fullscreenBtn = document.getElementById('fullscreen-toggle');
                 if (fullscreenBtn) fullscreenBtn.click();
+            }
+
+            // Extract Snapshot
+            if (e.key.toLowerCase() === 'x') {
+                const extractBtn = document.getElementById('extract-snapshot-btn');
+                if (extractBtn) extractBtn.click();
+            }
+        });
+
+        // NEW: High-Signal Data Extraction Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const extractBtn = document.getElementById('extract-snapshot-btn');
+            if (extractBtn) {
+                extractBtn.addEventListener('click', () => {
+                    const snapshot = {
+                        timestamp: new Date().toISOString(),
+                        telemetry: {
+                            cpu: document.getElementById('cpu-val')?.innerText || 'N/A',
+                            mem: document.getElementById('mem-val')?.innerText || 'N/A',
+                            latency: document.getElementById('net-val')?.innerText || 'N/A'
+                        },
+                        intelligence: {
+                            threats: document.getElementById('threat-count')?.innerText || 'N/A',
+                            signalToNoise: document.getElementById('snr-val')?.innerText || 'N/A',
+                            interference: document.getElementById('noise-val')?.innerText || 'N/A'
+                        },
+                        activeLoadout: document.querySelector('.loadout-card.active')?.getAttribute('data-loadout') || 'UNKNOWN',
+                        consoleBuffer: Array.from(document.querySelectorAll('.console-line')).map(line => {
+                            const time = line.querySelector('.console-time')?.innerText || '';
+                            const tag = line.querySelector('.console-tag')?.innerText || '';
+                            const msg = line.querySelector('.console-msg')?.innerText || '';
+                            return `${time} [${tag}] ${msg}`;
+                        })
+                    };
+
+                    const blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `quiet-snapshot-${Date.now()}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+
+                    // Provide visual feedback
+                    extractBtn.style.color = 'var(--ctp-green)';
+                    setTimeout(() => {
+                        extractBtn.style.color = '';
+                    }, 500);
+
+                    const overlay = document.getElementById('notification-overlay');
+                    if (overlay) {
+                        const toast = document.createElement('div');
+                        toast.className = 'notification-toast success';
+                        toast.innerHTML = `<span style="opacity: 0.5">[${new Date().toLocaleTimeString('en-US', { hour12: false })}]</span> DATA SNAPSHOT EXTRACTED`;
+                        overlay.appendChild(toast);
+                        setTimeout(() => {
+                            toast.style.animation = 'fadeOut 0.5s ease forwards';
+                            setTimeout(() => toast.remove(), 500);
+                        }, 3000);
+                    }
+                });
             }
         });
 
