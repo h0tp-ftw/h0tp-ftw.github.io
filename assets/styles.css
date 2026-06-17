@@ -43,6 +43,7 @@
   /* Fonts */
   --font-heading: "Outfit", sans-serif;
   --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
 }
 
 :root[data-theme="latte"] {
@@ -86,6 +87,7 @@
   /* Fonts */
   --font-heading: "Outfit", sans-serif;
   --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
 }
 
 /* ============================================
@@ -2889,4 +2891,120 @@ a:focus-visible,
 
 .js-tilt-glare-inner {
   border-radius: inherit;
+}
+
+/* ============================================
+   DEVELOPER TYPOGRAPHY & POLISH
+   ============================================ */
+
+/* Apply monospace to terminal-style UI elements */
+.setup-panel-label,
+.setup-chip,
+.project-stats .stat,
+.repo-owner,
+.floating-nav .nav-item,
+.top-nav-container a {
+  font-family: var(--font-mono) !important;
+  letter-spacing: -0.02em;
+}
+
+/* Make the setup chips look like terminal commands */
+.setup-chip::before {
+  content: "$ ";
+  color: var(--ctp-green);
+  font-weight: 700;
+}
+
+/* Style for the project description to look like a senior dev's summary */
+.project-impact {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ctp-subtext0);
+  background: var(--ctp-mantle);
+  border-left: 3px solid var(--ctp-mauve);
+  padding: 0.75rem 1rem;
+  border-radius: 0 8px 8px 0;
+  margin-top: 0.75rem;
+  line-height: 1.5;
+}
+
+/* Add a subtle code-comment style to the impact text */
+.project-impact::before {
+  content: "// impact: ";
+  color: var(--ctp-overlay1);
+  font-weight: 600;
+}
+
+/* Terminal Window Wrapper */
+.terminal-window {
+  max-width: 680px;
+  margin: 2rem auto 0 auto;
+  background: var(--ctp-mantle);
+  border: 1px solid var(--ctp-surface0);
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  font-family: var(--font-mono);
+  width: 100%;
+}
+
+/* The Red/Yellow/Green dots */
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--ctp-crust);
+  border-bottom: 1px solid var(--ctp-surface0);
+}
+
+.terminal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.terminal-dot.red { background: var(--ctp-red); }
+.terminal-dot.yellow { background: var(--ctp-yellow); }
+.terminal-dot.green { background: var(--ctp-green); }
+
+.terminal-title {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: var(--ctp-overlay0);
+}
+
+/* The terminal body */
+.terminal-body {
+  padding: 1.5rem;
+  text-align: left;
+  font-size: 1.1rem;
+  color: var(--ctp-text);
+  line-height: 1.6;
+}
+
+.terminal-prompt {
+  color: var(--ctp-green);
+}
+.terminal-user {
+  color: var(--ctp-blue);
+}
+.terminal-path {
+  color: var(--ctp-peach);
+}
+.terminal-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1.2em;
+  background: var(--ctp-text);
+  vertical-align: middle;
+  animation: blink 1s infinite;
+}
+
+/* Add this to neutralize the busy background and let your work shine */
+.gradient-orb {
+  opacity: 0.1 !important; /* Dial it back */
+}
+
+.background-animation::after {
+  display: none !important; /* The morphing blob is too much, kill it */
 }

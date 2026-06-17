@@ -103,6 +103,20 @@ function shuffleArray(array) {
     return shuffled;
 }
 
+function getProjectImpactHtml(repoName) {
+    const PROJECT_IMPACTS = {
+        'quiet': 'Auto-runs setup tasks, commits code, and updates UI on autopilot.',
+        'ankimon-trading-tool': 'Developed algorithmic swing trading logic executing trade signals automatically.',
+        'anki-prettify': 'Beautified Anki card layouts with modular CSS, saving users time and eye strain.',
+        'anki-vscode': 'Integrated VS Code with Anki, allowing markdown-to-card deck generation.',
+        'acoustic-engine': 'Engineered DSP pipeline detecting specific audio alarms using Python and Web Audio.',
+        'api-key-cycler': 'Secured APIs using automated API key rotation and key pooling strategies.'
+    };
+    const key = repoName.toLowerCase();
+    const impactText = PROJECT_IMPACTS[key] || '';
+    return impactText ? `<p class="project-impact">${impactText}</p>` : '';
+}
+
 // ============================================
 // SCROLL REVEAL & PARALLAX
 // ============================================
@@ -493,6 +507,7 @@ async function loadFeaturedProjects() {
                     </div>
                     <div class="project-info">
                         <p class="project-description">${description}</p>
+                        ${getProjectImpactHtml(repo.name)}
                     </div>
                 `;
 
@@ -954,6 +969,7 @@ function display5RandomCards(projects) {
             </div>
             <div class="project-info">
                 <p class="project-description">${description}</p>
+                ${getProjectImpactHtml(repo.name)}
             </div>
         `;
 
@@ -1059,6 +1075,7 @@ function displayMoreStars(filtered = allStars) {
             </div>
             <div class="project-info">
                 <p class="project-description">${description}</p>
+                ${getProjectImpactHtml(repo.name)}
             </div>
         `;
 

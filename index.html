@@ -127,13 +127,22 @@
         <img src="https://github.com/h0tp-ftw.png" alt="h0tp-ftw" />
       </div>
       <h1 class="username">h0tp-ftw</h1>
-      <p class="tagline">
-        <span class="sentence-container" id="sentence-container">
-          <span class="sentence-part">Just another </span>
-          <span class="rotating-text" id="rotating-text"></span>
-          <span class="sentence-part"> FOSS developer</span>
-        </span>
-      </p>
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <span class="terminal-dot red"></span>
+          <span class="terminal-dot yellow"></span>
+          <span class="terminal-dot green"></span>
+          <span class="terminal-title">h0tp@portfolio: ~</span>
+        </div>
+        <div class="terminal-body">
+          <span class="terminal-user">h0tp</span>@<span class="terminal-prompt">portfolio</span>:<span class="terminal-path">~</span>$ whoami<br>
+          <span style="color: var(--ctp-mauve);">FOSS developer, Swing Trader, and AI enthusiast</span><br><br>
+          <span class="terminal-user">h0tp</span>@<span class="terminal-prompt">portfolio</span>:<span class="terminal-path">~</span>$ cat status.txt<br>
+          Just another <span id="rotating-text" style="color: var(--ctp-yellow); font-weight: bold;"></span> FOSS developer<br><br>
+          <span class="terminal-user">h0tp</span>@<span class="terminal-prompt">portfolio</span>:<span class="terminal-path">~</span>$ cat skills.txt<br>
+          Bioinformatics, Game Dev, RL &amp; AI, Cybersecurity<span class="terminal-cursor"></span>
+        </div>
+      </div>
       <div class="hero-links">
         <a href="https://github.com/h0tp-ftw" class="hero-link" target="_blank" rel="noopener">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -270,6 +279,7 @@
         </div>
         <div class="project-info">
           <p class="project-description">OpenClaw Agent · Gemini 3.1 Pro &amp; Flash. Works on her website with zero human interaction or instructions provided.</p>
+          <p class="project-impact">Auto-runs setup tasks, commits code, and updates UI on autopilot.</p>
         </div>
       </a>
       <div class="loading-state">
