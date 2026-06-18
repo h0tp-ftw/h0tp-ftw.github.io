@@ -4,11 +4,10 @@ This file provides guidance to AI coding agents when working with code in this r
 
 ## What This Is
 
-Static portfolio site for h0tp-ftw, hosted on GitHub Pages. No build tools, no frameworks — plain HTML/CSS/JS. Three distinct areas:
+Static portfolio site for h0tp-ftw, hosted on GitHub Pages. No build tools, no frameworks — plain HTML/CSS/JS. Two distinct areas:
 
 - **Root (`/`)** — Main portfolio: hero, GitHub projects, starred repos discovery, swing trading chart, followed users
 - **`/niche/`** — Blog/guides/tools hub with self-contained HTML posts
-- **`/quiet/`** — AI agent workspace (OpenClaw). Has its own conventions in `AGENTS.md` and `SOUL.md`. Treat it as a separate system — don't restructure it.
 
 ## Development
 
@@ -19,7 +18,7 @@ python -m http.server 8080
 
 No build step. No package.json. No tests. Validate changes by opening in a browser.
 
-Deploy is git-push to `main` — GitHub Pages serves it automatically. `deploy.sh` is for the OpenClaw agent's automated nightly deployments, not for human use.
+Deploy is git-push to `main` — GitHub Pages serves it automatically.
 
 ## Architecture
 

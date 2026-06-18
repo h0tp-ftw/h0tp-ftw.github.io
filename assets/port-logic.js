@@ -105,7 +105,6 @@ function shuffleArray(array) {
 
 function getProjectImpactHtml(repoName) {
     const PROJECT_IMPACTS = {
-        'quiet': 'Auto-runs setup tasks, commits code, and updates UI on autopilot.',
         'ankimon-trading-tool': 'Developed algorithmic swing trading logic executing trade signals automatically.',
         'anki-prettify': 'Beautified Anki card layouts with modular CSS, saving users time and eye strain.',
         'anki-vscode': 'Integrated VS Code with Anki, allowing markdown-to-card deck generation.',
@@ -464,7 +463,7 @@ async function loadFeaturedProjects() {
             return;
         }
 
-        // Remove loading state only to preserve static tiles (like Quiet)
+        // Remove the loading state before rendering repo cards
         const loadingState = container.querySelector('.loading-state');
         if (loadingState) loadingState.remove();
 

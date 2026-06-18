@@ -339,7 +339,7 @@ h6 {
 
 
 /* ============================================
-   TOP NAVIGATION BUTTONS (Blog, Quiet)
+   TOP NAVIGATION BUTTONS (Blog)
    ============================================ */
 
 .top-nav-container {
@@ -352,8 +352,7 @@ h6 {
   z-index: 2000;
 }
 
-.blog-nav-btn,
-.quiet-nav-btn {
+.blog-nav-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -372,8 +371,7 @@ h6 {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.blog-nav-btn:hover,
-.quiet-nav-btn:hover {
+.blog-nav-btn:hover {
   background: var(--ctp-surface1);
   border-color: var(--accent);
   color: var(--accent);
@@ -388,13 +386,11 @@ h6 {
     gap: 0.5rem;
   }
 
-  .blog-nav-btn,
-  .quiet-nav-btn {
+  .blog-nav-btn {
     padding: 0 0.8rem;
   }
 
-  .blog-nav-btn span,
-  .quiet-nav-btn span {
+  .blog-nav-btn span {
     display: none;
   }
 }
@@ -883,25 +879,6 @@ a.setup-chip:hover {
 .project-card:hover .project-owner-avatar {
   border-color: var(--accent);
   transform: scale(1.08);
-}
-
-/* emoji avatars (static Quiet card) */
-.project-owner-emoji {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--ctp-surface0);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  flex-shrink: 0;
-  border: 1.5px solid var(--glass-border);
-  transition: border-color 0.3s ease;
-}
-
-.project-card:hover .project-owner-emoji {
-  border-color: var(--accent);
 }
 
 /* Project info — bottom section, description only */
@@ -2294,11 +2271,11 @@ canvas {
    ============================================ */
 
 /* Smooth link underlines - exclude buttons */
-a:not(.hero-link):not(.project-card):not(.person-card):not(.niche-link):not(.blog-nav-btn):not(.quiet-nav-btn) {
+a:not(.hero-link):not(.project-card):not(.person-card):not(.niche-link):not(.blog-nav-btn) {
   position: relative;
 }
 
-a:not(.hero-link):not(.project-card):not(.person-card):not(.niche-link):not(.blog-nav-btn):not(.quiet-nav-btn)::after {
+a:not(.hero-link):not(.project-card):not(.person-card):not(.niche-link):not(.blog-nav-btn)::after {
   content: "";
   position: absolute;
   bottom: -2px;
@@ -2309,7 +2286,7 @@ a:not(.hero-link):not(.project-card):not(.person-card):not(.niche-link):not(.blo
   transition: width 0.3s ease;
 }
 
-a:not(.hero-link):not(.project-card):not(.person-card):not(.niche-link):not(.blog-nav-btn):not(.quiet-nav-btn):hover::after {
+a:not(.hero-link):not(.project-card):not(.person-card):not(.niche-link):not(.blog-nav-btn):hover::after {
   width: 100%;
 }
 
