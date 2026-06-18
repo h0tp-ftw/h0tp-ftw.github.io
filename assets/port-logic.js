@@ -28,6 +28,29 @@ async function loadSnapshot(name) {
     return snapshotCache[name];
 }
 
+// Renders a friendly empty/error panel into a container. Pass onRetry to show a
+// Retry button (use for transient failures, not for genuinely-empty results).
+function renderState(container, { icon = 'ℹ️', title = '', detail = '', onRetry = null } = {}) {
+    if (!container) return;
+    container.innerHTML = '';
+    const panel = document.createElement('div');
+    panel.className = 'loading-state state-panel';
+    panel.innerHTML = `
+        <div class="state-icon" aria-hidden="true">${icon}</div>
+        <p class="state-title">${title}</p>
+        ${detail ? `<p class="state-detail">${detail}</p>` : ''}
+    `;
+    if (onRetry) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'state-retry';
+        btn.textContent = 'Retry';
+        btn.addEventListener('click', onRetry);
+        panel.appendChild(btn);
+    }
+    container.appendChild(panel);
+}
+
 // Site data/config (ROTATING_WORDS, PROJECT_LOGOS, LANGUAGE_ICONS) lives in assets/site-config.js
 
 // ============================================
@@ -431,7 +454,7 @@ async function loadFeaturedProjects() {
         const myRepos = await fetchMyRepos();
 
         if (myRepos.length === 0) {
-            container.innerHTML = `<div class="loading-state"><p>No repositories found.</p></div>`;
+            renderState(container, { icon: '📦', title: 'No projects to show yet', detail: 'Public repositories will appear here.' });
             return;
         }
 
@@ -441,7 +464,7 @@ async function loadFeaturedProjects() {
         });
 
         if (filteredRepos.length === 0) {
-            container.innerHTML = `<div class="loading-state"><p>No other projects found.</p></div>`;
+            renderState(container, { icon: '📦', title: 'No projects to show yet', detail: 'Public repositories will appear here.' });
             return;
         }
 
@@ -540,7 +563,12 @@ async function loadFeaturedProjects() {
 
     } catch (error) {
         console.error('Error loading featured projects:', error);
-        container.innerHTML = `<div class="loading-state"><p>Error loading projects.</p></div>`;
+        renderState(container, {
+            icon: '⚠️',
+            title: "Couldn't load projects",
+            detail: 'GitHub may be rate-limited. Try again in a moment.',
+            onRetry: () => { myReposCache = null; delete snapshotCache.repos; loadFeaturedProjects(); }
+        });
     }
 }
 
@@ -626,7 +654,7 @@ async function createPortfolioChart() {
         portfolioData = await loadPortfolioDataFromCSV();
 
         if (!portfolioData || portfolioData.months.length === 0) {
-            canvas.parentElement.innerHTML = '<div class="loading-state"><p>No portfolio data available.</p></div>';
+            renderState(canvas.parentElement, { icon: '📈', title: 'No portfolio data yet', detail: 'Performance data will appear here.' });
             return;
         }
 
@@ -637,7 +665,11 @@ async function createPortfolioChart() {
 
     } catch (error) {
         console.error('Error creating portfolio chart:', error);
-        canvas.parentElement.innerHTML = '<div class="loading-state"><p>Error loading chart.</p></div>';
+        renderState(canvas.parentElement, {
+            icon: '⚠️',
+            title: "Couldn't load the chart",
+            detail: 'Please refresh the page to try again.'
+        });
     }
 }
 
@@ -1004,7 +1036,7 @@ async function loadAllStars() {
 
     const container = document.getElementById('stars-grid');
     if (allStars.length === 0) {
-        container.innerHTML = `<div class="loading-state"><p>No starred repositories found.</p></div>`;
+        renderState(container, { icon: '⭐', title: 'No starred repos to show', detail: 'They may still be loading — check back shortly.' });
         return;
     }
 
@@ -1112,7 +1144,7 @@ async function loadCoolPeople() {
         const following = await fetchFollowing();
 
         if (following.length === 0) {
-            container.innerHTML = `<div class="loading-state"><p>Not following anyone yet!</p></div>`;
+            renderState(container, { icon: '👤', title: 'Not following anyone yet' });
             return;
         }
 
@@ -1179,7 +1211,12 @@ async function loadCoolPeople() {
         }
     } catch (error) {
         console.error('Error loading cool people:', error);
-        container.innerHTML = `<div class="loading-state"><p>Error loading following list.</p></div>`;
+        renderState(container, {
+            icon: '⚠️',
+            title: "Couldn't load people",
+            detail: 'GitHub may be rate-limited. Try again shortly.',
+            onRetry: () => { followingCache = null; delete snapshotCache.following; loadCoolPeople(); }
+        });
     }
 }
 // ============================================

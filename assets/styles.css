@@ -1407,6 +1407,53 @@ a.setup-chip:hover {
   font-size: 1.1rem;
 }
 
+/* Empty / error state panels (renderState in port-logic.js) */
+.state-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.state-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.state-panel .state-title {
+  color: var(--ctp-text);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.state-panel .state-detail {
+  color: var(--ctp-subtext0);
+  font-size: 0.95rem;
+  margin: 0;
+  max-width: 36ch;
+}
+
+.state-retry {
+  margin-top: 1rem;
+  padding: 0.6rem 1.5rem;
+  background: var(--glass-bg);
+  border: 2px solid var(--glass-border);
+  border-radius: 50px;
+  color: var(--ctp-text);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.state-retry:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
 /* ============================================
    SCROLL REVEAL ANIMATIONS
    ============================================ */
