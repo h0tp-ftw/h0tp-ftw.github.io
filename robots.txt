@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://h0tp-ftw.github.io/sitemap.xml

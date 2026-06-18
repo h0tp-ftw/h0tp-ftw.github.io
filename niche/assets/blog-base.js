@@ -3,6 +3,15 @@
     const savedTheme = localStorage.getItem('theme') || 'frappe';
     html.setAttribute('data-theme', savedTheme);
 
+    // Shared favicon for all blog pages
+    if (!document.querySelector('link[rel="icon"]')) {
+        const favicon = document.createElement('link');
+        favicon.rel = 'icon';
+        favicon.type = 'image/svg+xml';
+        favicon.href = '/favicon.svg';
+        document.head.appendChild(favicon);
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         // Animated background
         const bg = document.createElement('div');
