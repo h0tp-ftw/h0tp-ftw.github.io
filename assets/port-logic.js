@@ -6,6 +6,28 @@ const GITHUB_USERNAME = 'h0tp-ftw';
 const FEATURED_PROJECTS_COUNT = 6;
 const PORTFOLIO_CSV_URL = 'assets/portfolio-returns.csv';
 
+// Static snapshots generated daily by .github/workflows/snapshot-github-data.yml.
+// Visitors read these instead of GitHub's unauthenticated API (60 req/hr/IP), so
+// the data-driven sections stay fast and never break under traffic. Each function
+// below falls back to the live API if its snapshot is missing or empty (e.g. before
+// the first Action run on a fork).
+const DATA_BASE = 'assets/data';
+const snapshotCache = {};
+
+async function loadSnapshot(name) {
+    if (name in snapshotCache) return snapshotCache[name];
+    try {
+        const res = await fetch(`${DATA_BASE}/${name}.json`, { cache: 'no-cache' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        snapshotCache[name] = (Array.isArray(data) && data.length) ? data : null;
+    } catch (error) {
+        console.warn(`[snapshot] ${name} unavailable, falling back to live API:`, error.message);
+        snapshotCache[name] = null;
+    }
+    return snapshotCache[name];
+}
+
 const ROTATING_WORDS = [
     'unpaid',
     'unknown',
@@ -276,6 +298,9 @@ let followingCache = null;
 async function fetchMyRepos() {
     if (myReposCache) return myReposCache;
 
+    const snap = await loadSnapshot('repos');
+    if (snap) { myReposCache = snap; return snap; }
+
     try {
         const repos = [];
         let page = 1;
@@ -316,6 +341,10 @@ async function fetchStarredFirstPage() {
     if (starredFirstPageCache) return starredFirstPageCache;
     if (starredReposCache) return starredReposCache;
 
+    // The snapshot holds the full starred list, so it also satisfies "Show All Stars".
+    const snap = await loadSnapshot('starred');
+    if (snap) { starredReposCache = snap; starredFirstPageCache = snap; return snap; }
+
     try {
         const response = await fetch(
             `https://api.github.com/users/${GITHUB_USERNAME}/starred?per_page=100&page=1`,
@@ -332,6 +361,9 @@ async function fetchStarredFirstPage() {
 
 async function fetchAllStarredRepos() {
     if (starredReposCache) return starredReposCache;
+
+    const snap = await loadSnapshot('starred');
+    if (snap) { starredReposCache = snap; starredFirstPageCache = snap; return snap; }
 
     try {
         const firstPage = await fetchStarredFirstPage();
@@ -369,6 +401,9 @@ async function fetchAllStarredRepos() {
 
 async function fetchFollowing() {
     if (followingCache) return followingCache;
+
+    const snap = await loadSnapshot('following');
+    if (snap) { followingCache = shuffleArray(snap); return followingCache; }
 
     try {
         const users = [];
@@ -1151,44 +1186,50 @@ async function loadCoolPeople() {
                     <img src="${user.avatar_url}" alt="${user.login}" loading="lazy" />
                 </div>
                 <div class="person-name">${user.login}</div>
-                <div class="person-bio">${user.login}</div>
+                <div class="person-bio"></div>
             `;
+            // Set bio via textContent so profile data can't inject markup.
+            card.querySelector('.person-bio').textContent = user.bio || user.name || user.login;
 
             container.appendChild(card);
             observer.observe(card);
         });
 
-        // Lazy-fetch bios once the section scrolls into view
-        const section = document.getElementById('cool-people');
-        const bioObserver = new IntersectionObserver(async (entries) => {
-            if (!entries[0].isIntersecting) return;
-            bioObserver.disconnect();
+        // Snapshot data already carries bios; only the live-API fallback needs lookups.
+        const needsBio = peopleToShow.some(u => !u.bio && !u.name);
+        if (needsBio) {
+            // Lazy-fetch bios once the section scrolls into view
+            const section = document.getElementById('cool-people');
+            const bioObserver = new IntersectionObserver(async (entries) => {
+                if (!entries[0].isIntersecting) return;
+                bioObserver.disconnect();
 
-            const cards = container.querySelectorAll('.person-card');
-            const batchSize = 5;
-            for (let i = 0; i < peopleToShow.length; i += batchSize) {
-                const batch = peopleToShow.slice(i, i + batchSize);
-                const details = await Promise.allSettled(
-                    batch.map(u =>
-                        fetch(`https://api.github.com/users/${u.login}`, {
-                            headers: { 'Accept': 'application/vnd.github.v3+json' }
-                        }).then(r => r.ok ? r.json() : null)
-                    )
-                );
-                details.forEach((result, j) => {
-                    if (result.status !== 'fulfilled' || !result.value) return;
-                    const userData = result.value;
-                    const card = cards[i + j];
-                    if (!card) return;
-                    const bioEl = card.querySelector('.person-bio');
-                    if (bioEl && (userData.bio || userData.name)) {
-                        bioEl.textContent = userData.bio || userData.name;
-                    }
-                });
-            }
-        }, { rootMargin: '200px' });
+                const cards = container.querySelectorAll('.person-card');
+                const batchSize = 5;
+                for (let i = 0; i < peopleToShow.length; i += batchSize) {
+                    const batch = peopleToShow.slice(i, i + batchSize);
+                    const details = await Promise.allSettled(
+                        batch.map(u =>
+                            fetch(`https://api.github.com/users/${u.login}`, {
+                                headers: { 'Accept': 'application/vnd.github.v3+json' }
+                            }).then(r => r.ok ? r.json() : null)
+                        )
+                    );
+                    details.forEach((result, j) => {
+                        if (result.status !== 'fulfilled' || !result.value) return;
+                        const userData = result.value;
+                        const card = cards[i + j];
+                        if (!card) return;
+                        const bioEl = card.querySelector('.person-bio');
+                        if (bioEl && (userData.bio || userData.name)) {
+                            bioEl.textContent = userData.bio || userData.name;
+                        }
+                    });
+                }
+            }, { rootMargin: '200px' });
 
-        if (section) bioObserver.observe(section);
+            if (section) bioObserver.observe(section);
+        }
     } catch (error) {
         console.error('Error loading cool people:', error);
         container.innerHTML = `<div class="loading-state"><p>Error loading following list.</p></div>`;

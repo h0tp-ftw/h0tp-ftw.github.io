@@ -1,0 +1,254 @@
+[
+  {
+    "name": "acoustic-engine",
+    "full_name": "h0tp-ftw/acoustic-engine",
+    "description": "Lightweight engine to recognize beep patterns from machines and alarms with high accuracy.",
+    "html_url": "https://github.com/h0tp-ftw/acoustic-engine",
+    "language": "Python",
+    "stargazers_count": 1,
+    "forks_count": 0,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "shucky",
+    "full_name": "h0tp-ftw/shucky",
+    "description": "Portable agent-skill suite: skill-finder (safe discover->audit->install) + shucky (zero-dep SKILL.md safety scanner). Runs via npx.",
+    "html_url": "https://github.com/h0tp-ftw/shucky",
+    "language": "JavaScript",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "jules-bot",
+    "full_name": "h0tp-ftw/jules-bot",
+    "description": null,
+    "html_url": "https://github.com/h0tp-ftw/jules-bot",
+    "language": "TypeScript",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "h0tp-ftw.github.io",
+    "full_name": "h0tp-ftw/h0tp-ftw.github.io",
+    "description": "website and profile for @h0tp-ftw ",
+    "html_url": "https://github.com/h0tp-ftw/h0tp-ftw.github.io",
+    "language": "HTML",
+    "stargazers_count": 1,
+    "forks_count": 0,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "ankimon",
+    "full_name": "h0tp-ftw/ankimon",
+    "description": "Ankimon  - an Anki Addon to Gamify your learning experience! EXPERIMENTAL branch!",
+    "html_url": "https://github.com/h0tp-ftw/ankimon",
+    "language": "Python",
+    "stargazers_count": 66,
+    "forks_count": 21,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "anki-vscode",
+    "full_name": "h0tp-ftw/anki-vscode",
+    "description": "One-script setup to test and run Anki addons directly via VS Code, with full debugpy support! ",
+    "html_url": "https://github.com/h0tp-ftw/anki-vscode",
+    "language": "TypeScript",
+    "stargazers_count": 13,
+    "forks_count": 0,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "ankimon-sprites",
+    "full_name": "h0tp-ftw/ankimon-sprites",
+    "description": "Pokemon sprites, sounds, and badge assets for Ankimon",
+    "html_url": "https://github.com/h0tp-ftw/ankimon-sprites",
+    "language": null,
+    "stargazers_count": 0,
+    "forks_count": 1,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "jules-skill",
+    "full_name": "h0tp-ftw/jules-skill",
+    "description": null,
+    "html_url": "https://github.com/h0tp-ftw/jules-skill",
+    "language": "JavaScript",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "hermes-agent",
+    "full_name": "h0tp-ftw/hermes-agent",
+    "description": "The agent that grows with you",
+    "html_url": "https://github.com/h0tp-ftw/hermes-agent",
+    "language": "Python",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "ionosphere",
+    "full_name": "h0tp-ftw/ionosphere",
+    "description": null,
+    "html_url": "https://github.com/h0tp-ftw/ionosphere",
+    "language": "JavaScript",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "poke-engine",
+    "full_name": "h0tp-ftw/poke-engine",
+    "description": "A Pokemon battle engine written in Python. The engine is extracted from pmariglia's Showdown bot application.",
+    "html_url": "https://github.com/h0tp-ftw/poke-engine",
+    "language": null,
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "Onigiri",
+    "full_name": "h0tp-ftw/Onigiri",
+    "description": "Onigiri is an experimental add-on that replaces the standard Anki interface with a modern, highly customizable, and personalized dashboard, completely transforming how Anki looks. ",
+    "html_url": "https://github.com/h0tp-ftw/Onigiri",
+    "language": "Python",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "ankimon-stale",
+    "full_name": "h0tp-ftw/ankimon-stale",
+    "description": null,
+    "html_url": "https://github.com/h0tp-ftw/ankimon-stale",
+    "language": "Python",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "gemini-cli",
+    "full_name": "h0tp-ftw/gemini-cli",
+    "description": "An open-source AI agent that brings the power of Gemini directly into your terminal.",
+    "html_url": "https://github.com/h0tp-ftw/gemini-cli",
+    "language": null,
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "openclaw",
+    "full_name": "h0tp-ftw/openclaw",
+    "description": "OpenClaw with added Gemini CLI usage integration. 🦞 ",
+    "html_url": "https://github.com/h0tp-ftw/openclaw",
+    "language": "TypeScript",
+    "stargazers_count": 1,
+    "forks_count": 0,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "gemini-openai-bridge",
+    "full_name": "h0tp-ftw/gemini-openai-bridge",
+    "description": "Proof-of-concept OpenAI SDK bridge for Gemini CLI usage.",
+    "html_url": "https://github.com/h0tp-ftw/gemini-openai-bridge",
+    "language": "JavaScript",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "alarm-audio-detector",
+    "full_name": "h0tp-ftw/alarm-audio-detector",
+    "description": null,
+    "html_url": "https://github.com/h0tp-ftw/alarm-audio-detector",
+    "language": "Python",
+    "stargazers_count": 1,
+    "forks_count": 0,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "api-key-cycler",
+    "full_name": "h0tp-ftw/api-key-cycler",
+    "description": "Quickly cycle through API keys and other environment variable sets in your .env file. Instantly cycle through multiple API credential groups—either sequentially, randomly, or by a specific index",
+    "html_url": "https://github.com/h0tp-ftw/api-key-cycler",
+    "language": "PowerShell",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "auto-pilot",
+    "full_name": "h0tp-ftw/auto-pilot",
+    "description": null,
+    "html_url": "https://github.com/h0tp-ftw/auto-pilot",
+    "language": "JavaScript",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "ankimon-trading-tool",
+    "full_name": "h0tp-ftw/ankimon-trading-tool",
+    "description": "Tool to quickly compare Ankimon collections to find trades",
+    "html_url": "https://github.com/h0tp-ftw/ankimon-trading-tool",
+    "language": null,
+    "stargazers_count": 1,
+    "forks_count": 0,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "anki-prettify",
+    "full_name": "h0tp-ftw/anki-prettify",
+    "description": "h0tp's mod of the Prettify Nord card template for Anki by @pranavdeshai. Extra customization and features to have beautiful and modern cards!",
+    "html_url": "https://github.com/h0tp-ftw/anki-prettify",
+    "language": "HTML",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  }
+]

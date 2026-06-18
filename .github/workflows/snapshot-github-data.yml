@@ -1,0 +1,44 @@
+name: Snapshot GitHub data
+
+# Refreshes assets/data/*.json so visitors read pre-fetched data instead of
+# hammering GitHub's unauthenticated API (60 req/hr/IP). Runs daily and can be
+# triggered by hand from the Actions tab (Run workflow).
+
+on:
+  schedule:
+    - cron: "17 6 * * *" # daily at 06:17 UTC
+  workflow_dispatch:
+
+# Needed so the bot can commit the refreshed snapshot back to the repo.
+# Repo Settings -> Actions -> General -> Workflow permissions must also allow
+# "Read and write permissions".
+permissions:
+  contents: write
+
+concurrency:
+  group: snapshot-github-data
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch GitHub data into assets/data
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_USER: ${{ github.repository_owner }}
+        run: python3 .github/scripts/snapshot.py
+
+      - name: Commit snapshot if it changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/data
+          if git diff --cached --quiet; then
+            echo "No changes to the GitHub data snapshot."
+          else
+            git commit -m "chore(data): refresh GitHub data snapshot [skip ci]"
+            git push
+          fi
