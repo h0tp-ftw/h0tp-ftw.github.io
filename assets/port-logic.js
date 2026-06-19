@@ -96,15 +96,9 @@ function shuffleArray(array) {
 }
 
 function getProjectImpactHtml(repoName) {
-    const PROJECT_IMPACTS = {
-        'ankimon-trading-tool': 'Developed algorithmic swing trading logic executing trade signals automatically.',
-        'anki-prettify': 'Beautified Anki card layouts with modular CSS, saving users time and eye strain.',
-        'anki-vscode': 'Integrated VS Code with Anki, allowing markdown-to-card deck generation.',
-        'acoustic-engine': 'Engineered DSP pipeline detecting specific audio alarms using Python and Web Audio.',
-        'api-key-cycler': 'Secured APIs using automated API key rotation and key pooling strategies.'
-    };
-    const key = repoName.toLowerCase();
-    const impactText = PROJECT_IMPACTS[key] || '';
+    // PROJECT_IMPACTS lives in assets/site-config.js (loaded before this file).
+    const impacts = (typeof PROJECT_IMPACTS !== 'undefined') ? PROJECT_IMPACTS : {};
+    const impactText = impacts[repoName.toLowerCase()] || '';
     return impactText ? `<p class="project-impact">${impactText}</p>` : '';
 }
 
