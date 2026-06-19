@@ -293,12 +293,10 @@ async function fetchMyRepos() {
             }
         }
 
-        const filteredRepos = repos.filter(repo => {
-            return repo.owner.login === GITHUB_USERNAME || !repo.fork;
-        });
-
-        myReposCache = filteredRepos;
-        return filteredRepos;
+        // This endpoint only returns repos owned by the user; fork-filtering
+        // happens in loadFeaturedProjects (which honors SHOWCASE_FORKS).
+        myReposCache = repos;
+        return repos;
     } catch (error) {
         console.error('Error fetching repos:', error);
         return [];
@@ -458,9 +456,15 @@ async function loadFeaturedProjects() {
             return;
         }
 
-        // FILTER OUT h0tp-ftw/h0tp-ftw (website repo)!
+        // Hide the profile/website repo, and hide forks unless explicitly
+        // featured via SHOWCASE_FORKS (assets/site-config.js). Most forks are
+        // throwaway dev/PR forks, so they're excluded by default.
+        const showcaseForks = (typeof SHOWCASE_FORKS !== 'undefined' ? SHOWCASE_FORKS : [])
+            .map(name => name.toLowerCase());
         const filteredRepos = myRepos.filter(repo => {
-            return repo.full_name !== 'h0tp-ftw/h0tp-ftw';
+            if (repo.full_name === 'h0tp-ftw/h0tp-ftw') return false;
+            if (repo.fork && !showcaseForks.includes((repo.name || '').toLowerCase())) return false;
+            return true;
         });
 
         if (filteredRepos.length === 0) {

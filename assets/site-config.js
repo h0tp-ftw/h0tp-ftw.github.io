@@ -15,6 +15,17 @@ const ROTATING_WORDS = [
     'dedicated',
 ];
 
+// Forks are hidden from the "My Projects" section by default — most are
+// throwaway forks kept only for development or sending a PR. To feature a fork
+// anyway (e.g. one you've meaningfully built on), add its repo name here.
+// Matched against the GitHub repo name, case-insensitive.
+const SHOWCASE_FORKS = [
+    'ankimon',        // 66★ flagship project (forked from upstream, but yours)
+    'anki-vscode',    // 13★ your tool
+    'anki-prettify',  // your mod of the Prettify Nord card template
+    'openclaw',       // OpenClaw + your Gemini CLI integration
+];
+
 const PROJECT_LOGOS = {
     'ankimon-trading-tool': 'https://img.icons8.com/fluency/512/bullish.png',
     'ankimon': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Pok%C3%A9_Ball_icon.svg/2052px-Pok%C3%A9_Ball_icon.svg.png',

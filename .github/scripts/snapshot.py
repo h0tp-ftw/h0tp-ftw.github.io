@@ -86,6 +86,7 @@ def trim_repo(r):
         "language": r.get("language"),
         "stargazers_count": r.get("stargazers_count", 0),
         "forks_count": r.get("forks_count", 0),
+        "fork": bool(r.get("fork", False)),
         "owner": {"login": (r.get("owner") or {}).get("login")},
     }
 
@@ -102,12 +103,11 @@ def main():
     mode = "authenticated" if TOKEN else "UNauthenticated (60 req/hr)"
     print(f"Snapshotting GitHub data for {USER} -- {mode}")
 
-    # Own repos: mirror port-logic.js's owner/non-fork filter.
-    repos = [
-        trim_repo(r)
-        for r in paginate(f"/users/{USER}/repos?sort=updated", 5)
-        if (r.get("owner") or {}).get("login") == USER or not r.get("fork")
-    ]
+    # All repos owned by USER (this endpoint never returns anyone else's). Forks
+    # are kept here, each carrying its `fork` flag; the site hides forks from the
+    # Projects section by default and re-includes only those listed in
+    # SHOWCASE_FORKS (assets/site-config.js).
+    repos = [trim_repo(r) for r in paginate(f"/users/{USER}/repos?sort=updated", 5)]
 
     # Starred repos: the full list (powers "Show All Stars" with zero live calls).
     starred = [trim_repo(r) for r in paginate(f"/users/{USER}/starred", 20)]
