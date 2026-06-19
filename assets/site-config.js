@@ -25,6 +25,13 @@ const SHOWCASE_FORKS = [
     'anki-prettify',  // your mod of the Prettify Nord card template
 ];
 
+// Repos to hide from "My Projects" entirely, by name (case-insensitive) —
+// dead duplicates, throwaway experiments, anything not worth featuring.
+// Applies to forks and non-forks alike.
+const HIDE_REPOS = [
+    'ankimon-stale',  // dead duplicate of ankimon
+];
+
 const PROJECT_LOGOS = {
     'ankimon-trading-tool': 'https://img.icons8.com/fluency/512/bullish.png',
     'ankimon': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Pok%C3%A9_Ball_icon.svg/2052px-Pok%C3%A9_Ball_icon.svg.png',

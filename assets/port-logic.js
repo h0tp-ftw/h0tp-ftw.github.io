@@ -455,9 +455,13 @@ async function loadFeaturedProjects() {
         // throwaway dev/PR forks, so they're excluded by default.
         const showcaseForks = (typeof SHOWCASE_FORKS !== 'undefined' ? SHOWCASE_FORKS : [])
             .map(name => name.toLowerCase());
+        const hideRepos = (typeof HIDE_REPOS !== 'undefined' ? HIDE_REPOS : [])
+            .map(name => name.toLowerCase());
         const filteredRepos = myRepos.filter(repo => {
+            const name = (repo.name || '').toLowerCase();
             if (repo.full_name === 'h0tp-ftw/h0tp-ftw') return false;
-            if (repo.fork && !showcaseForks.includes((repo.name || '').toLowerCase())) return false;
+            if (hideRepos.includes(name)) return false;
+            if (repo.fork && !showcaseForks.includes(name)) return false;
             return true;
         });
 
