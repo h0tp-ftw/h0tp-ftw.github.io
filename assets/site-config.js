@@ -23,7 +23,6 @@ const SHOWCASE_FORKS = [
     'ankimon',        // 66★ flagship project (forked from upstream, but yours)
     'anki-vscode',    // 13★ your tool
     'anki-prettify',  // your mod of the Prettify Nord card template
-    'openclaw',       // OpenClaw + your Gemini CLI integration
 ];
 
 const PROJECT_LOGOS = {
