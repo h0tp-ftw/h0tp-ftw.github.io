@@ -1,11 +1,35 @@
 [
   {
-    "name": "acoustic-engine",
-    "full_name": "h0tp-ftw/acoustic-engine",
-    "description": "Lightweight engine to recognize beep patterns from machines and alarms with high accuracy.",
-    "html_url": "https://github.com/h0tp-ftw/acoustic-engine",
+    "name": "jules-bot",
+    "full_name": "h0tp-ftw/jules-bot",
+    "description": null,
+    "html_url": "https://github.com/h0tp-ftw/jules-bot",
+    "language": "TypeScript",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "ankimon",
+    "full_name": "h0tp-ftw/ankimon",
+    "description": "Ankimon  - an Anki Addon to Gamify your learning experience! EXPERIMENTAL branch!",
+    "html_url": "https://github.com/h0tp-ftw/ankimon",
     "language": "Python",
-    "stargazers_count": 1,
+    "stargazers_count": 66,
+    "forks_count": 21,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "h0tp-ftw",
+    "full_name": "h0tp-ftw/h0tp-ftw",
+    "description": "My GitHub profile README",
+    "html_url": "https://github.com/h0tp-ftw/h0tp-ftw",
+    "language": "Python",
+    "stargazers_count": 0,
     "forks_count": 0,
     "owner": {
       "login": "h0tp-ftw"
@@ -24,12 +48,12 @@
     }
   },
   {
-    "name": "jules-bot",
-    "full_name": "h0tp-ftw/jules-bot",
-    "description": null,
-    "html_url": "https://github.com/h0tp-ftw/jules-bot",
-    "language": "TypeScript",
-    "stargazers_count": 0,
+    "name": "acoustic-engine",
+    "full_name": "h0tp-ftw/acoustic-engine",
+    "description": "Lightweight engine to recognize beep patterns from machines and alarms with high accuracy.",
+    "html_url": "https://github.com/h0tp-ftw/acoustic-engine",
+    "language": "Python",
+    "stargazers_count": 1,
     "forks_count": 0,
     "owner": {
       "login": "h0tp-ftw"
@@ -40,21 +64,9 @@
     "full_name": "h0tp-ftw/h0tp-ftw.github.io",
     "description": "website and profile for @h0tp-ftw ",
     "html_url": "https://github.com/h0tp-ftw/h0tp-ftw.github.io",
-    "language": "HTML",
+    "language": "CSS",
     "stargazers_count": 1,
     "forks_count": 0,
-    "owner": {
-      "login": "h0tp-ftw"
-    }
-  },
-  {
-    "name": "ankimon",
-    "full_name": "h0tp-ftw/ankimon",
-    "description": "Ankimon  - an Anki Addon to Gamify your learning experience! EXPERIMENTAL branch!",
-    "html_url": "https://github.com/h0tp-ftw/ankimon",
-    "language": "Python",
-    "stargazers_count": 66,
-    "forks_count": 21,
     "owner": {
       "login": "h0tp-ftw"
     }

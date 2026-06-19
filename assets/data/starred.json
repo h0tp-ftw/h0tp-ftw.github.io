@@ -5,8 +5,8 @@
     "description": "The API to search, scrape, and interact with the web at scale. 🔥",
     "html_url": "https://github.com/firecrawl/firecrawl",
     "language": "TypeScript",
-    "stargazers_count": 134550,
-    "forks_count": 7849,
+    "stargazers_count": 134975,
+    "forks_count": 7863,
     "owner": {
       "login": "firecrawl"
     }
@@ -17,8 +17,8 @@
     "description": "The agent that grows with you",
     "html_url": "https://github.com/NousResearch/hermes-agent",
     "language": "Python",
-    "stargazers_count": 196753,
-    "forks_count": 34695,
+    "stargazers_count": 197284,
+    "forks_count": 34880,
     "owner": {
       "login": "NousResearch"
     }
@@ -53,8 +53,8 @@
     "description": "Browse any app normally. Spectral captures the traffic, understands what each API call does, and generates MCP tools that AI agents can call directly.",
     "html_url": "https://github.com/spectral-mcp/spectral",
     "language": "Python",
-    "stargazers_count": 103,
-    "forks_count": 10,
+    "stargazers_count": 104,
+    "forks_count": 11,
     "owner": {
       "login": "spectral-mcp"
     }
@@ -65,8 +65,8 @@
     "description": "Podman: A tool for managing OCI containers and pods.",
     "html_url": "https://github.com/podman-container-tools/podman",
     "language": "Go",
-    "stargazers_count": 32051,
-    "forks_count": 3152,
+    "stargazers_count": 32057,
+    "forks_count": 3155,
     "owner": {
       "login": "podman-container-tools"
     }
@@ -77,8 +77,8 @@
     "description": "Your own personal AI assistant. Any OS. Any Platform. The lobster way. 🦞 ",
     "html_url": "https://github.com/openclaw/openclaw",
     "language": "TypeScript",
-    "stargazers_count": 379360,
-    "forks_count": 79411,
+    "stargazers_count": 379466,
+    "forks_count": 79431,
     "owner": {
       "login": "openclaw"
     }
@@ -89,7 +89,7 @@
     "description": "Use the Wii Balance Board as a pretty accurate weight scale",
     "html_url": "https://github.com/schellingb/WiiBalanceScale",
     "language": "C#",
-    "stargazers_count": 121,
+    "stargazers_count": 122,
     "forks_count": 20,
     "owner": {
       "login": "schellingb"
@@ -101,8 +101,8 @@
     "description": ":house_with_garden: Open source home automation that puts local control and privacy first.",
     "html_url": "https://github.com/home-assistant/core",
     "language": "Python",
-    "stargazers_count": 87787,
-    "forks_count": 37698,
+    "stargazers_count": 87816,
+    "forks_count": 37699,
     "owner": {
       "login": "home-assistant"
     }
@@ -125,7 +125,7 @@
     "description": "Linux application sandboxing and distribution framework",
     "html_url": "https://github.com/flatpak/flatpak",
     "language": "C",
-    "stargazers_count": 4964,
+    "stargazers_count": 4965,
     "forks_count": 507,
     "owner": {
       "login": "flatpak"
@@ -137,7 +137,7 @@
     "description": "Bazzite makes gaming and everyday use smoother and simpler across desktop PCs, handhelds, tablets, and home theater PCs.",
     "html_url": "https://github.com/ublue-os/bazzite",
     "language": "Just",
-    "stargazers_count": 8607,
+    "stargazers_count": 8608,
     "forks_count": 926,
     "owner": {
       "login": "ublue-os"
@@ -149,8 +149,8 @@
     "description": "Bitwarden infrastructure/backend (API, database, Docker, etc).",
     "html_url": "https://github.com/bitwarden/server",
     "language": "C#",
-    "stargazers_count": 19218,
-    "forks_count": 1671,
+    "stargazers_count": 19224,
+    "forks_count": 1670,
     "owner": {
       "login": "bitwarden"
     }
@@ -161,8 +161,8 @@
     "description": "Virtual whiteboard for sketching hand-drawn like diagrams",
     "html_url": "https://github.com/excalidraw/excalidraw",
     "language": "TypeScript",
-    "stargazers_count": 125583,
-    "forks_count": 14068,
+    "stargazers_count": 125632,
+    "forks_count": 14072,
     "owner": {
       "login": "excalidraw"
     }
@@ -174,7 +174,7 @@
     "html_url": "https://github.com/Vencord/Vesktop",
     "language": "TypeScript",
     "stargazers_count": 8085,
-    "forks_count": 408,
+    "forks_count": 410,
     "owner": {
       "login": "Vencord"
     }
@@ -197,8 +197,8 @@
     "description": "😸 Soothing pastel theme for the high-spirited!",
     "html_url": "https://github.com/catppuccin/catppuccin",
     "language": "TypeScript",
-    "stargazers_count": 19349,
-    "forks_count": 351,
+    "stargazers_count": 19355,
+    "forks_count": 350,
     "owner": {
       "login": "catppuccin"
     }
@@ -209,7 +209,7 @@
     "description": "AnkiDroid: Anki flashcards on Android. Your secret trick to achieve superhuman information retention.",
     "html_url": "https://github.com/ankidroid/Anki-Android",
     "language": "Kotlin",
-    "stargazers_count": 11274,
+    "stargazers_count": 11276,
     "forks_count": 2809,
     "owner": {
       "login": "ankidroid"
@@ -221,8 +221,8 @@
     "description": "Anki is a smart spaced repetition flashcard program",
     "html_url": "https://github.com/ankitects/anki",
     "language": "Rust",
-    "stargazers_count": 28613,
-    "forks_count": 3010,
+    "stargazers_count": 28623,
+    "forks_count": 3013,
     "owner": {
       "login": "ankitects"
     }
@@ -233,8 +233,8 @@
     "description": "The Magic Mask for Android",
     "html_url": "https://github.com/topjohnwu/Magisk",
     "language": "Kotlin",
-    "stargazers_count": 61017,
-    "forks_count": 17712,
+    "stargazers_count": 61030,
+    "forks_count": 17717,
     "owner": {
       "login": "topjohnwu"
     }
@@ -245,7 +245,7 @@
     "description": "Atmosphère is a work-in-progress customized firmware for the Nintendo Switch.",
     "html_url": "https://github.com/Atmosphere-NX/Atmosphere",
     "language": "C++",
-    "stargazers_count": 19175,
+    "stargazers_count": 19174,
     "forks_count": 1445,
     "owner": {
       "login": "Atmosphere-NX"
@@ -257,7 +257,7 @@
     "description": "Command-line tool to customize Spotify client. Supports Windows, macOS, and Linux.",
     "html_url": "https://github.com/spicetify/cli",
     "language": "JavaScript",
-    "stargazers_count": 23445,
+    "stargazers_count": 23448,
     "forks_count": 884,
     "owner": {
       "login": "spicetify"
@@ -293,8 +293,8 @@
     "description": "AdNauseam: Fight back against advertising surveillance",
     "html_url": "https://github.com/dhowe/AdNauseam",
     "language": "JavaScript",
-    "stargazers_count": 6524,
-    "forks_count": 241,
+    "stargazers_count": 6529,
+    "forks_count": 242,
     "owner": {
       "login": "dhowe"
     }
@@ -305,8 +305,8 @@
     "description": "uBlock Origin - An efficient blocker for Chromium and Firefox. Fast and lean.",
     "html_url": "https://github.com/gorhill/uBlock",
     "language": "JavaScript",
-    "stargazers_count": 65589,
-    "forks_count": 4174,
+    "stargazers_count": 65603,
+    "forks_count": 4178,
     "owner": {
       "login": "gorhill"
     }
@@ -317,7 +317,7 @@
     "description": "The next generation Linux workstation, designed for reliability, performance, and sustainability.",
     "html_url": "https://github.com/ublue-os/bluefin",
     "language": "Shell",
-    "stargazers_count": 2522,
+    "stargazers_count": 2521,
     "forks_count": 259,
     "owner": {
       "login": "ublue-os"
@@ -329,7 +329,7 @@
     "description": "The main repository for the Linux and Mac OS Bedrock edition Minecraft launcher.",
     "html_url": "https://github.com/minecraft-linux/mcpelauncher-manifest",
     "language": "CMake",
-    "stargazers_count": 1550,
+    "stargazers_count": 1552,
     "forks_count": 123,
     "owner": {
       "login": "minecraft-linux"
@@ -353,7 +353,7 @@
     "description": "collection for free openai keys to use in your projects",
     "html_url": "https://github.com/dan1471/FREE-openai-api-keys",
     "language": null,
-    "stargazers_count": 4888,
+    "stargazers_count": 4893,
     "forks_count": 542,
     "owner": {
       "login": "dan1471"
@@ -377,8 +377,8 @@
     "description": "🌐 The open-source Agentic browser; alternative to ChatGPT Atlas, Perplexity Comet, Dia.",
     "html_url": "https://github.com/browseros-ai/BrowserOS",
     "language": "TypeScript",
-    "stargazers_count": 11431,
-    "forks_count": 1167,
+    "stargazers_count": 11438,
+    "forks_count": 1168,
     "owner": {
       "login": "browseros-ai"
     }
@@ -389,8 +389,8 @@
     "description": "An open-source AI agent that brings the power of Gemini directly into your terminal.",
     "html_url": "https://github.com/google-gemini/gemini-cli",
     "language": "TypeScript",
-    "stargazers_count": 105391,
-    "forks_count": 14102,
+    "stargazers_count": 105412,
+    "forks_count": 14123,
     "owner": {
       "login": "google-gemini"
     }
@@ -401,7 +401,7 @@
     "description": " Run Windows apps such as Microsoft Office/Adobe in Linux (Ubuntu/Fedora) and GNOME/KDE as if they were a part of the native OS, including Nautilus integration. Hard fork of https://github.com/Fmstrat/winapps/",
     "html_url": "https://github.com/winapps-org/winapps",
     "language": "Shell",
-    "stargazers_count": 15362,
+    "stargazers_count": 15371,
     "forks_count": 482,
     "owner": {
       "login": "winapps-org"
@@ -473,8 +473,8 @@
     "description": "The Pokémon API",
     "html_url": "https://github.com/PokeAPI/pokeapi",
     "language": "Python",
-    "stargazers_count": 5242,
-    "forks_count": 1137,
+    "stargazers_count": 5240,
+    "forks_count": 1136,
     "owner": {
       "login": "PokeAPI"
     }
@@ -485,7 +485,7 @@
     "description": "Transcribe on your own!",
     "html_url": "https://github.com/thewh1teagle/vibe",
     "language": "TypeScript",
-    "stargazers_count": 6476,
+    "stargazers_count": 6485,
     "forks_count": 423,
     "owner": {
       "login": "thewh1teagle"
@@ -497,8 +497,8 @@
     "description": "Pear 🍐 is extension for music player",
     "html_url": "https://github.com/pear-devs/pear-desktop",
     "language": "TypeScript",
-    "stargazers_count": 31947,
-    "forks_count": 1834,
+    "stargazers_count": 31946,
+    "forks_count": 1833,
     "owner": {
       "login": "pear-devs"
     }
