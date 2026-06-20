@@ -13,12 +13,12 @@
     }
   },
   {
-    "name": "h0tp-ftw",
-    "full_name": "h0tp-ftw/h0tp-ftw",
-    "description": "My GitHub profile README",
-    "html_url": "https://github.com/h0tp-ftw/h0tp-ftw",
+    "name": "acoustic-engine",
+    "full_name": "h0tp-ftw/acoustic-engine",
+    "description": "Lightweight engine to recognize beep patterns from machines and alarms with high accuracy.",
+    "html_url": "https://github.com/h0tp-ftw/acoustic-engine",
     "language": "Python",
-    "stargazers_count": 0,
+    "stargazers_count": 1,
     "forks_count": 0,
     "fork": false,
     "owner": {
@@ -39,11 +39,11 @@
     }
   },
   {
-    "name": "jules-bot",
-    "full_name": "h0tp-ftw/jules-bot",
-    "description": null,
-    "html_url": "https://github.com/h0tp-ftw/jules-bot",
-    "language": "TypeScript",
+    "name": "h0tp-ftw",
+    "full_name": "h0tp-ftw/h0tp-ftw",
+    "description": "My GitHub profile README",
+    "html_url": "https://github.com/h0tp-ftw/h0tp-ftw",
+    "language": "Python",
     "stargazers_count": 0,
     "forks_count": 0,
     "fork": false,
@@ -65,12 +65,12 @@
     }
   },
   {
-    "name": "acoustic-engine",
-    "full_name": "h0tp-ftw/acoustic-engine",
-    "description": "Lightweight engine to recognize beep patterns from machines and alarms with high accuracy.",
-    "html_url": "https://github.com/h0tp-ftw/acoustic-engine",
-    "language": "Python",
-    "stargazers_count": 1,
+    "name": "jules-bot",
+    "full_name": "h0tp-ftw/jules-bot",
+    "description": null,
+    "html_url": "https://github.com/h0tp-ftw/jules-bot",
+    "language": "TypeScript",
+    "stargazers_count": 0,
     "forks_count": 0,
     "fork": false,
     "owner": {
