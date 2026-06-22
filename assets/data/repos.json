@@ -1,5 +1,31 @@
 [
   {
+    "name": "ankimon",
+    "full_name": "h0tp-ftw/ankimon",
+    "description": "Ankimon  - an Anki Addon to Gamify your learning experience! EXPERIMENTAL branch!",
+    "html_url": "https://github.com/h0tp-ftw/ankimon",
+    "language": "Python",
+    "stargazers_count": 67,
+    "forks_count": 21,
+    "fork": true,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "h0tp-ftw.github.io",
+    "full_name": "h0tp-ftw/h0tp-ftw.github.io",
+    "description": "website and profile for @h0tp-ftw ",
+    "html_url": "https://github.com/h0tp-ftw/h0tp-ftw.github.io",
+    "language": "CSS",
+    "stargazers_count": 1,
+    "forks_count": 0,
+    "fork": false,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
     "name": "shucky",
     "full_name": "h0tp-ftw/shucky",
     "description": "Portable agent-skill suite: skill-finder (safe discover->audit->install) + shucky (zero-dep SKILL.md safety scanner). Runs via npx.",
@@ -13,37 +39,11 @@
     }
   },
   {
-    "name": "ankimon",
-    "full_name": "h0tp-ftw/ankimon",
-    "description": "Ankimon  - an Anki Addon to Gamify your learning experience! EXPERIMENTAL branch!",
-    "html_url": "https://github.com/h0tp-ftw/ankimon",
-    "language": "Python",
-    "stargazers_count": 66,
-    "forks_count": 21,
-    "fork": true,
-    "owner": {
-      "login": "h0tp-ftw"
-    }
-  },
-  {
     "name": "acoustic-engine",
     "full_name": "h0tp-ftw/acoustic-engine",
     "description": "Lightweight engine to recognize beep patterns from machines and alarms with high accuracy.",
     "html_url": "https://github.com/h0tp-ftw/acoustic-engine",
     "language": "Python",
-    "stargazers_count": 1,
-    "forks_count": 0,
-    "fork": false,
-    "owner": {
-      "login": "h0tp-ftw"
-    }
-  },
-  {
-    "name": "h0tp-ftw.github.io",
-    "full_name": "h0tp-ftw/h0tp-ftw.github.io",
-    "description": "website and profile for @h0tp-ftw ",
-    "html_url": "https://github.com/h0tp-ftw/h0tp-ftw.github.io",
-    "language": "CSS",
     "stargazers_count": 1,
     "forks_count": 0,
     "fork": false,
