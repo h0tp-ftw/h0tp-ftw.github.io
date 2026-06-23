@@ -1,13 +1,26 @@
 [
   {
-    "name": "ankimon",
-    "full_name": "h0tp-ftw/ankimon",
-    "description": "Ankimon  - an Anki Addon to Gamify your learning experience! EXPERIMENTAL branch!",
-    "html_url": "https://github.com/h0tp-ftw/ankimon",
+    "name": "Onigiri",
+    "full_name": "h0tp-ftw/Onigiri",
+    "description": "Onigiri is an experimental add-on that replaces the standard Anki interface with a modern, highly customizable, and personalized dashboard, completely transforming how Anki looks. ",
+    "html_url": "https://github.com/h0tp-ftw/Onigiri",
     "language": "Python",
-    "stargazers_count": 67,
-    "forks_count": 21,
+    "stargazers_count": 0,
+    "forks_count": 0,
     "fork": true,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "jules-bot",
+    "full_name": "h0tp-ftw/jules-bot",
+    "description": null,
+    "html_url": "https://github.com/h0tp-ftw/jules-bot",
+    "language": "TypeScript",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "fork": false,
     "owner": {
       "login": "h0tp-ftw"
     }
@@ -21,6 +34,19 @@
     "stargazers_count": 1,
     "forks_count": 0,
     "fork": false,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "ankimon",
+    "full_name": "h0tp-ftw/ankimon",
+    "description": "Ankimon  - an Anki Addon to Gamify your learning experience! EXPERIMENTAL branch!",
+    "html_url": "https://github.com/h0tp-ftw/ankimon",
+    "language": "Python",
+    "stargazers_count": 67,
+    "forks_count": 21,
+    "fork": true,
     "owner": {
       "login": "h0tp-ftw"
     }
@@ -57,19 +83,6 @@
     "description": "My GitHub profile README",
     "html_url": "https://github.com/h0tp-ftw/h0tp-ftw",
     "language": "Python",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "fork": false,
-    "owner": {
-      "login": "h0tp-ftw"
-    }
-  },
-  {
-    "name": "jules-bot",
-    "full_name": "h0tp-ftw/jules-bot",
-    "description": null,
-    "html_url": "https://github.com/h0tp-ftw/jules-bot",
-    "language": "TypeScript",
     "stargazers_count": 0,
     "forks_count": 0,
     "fork": false,
@@ -148,19 +161,6 @@
     "description": "A Pokemon battle engine written in Python. The engine is extracted from pmariglia's Showdown bot application.",
     "html_url": "https://github.com/h0tp-ftw/poke-engine",
     "language": null,
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "fork": true,
-    "owner": {
-      "login": "h0tp-ftw"
-    }
-  },
-  {
-    "name": "Onigiri",
-    "full_name": "h0tp-ftw/Onigiri",
-    "description": "Onigiri is an experimental add-on that replaces the standard Anki interface with a modern, highly customizable, and personalized dashboard, completely transforming how Anki looks. ",
-    "html_url": "https://github.com/h0tp-ftw/Onigiri",
-    "language": "Python",
     "stargazers_count": 0,
     "forks_count": 0,
     "fork": true,
