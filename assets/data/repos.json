@@ -1,18 +1,5 @@
 [
   {
-    "name": "Onigiri",
-    "full_name": "h0tp-ftw/Onigiri",
-    "description": "Onigiri is an experimental add-on that replaces the standard Anki interface with a modern, highly customizable, and personalized dashboard, completely transforming how Anki looks. ",
-    "html_url": "https://github.com/h0tp-ftw/Onigiri",
-    "language": "Python",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "fork": true,
-    "owner": {
-      "login": "h0tp-ftw"
-    }
-  },
-  {
     "name": "jules-bot",
     "full_name": "h0tp-ftw/jules-bot",
     "description": null,
@@ -34,6 +21,19 @@
     "stargazers_count": 1,
     "forks_count": 0,
     "fork": false,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "Onigiri",
+    "full_name": "h0tp-ftw/Onigiri",
+    "description": "Onigiri is an experimental add-on that replaces the standard Anki interface with a modern, highly customizable, and personalized dashboard, completely transforming how Anki looks. ",
+    "html_url": "https://github.com/h0tp-ftw/Onigiri",
+    "language": "Python",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "fork": true,
     "owner": {
       "login": "h0tp-ftw"
     }
