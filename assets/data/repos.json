@@ -13,6 +13,19 @@
     }
   },
   {
+    "name": "ankimon",
+    "full_name": "h0tp-ftw/ankimon",
+    "description": "Ankimon  - an Anki Addon to Gamify your learning experience! EXPERIMENTAL branch!",
+    "html_url": "https://github.com/h0tp-ftw/ankimon",
+    "language": "Python",
+    "stargazers_count": 67,
+    "forks_count": 21,
+    "fork": true,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
     "name": "h0tp-ftw.github.io",
     "full_name": "h0tp-ftw/h0tp-ftw.github.io",
     "description": "website and profile for @h0tp-ftw ",
@@ -33,19 +46,6 @@
     "language": "Python",
     "stargazers_count": 0,
     "forks_count": 0,
-    "fork": true,
-    "owner": {
-      "login": "h0tp-ftw"
-    }
-  },
-  {
-    "name": "ankimon",
-    "full_name": "h0tp-ftw/ankimon",
-    "description": "Ankimon  - an Anki Addon to Gamify your learning experience! EXPERIMENTAL branch!",
-    "html_url": "https://github.com/h0tp-ftw/ankimon",
-    "language": "Python",
-    "stargazers_count": 67,
-    "forks_count": 21,
     "fork": true,
     "owner": {
       "login": "h0tp-ftw"
