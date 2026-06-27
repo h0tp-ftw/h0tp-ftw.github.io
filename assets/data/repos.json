@@ -1,5 +1,18 @@
 [
   {
+    "name": "h0tp-ftw.github.io",
+    "full_name": "h0tp-ftw/h0tp-ftw.github.io",
+    "description": "website and profile for @h0tp-ftw ",
+    "html_url": "https://github.com/h0tp-ftw/h0tp-ftw.github.io",
+    "language": "CSS",
+    "stargazers_count": 1,
+    "forks_count": 0,
+    "fork": false,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
     "name": "jules-bot",
     "full_name": "h0tp-ftw/jules-bot",
     "description": null,
@@ -18,19 +31,6 @@
     "description": "Lightweight engine to recognize beep patterns from machines and alarms with high accuracy.",
     "html_url": "https://github.com/h0tp-ftw/acoustic-engine",
     "language": "Python",
-    "stargazers_count": 1,
-    "forks_count": 0,
-    "fork": false,
-    "owner": {
-      "login": "h0tp-ftw"
-    }
-  },
-  {
-    "name": "h0tp-ftw.github.io",
-    "full_name": "h0tp-ftw/h0tp-ftw.github.io",
-    "description": "website and profile for @h0tp-ftw ",
-    "html_url": "https://github.com/h0tp-ftw/h0tp-ftw.github.io",
-    "language": "CSS",
     "stargazers_count": 1,
     "forks_count": 0,
     "fork": false,
