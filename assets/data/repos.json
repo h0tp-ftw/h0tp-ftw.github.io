@@ -1,24 +1,11 @@
 [
   {
-    "name": "jules-bot",
-    "full_name": "h0tp-ftw/jules-bot",
-    "description": null,
-    "html_url": "https://github.com/h0tp-ftw/jules-bot",
-    "language": "TypeScript",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "fork": false,
-    "owner": {
-      "login": "h0tp-ftw"
-    }
-  },
-  {
     "name": "ankimon",
     "full_name": "h0tp-ftw/ankimon",
     "description": "Ankimon  - an Anki Addon to Gamify your learning experience! EXPERIMENTAL branch!",
     "html_url": "https://github.com/h0tp-ftw/ankimon",
     "language": "Python",
-    "stargazers_count": 69,
+    "stargazers_count": 70,
     "forks_count": 21,
     "fork": true,
     "owner": {
@@ -31,7 +18,33 @@
     "description": "website and profile for @h0tp-ftw ",
     "html_url": "https://github.com/h0tp-ftw/h0tp-ftw.github.io",
     "language": "CSS",
-    "stargazers_count": 1,
+    "stargazers_count": 2,
+    "forks_count": 0,
+    "fork": false,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "ankimon-trading-tool",
+    "full_name": "h0tp-ftw/ankimon-trading-tool",
+    "description": "Tool to quickly compare Ankimon collections to find trades",
+    "html_url": "https://github.com/h0tp-ftw/ankimon-trading-tool",
+    "language": null,
+    "stargazers_count": 2,
+    "forks_count": 0,
+    "fork": false,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "jules-bot",
+    "full_name": "h0tp-ftw/jules-bot",
+    "description": null,
+    "html_url": "https://github.com/h0tp-ftw/jules-bot",
+    "language": "TypeScript",
+    "stargazers_count": 0,
     "forks_count": 0,
     "fork": false,
     "owner": {
@@ -255,19 +268,6 @@
     "stargazers_count": 0,
     "forks_count": 0,
     "fork": true,
-    "owner": {
-      "login": "h0tp-ftw"
-    }
-  },
-  {
-    "name": "ankimon-trading-tool",
-    "full_name": "h0tp-ftw/ankimon-trading-tool",
-    "description": "Tool to quickly compare Ankimon collections to find trades",
-    "html_url": "https://github.com/h0tp-ftw/ankimon-trading-tool",
-    "language": null,
-    "stargazers_count": 1,
-    "forks_count": 0,
-    "fork": false,
     "owner": {
       "login": "h0tp-ftw"
     }
