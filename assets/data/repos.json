@@ -1,26 +1,26 @@
 [
   {
-    "name": "ankimon",
-    "full_name": "h0tp-ftw/ankimon",
-    "description": "Ankimon  - an Anki Addon to Gamify your learning experience! EXPERIMENTAL branch!",
-    "html_url": "https://github.com/h0tp-ftw/ankimon",
-    "language": "Python",
-    "stargazers_count": 72,
-    "forks_count": 23,
+    "name": "pear-desktop",
+    "full_name": "h0tp-ftw/pear-desktop",
+    "description": "Pear 🍐 is extension for music player",
+    "html_url": "https://github.com/h0tp-ftw/pear-desktop",
+    "language": null,
+    "stargazers_count": 0,
+    "forks_count": 0,
     "fork": true,
     "owner": {
       "login": "h0tp-ftw"
     }
   },
   {
-    "name": "jules-bot",
-    "full_name": "h0tp-ftw/jules-bot",
-    "description": null,
-    "html_url": "https://github.com/h0tp-ftw/jules-bot",
-    "language": "TypeScript",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "fork": false,
+    "name": "ankimon",
+    "full_name": "h0tp-ftw/ankimon",
+    "description": "Ankimon  - an Anki Addon to Gamify your learning experience! EXPERIMENTAL branch!",
+    "html_url": "https://github.com/h0tp-ftw/ankimon",
+    "language": "Python",
+    "stargazers_count": 73,
+    "forks_count": 23,
+    "fork": true,
     "owner": {
       "login": "h0tp-ftw"
     }
@@ -32,6 +32,19 @@
     "html_url": "https://github.com/h0tp-ftw/h0tp-ftw.github.io",
     "language": "CSS",
     "stargazers_count": 2,
+    "forks_count": 0,
+    "fork": false,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "jules-bot",
+    "full_name": "h0tp-ftw/jules-bot",
+    "description": null,
+    "html_url": "https://github.com/h0tp-ftw/jules-bot",
+    "language": "TypeScript",
+    "stargazers_count": 0,
     "forks_count": 0,
     "fork": false,
     "owner": {
