@@ -1,18 +1,5 @@
 [
   {
-    "name": "pear-desktop",
-    "full_name": "h0tp-ftw/pear-desktop",
-    "description": "Pear 🍐 is extension for music player",
-    "html_url": "https://github.com/h0tp-ftw/pear-desktop",
-    "language": null,
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "fork": true,
-    "owner": {
-      "login": "h0tp-ftw"
-    }
-  },
-  {
     "name": "ankimon",
     "full_name": "h0tp-ftw/ankimon",
     "description": "Ankimon  - an Anki Addon to Gamify your learning experience! EXPERIMENTAL branch!",
@@ -34,6 +21,19 @@
     "stargazers_count": 2,
     "forks_count": 0,
     "fork": false,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "pear-desktop",
+    "full_name": "h0tp-ftw/pear-desktop",
+    "description": "Pear 🍐 is extension for music player",
+    "html_url": "https://github.com/h0tp-ftw/pear-desktop",
+    "language": null,
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "fork": true,
     "owner": {
       "login": "h0tp-ftw"
     }
