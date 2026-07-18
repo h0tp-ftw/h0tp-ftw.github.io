@@ -1,13 +1,13 @@
 [
   {
-    "name": "jules-bot",
-    "full_name": "h0tp-ftw/jules-bot",
-    "description": null,
-    "html_url": "https://github.com/h0tp-ftw/jules-bot",
-    "language": "TypeScript",
-    "stargazers_count": 1,
-    "forks_count": 1,
-    "fork": false,
+    "name": "ankimon",
+    "full_name": "h0tp-ftw/ankimon",
+    "description": "Ankimon  - an Anki Addon to Gamify your learning experience! EXPERIMENTAL branch!",
+    "html_url": "https://github.com/h0tp-ftw/ankimon",
+    "language": "Python",
+    "stargazers_count": 77,
+    "forks_count": 25,
+    "fork": true,
     "owner": {
       "login": "h0tp-ftw"
     }
@@ -26,14 +26,14 @@
     }
   },
   {
-    "name": "ankimon",
-    "full_name": "h0tp-ftw/ankimon",
-    "description": "Ankimon  - an Anki Addon to Gamify your learning experience! EXPERIMENTAL branch!",
-    "html_url": "https://github.com/h0tp-ftw/ankimon",
-    "language": "Python",
-    "stargazers_count": 76,
-    "forks_count": 24,
-    "fork": true,
+    "name": "jules-bot",
+    "full_name": "h0tp-ftw/jules-bot",
+    "description": null,
+    "html_url": "https://github.com/h0tp-ftw/jules-bot",
+    "language": "TypeScript",
+    "stargazers_count": 1,
+    "forks_count": 1,
+    "fork": false,
     "owner": {
       "login": "h0tp-ftw"
     }
