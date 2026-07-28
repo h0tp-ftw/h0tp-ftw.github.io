@@ -1,36 +1,10 @@
 [
   {
-    "name": "ankimon",
-    "full_name": "h0tp-ftw/ankimon",
-    "description": "Ankimon  - an Anki Addon to Gamify your learning experience! EXPERIMENTAL branch!",
-    "html_url": "https://github.com/h0tp-ftw/ankimon",
-    "language": "Python",
-    "stargazers_count": 80,
-    "forks_count": 24,
-    "fork": true,
-    "owner": {
-      "login": "h0tp-ftw"
-    }
-  },
-  {
     "name": "jules-bot",
     "full_name": "h0tp-ftw/jules-bot",
     "description": null,
     "html_url": "https://github.com/h0tp-ftw/jules-bot",
     "language": "TypeScript",
-    "stargazers_count": 1,
-    "forks_count": 0,
-    "fork": false,
-    "owner": {
-      "login": "h0tp-ftw"
-    }
-  },
-  {
-    "name": "acoustica",
-    "full_name": "h0tp-ftw/acoustica",
-    "description": null,
-    "html_url": "https://github.com/h0tp-ftw/acoustica",
-    "language": "Python",
     "stargazers_count": 1,
     "forks_count": 0,
     "fork": false,
@@ -45,6 +19,32 @@
     "html_url": "https://github.com/h0tp-ftw/h0tp-ftw.github.io",
     "language": "CSS",
     "stargazers_count": 2,
+    "forks_count": 0,
+    "fork": false,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "ankimon",
+    "full_name": "h0tp-ftw/ankimon",
+    "description": "Ankimon  - an Anki Addon to Gamify your learning experience! EXPERIMENTAL branch!",
+    "html_url": "https://github.com/h0tp-ftw/ankimon",
+    "language": "Python",
+    "stargazers_count": 80,
+    "forks_count": 24,
+    "fork": true,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "acoustica",
+    "full_name": "h0tp-ftw/acoustica",
+    "description": null,
+    "html_url": "https://github.com/h0tp-ftw/acoustica",
+    "language": "Python",
+    "stargazers_count": 1,
     "forks_count": 0,
     "fork": false,
     "owner": {
