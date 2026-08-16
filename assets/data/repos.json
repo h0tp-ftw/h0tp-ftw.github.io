@@ -13,14 +13,14 @@
     }
   },
   {
-    "name": "jules-bot",
-    "full_name": "h0tp-ftw/jules-bot",
-    "description": null,
-    "html_url": "https://github.com/h0tp-ftw/jules-bot",
+    "name": "anki-vscode",
+    "full_name": "h0tp-ftw/anki-vscode",
+    "description": "One-script setup to test and run Anki addons directly via VS Code, with full debugpy support! ",
+    "html_url": "https://github.com/h0tp-ftw/anki-vscode",
     "language": "TypeScript",
-    "stargazers_count": 1,
-    "forks_count": 1,
-    "fork": false,
+    "stargazers_count": 13,
+    "forks_count": 0,
+    "fork": true,
     "owner": {
       "login": "h0tp-ftw"
     }
@@ -39,25 +39,25 @@
     }
   },
   {
+    "name": "jules-bot",
+    "full_name": "h0tp-ftw/jules-bot",
+    "description": null,
+    "html_url": "https://github.com/h0tp-ftw/jules-bot",
+    "language": "TypeScript",
+    "stargazers_count": 1,
+    "forks_count": 1,
+    "fork": false,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
     "name": "anki-prettify",
     "full_name": "h0tp-ftw/anki-prettify",
     "description": "h0tp's mod of the Prettify Nord card template for Anki by @pranavdeshai. Extra customization and features to have beautiful and modern cards!",
     "html_url": "https://github.com/h0tp-ftw/anki-prettify",
     "language": "JavaScript",
     "stargazers_count": 1,
-    "forks_count": 0,
-    "fork": true,
-    "owner": {
-      "login": "h0tp-ftw"
-    }
-  },
-  {
-    "name": "anki-vscode",
-    "full_name": "h0tp-ftw/anki-vscode",
-    "description": "One-script setup to test and run Anki addons directly via VS Code, with full debugpy support! ",
-    "html_url": "https://github.com/h0tp-ftw/anki-vscode",
-    "language": "TypeScript",
-    "stargazers_count": 14,
     "forks_count": 0,
     "fork": true,
     "owner": {
