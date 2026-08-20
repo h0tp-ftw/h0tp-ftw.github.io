@@ -1,12 +1,25 @@
 [
   {
-    "name": "ankimon",
-    "full_name": "h0tp-ftw/ankimon",
-    "description": "Ankimon  - an Anki Addon to Gamify your learning experience! EXPERIMENTAL branch!",
-    "html_url": "https://github.com/h0tp-ftw/ankimon",
-    "language": "Python",
-    "stargazers_count": 81,
-    "forks_count": 26,
+    "name": "jules-bot",
+    "full_name": "h0tp-ftw/jules-bot",
+    "description": null,
+    "html_url": "https://github.com/h0tp-ftw/jules-bot",
+    "language": "TypeScript",
+    "stargazers_count": 1,
+    "forks_count": 1,
+    "fork": false,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "antigravity-remote",
+    "full_name": "h0tp-ftw/antigravity-remote",
+    "description": "Use the Antigravity desktop app from your phone. One binary that serves Antigravity's own web UI to your devices, behind a password.",
+    "html_url": "https://github.com/h0tp-ftw/antigravity-remote",
+    "language": null,
+    "stargazers_count": 0,
+    "forks_count": 0,
     "fork": true,
     "owner": {
       "login": "h0tp-ftw"
@@ -26,14 +39,14 @@
     }
   },
   {
-    "name": "jules-bot",
-    "full_name": "h0tp-ftw/jules-bot",
-    "description": null,
-    "html_url": "https://github.com/h0tp-ftw/jules-bot",
-    "language": "TypeScript",
-    "stargazers_count": 1,
-    "forks_count": 1,
-    "fork": false,
+    "name": "ankimon",
+    "full_name": "h0tp-ftw/ankimon",
+    "description": "Ankimon  - an Anki Addon to Gamify your learning experience! EXPERIMENTAL branch!",
+    "html_url": "https://github.com/h0tp-ftw/ankimon",
+    "language": "Python",
+    "stargazers_count": 81,
+    "forks_count": 26,
+    "fork": true,
     "owner": {
       "login": "h0tp-ftw"
     }
