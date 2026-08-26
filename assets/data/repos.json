@@ -1,18 +1,5 @@
 [
   {
-    "name": "anki-prettify",
-    "full_name": "h0tp-ftw/anki-prettify",
-    "description": "h0tp's mod of the Prettify Nord card template for Anki by @pranavdeshai. Extra customization and features to have beautiful and modern cards!",
-    "html_url": "https://github.com/h0tp-ftw/anki-prettify",
-    "language": "JavaScript",
-    "stargazers_count": 2,
-    "forks_count": 0,
-    "fork": true,
-    "owner": {
-      "login": "h0tp-ftw"
-    }
-  },
-  {
     "name": "h0tp-ftw.github.io",
     "full_name": "h0tp-ftw/h0tp-ftw.github.io",
     "description": "website and profile for @h0tp-ftw ",
@@ -21,6 +8,19 @@
     "stargazers_count": 2,
     "forks_count": 0,
     "fork": false,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "anki-prettify",
+    "full_name": "h0tp-ftw/anki-prettify",
+    "description": "h0tp's mod of the Prettify Nord card template for Anki by @pranavdeshai. Extra customization and features to have beautiful and modern cards!",
+    "html_url": "https://github.com/h0tp-ftw/anki-prettify",
+    "language": "JavaScript",
+    "stargazers_count": 2,
+    "forks_count": 0,
+    "fork": true,
     "owner": {
       "login": "h0tp-ftw"
     }
@@ -58,7 +58,7 @@
     "html_url": "https://github.com/h0tp-ftw/ankimon",
     "language": "Python",
     "stargazers_count": 82,
-    "forks_count": 28,
+    "forks_count": 29,
     "fork": true,
     "owner": {
       "login": "h0tp-ftw"
