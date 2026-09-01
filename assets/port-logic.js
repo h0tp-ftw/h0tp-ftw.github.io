@@ -61,7 +61,7 @@ function renderState(container, { icon = 'ℹ️', title = '', detail = '', onRe
     container.appendChild(panel);
 }
 
-// Site data/config (ROTATING_WORDS, PROJECT_LOGOS, LANGUAGE_ICONS) lives in assets/site-config.js
+// Site data/config (ROTATING_WORDS, SHOWCASE_FORKS, HIDE_REPOS, LANGUAGE_ICONS) lives in assets/site-config.js
 
 // ============================================
 // SCROLL PROGRESS INDICATOR (throttled)
@@ -422,18 +422,6 @@ async function fetchFollowing() {
     }
 }
 
-function getProjectLogo(repoName) {
-    const lowerName = repoName.toLowerCase();
-
-    for (const [key, logoUrl] of Object.entries(PROJECT_LOGOS)) {
-        if (lowerName.includes(key)) {
-            return logoUrl;
-        }
-    }
-
-    return null;
-}
-
 function getLanguageIcon(language) {
     if (!language) return LANGUAGE_ICONS['default'];
     return LANGUAGE_ICONS[language] || LANGUAGE_ICONS['default'];
@@ -506,7 +494,7 @@ async function loadFeaturedProjects() {
                 const description = repo.description || 'No description available';
                 const stars = formatNumber(repo.stargazers_count);
                 const language = repo.language || 'Code'; // Better fallback
-                const customLogo = getProjectLogo(repo.name);
+                const iconClass = getLanguageIcon(language);
 
                 // CREATE FULLY CLICKABLE CARD
                 const card = document.createElement('a');
@@ -517,17 +505,9 @@ async function loadFeaturedProjects() {
                 // Stagger animations based on index in this batch
                 card.dataset.stagger = (i % 6) * 80;
 
-                // Unified card template: owner avatar top-left + content below
-                const ownerLogin = repo.owner ? repo.owner.login : repo.full_name.split('/')[0];
-                const ownerAvatar = `https://github.com/${ownerLogin}.png?size=64`;
-                const cardLogo = customLogo || ownerAvatar;
-                const cardLogoAlt = customLogo ? `${repo.name} logo` : `${ownerLogin} avatar`;
-                const iconClass = getLanguageIcon(language);
-
                 card.innerHTML = `
                     <div class="project-top">
                         <div class="project-top-left">
-                            <img src="${escapeHtml(cardLogo)}" alt="${escapeHtml(cardLogoAlt)}" class="project-owner-avatar" loading="lazy" />
                             <h3 class="project-name">
                                 ${renderRepoName(repo.full_name)}
                             </h3>

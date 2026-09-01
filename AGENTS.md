@@ -22,7 +22,7 @@ Deploy is git-push to `main` — GitHub Pages serves it automatically.
 ## Architecture
 
 **Main page (`index.html` + `assets/port-logic.js` + `assets/styles.css`)**
-- `port-logic.js` (~1000 lines) drives the page: GitHub data loading (repos, stars, following), scroll handling, theme toggle, rotating text animation. Two helper scripts load **before** it (classic scripts sharing global scope): `site-config.js` (editable data — rotating words, project logos, language icons, `SHOWCASE_FORKS`: forks to surface in Projects, and `HIDE_REPOS`: repos to drop entirely) and `vanilla-tilt.js` (vendored 3D-tilt library)
+- `port-logic.js` (~1000 lines) drives the page: GitHub data loading (repos, stars, following), scroll handling, theme toggle, rotating text animation. Two helper scripts load **before** it (classic scripts sharing global scope): `site-config.js` (editable data — rotating words, language icons, `SHOWCASE_FORKS`: forks to surface in Projects, and `HIDE_REPOS`: repos to drop entirely) and `vanilla-tilt.js` (vendored 3D-tilt library)
 - GitHub data is read **snapshot-first**: `loadSnapshot()` fetches `assets/data/{repos,starred,following}.json`; the live unauthenticated API (60 req/hr) is only a fallback when a snapshot is missing/empty
 - Data flows: `assets/data/*.json` (or live GitHub API fallback) → JS DOM injection
 - Starred repos: the snapshot holds the full list, so "Show All Stars" needs no extra calls; the live fallback still fetches page-by-page
