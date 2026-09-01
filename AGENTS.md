@@ -6,8 +6,7 @@ This file provides guidance to AI coding agents when working with code in this r
 
 Static portfolio site for h0tp-ftw, hosted on GitHub Pages. No build tools, no frameworks — plain HTML/CSS/JS.
 
-- **Root (`/`)** — Main portfolio: hero, GitHub projects, starred repos discovery, swing trading chart, followed users
-- **`/twr-calculator/`** — a standalone, **unlisted** time-weighted-return calculator (self-contained HTML + a local `guide-breathtaking.css`; intentionally not linked from the homepage)
+- **Root (`/`)** — Main portfolio: hero, GitHub projects, starred repos discovery, followed users
 
 ## Development
 
@@ -23,9 +22,9 @@ Deploy is git-push to `main` — GitHub Pages serves it automatically.
 ## Architecture
 
 **Main page (`index.html` + `assets/port-logic.js` + `assets/styles.css`)**
-- `port-logic.js` (~1300 lines) drives the page: GitHub data loading (repos, stars, following), Chart.js portfolio rendering, scroll handling, theme toggle, rotating text animation. Two helper scripts load **before** it (classic scripts sharing global scope): `site-config.js` (editable data — rotating words, project logos, language icons, `PROJECT_IMPACTS`: per-repo impact blurbs, `SHOWCASE_FORKS`: forks to surface in Projects, and `HIDE_REPOS`: repos to drop entirely) and `vanilla-tilt.js` (vendored 3D-tilt library)
+- `port-logic.js` (~1000 lines) drives the page: GitHub data loading (repos, stars, following), scroll handling, theme toggle, rotating text animation. Two helper scripts load **before** it (classic scripts sharing global scope): `site-config.js` (editable data — rotating words, project logos, language icons, `SHOWCASE_FORKS`: forks to surface in Projects, and `HIDE_REPOS`: repos to drop entirely) and `vanilla-tilt.js` (vendored 3D-tilt library)
 - GitHub data is read **snapshot-first**: `loadSnapshot()` fetches `assets/data/{repos,starred,following}.json`; the live unauthenticated API (60 req/hr) is only a fallback when a snapshot is missing/empty
-- Data flows: `assets/data/*.json` (or live GitHub API fallback) → JS DOM injection, `portfolio-returns.csv` → Chart.js
+- Data flows: `assets/data/*.json` (or live GitHub API fallback) → JS DOM injection
 - Starred repos: the snapshot holds the full list, so "Show All Stars" needs no extra calls; the live fallback still fetches page-by-page
 - Cool People bios: come from the `following` snapshot; the live fallback lazy-fetches them per-user when the section scrolls into view
 
@@ -37,19 +36,17 @@ Deploy is git-push to `main` — GitHub Pages serves it automatically.
 
 ## Key Conventions
 
-**Theming:** Catppuccin Frappé (dark, default) / Latte (light). CSS variables are `--ctp-*` (e.g. `--ctp-mauve`, `--ctp-base`). Theme persists via `localStorage.getItem('theme')`. `styles.css` defines the full color sets; the standalone `/twr-calculator/` page carries its own copy in `guide-breathtaking.css`.
+**Theming:** Catppuccin Frappé (dark, default) / Latte (light). CSS variables are `--ctp-*` (e.g. `--ctp-mauve`, `--ctp-base`). Theme persists via `localStorage.getItem('theme')`. `styles.css` defines the full color sets.
 
 **Performance rules already in place:**
 - `backdrop-filter` disabled on mobile (<768px) and on section-level elements
 - VanillaTilt skipped on touch devices
 - Scroll handlers throttled via single `requestAnimationFrame` loop
 - Images in dynamically-created cards use `loading="lazy"`
-- Chart.js loaded with `defer`
 
 **CSS structure in `styles.css`:** Organized in labeled sections (theme variables → global → background → navigation → hero → sections → cards → responsive → performance). Accent colors use `--accent` which maps to `--ctp-mauve` (dark) or `--ctp-blue` (light).
 
 ## External Dependencies (CDN)
 
-- **Chart.js** — portfolio performance chart
 - **Devicons** — language icons on project cards
 - **Google Fonts** — Inter, Outfit, Fira Code
