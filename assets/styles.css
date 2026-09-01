@@ -762,6 +762,14 @@ a.setup-chip:hover {
   border-radius: 50%;
 }
 
+.chip-logo-monochrome {
+  filter: invert(0.85);
+}
+
+:root[data-theme="latte"] .chip-logo-monochrome {
+  filter: invert(0.15);
+}
+
 .setup-chip.no-link {
   opacity: 0.9;
 }
