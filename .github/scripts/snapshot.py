@@ -21,6 +21,7 @@ previously good snapshot.
 """
 import json
 import os
+import re
 import sys
 import time
 import urllib.error
@@ -91,12 +92,41 @@ def trim_repo(r):
     }
 
 
+def get_latest_gemini_flash():
+    """Fetch the latest stable Gemini Flash model name from public model listings."""
+    try:
+        req = urllib.request.Request(
+            "https://openrouter.ai/api/v1/models",
+            headers={"User-Agent": f"{USER}-site-snapshot"}
+        )
+        with urllib.request.urlopen(req, timeout=15) as r:
+            data = json.load(r)
+        candidates = []
+        for m in data.get("data", []):
+            mid = (m.get("id") or "").lower()
+            if not mid.startswith("google/gemini") or "flash" not in mid:
+                continue
+            if any(k in mid for k in ["lite", "image", "preview", "batch", "thinking"]):
+                continue
+            match = re.search(r"gemini[ -]?(\d+(?:\.\d+)*)[ -]?flash", mid)
+            if match:
+                version = tuple(map(int, match.group(1).split(".")))
+                name = re.sub(r"^Google:\s*", "", m.get("name", "")).strip()
+                candidates.append((version, name))
+        if candidates:
+            candidates.sort(key=lambda x: x[0], reverse=True)
+            return candidates[0][1]
+    except Exception as e:  # noqa: BLE001
+        print(f"  Gemini Flash model fetch failed: {e}", file=sys.stderr)
+    return "Gemini Flash"
+
+
 def write_json(name, data):
     path = os.path.join(OUT_DIR, f"{name}.json")
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
         f.write("\n")
-    print(f"  wrote {path} ({len(data)} items)")
+    print(f"  wrote {path} ({len(data) if isinstance(data, list) else 1} items)")
 
 
 def main():
@@ -130,11 +160,17 @@ def main():
             "bio": bio,
         })
 
+    # Models snapshot for latest model versions
+    models = {
+        "gemini_flash": get_latest_gemini_flash()
+    }
+
     # Only now that every fetch succeeded do we touch the files.
     os.makedirs(OUT_DIR, exist_ok=True)
     write_json("repos", repos)
     write_json("starred", starred)
     write_json("following", following)
+    write_json("models", models)
     print("Done.")
 
 

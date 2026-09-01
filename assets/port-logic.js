@@ -30,7 +30,7 @@ async function loadSnapshot(name) {
         const res = await fetch(`${DATA_BASE}/${name}.json`, { cache: 'no-cache' });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
-        snapshotCache[name] = (Array.isArray(data) && data.length) ? data : null;
+        snapshotCache[name] = data && (Array.isArray(data) ? data.length > 0 : Object.keys(data).length > 0) ? data : null;
     } catch (error) {
         console.warn(`[snapshot] ${name} unavailable, falling back to live API:`, error.message);
         snapshotCache[name] = null;
@@ -901,6 +901,51 @@ async function loadCoolPeople() {
     }
 }
 // ============================================
+// LATEST MODELS DYNAMIC RESOLUTION
+// ============================================
+
+async function updateLatestModels() {
+    const geminiLabel = document.getElementById('gemini-model-name');
+    if (!geminiLabel) return;
+
+    try {
+        const modelsData = await loadSnapshot('models');
+        if (modelsData && modelsData.gemini_flash) {
+            geminiLabel.textContent = modelsData.gemini_flash;
+            return;
+        }
+    } catch (_) {}
+
+    try {
+        const res = await fetch('https://openrouter.ai/api/v1/models');
+        if (!res.ok) return;
+        const json = await res.json();
+        const candidates = [];
+        for (const m of json.data || []) {
+            const mid = (m.id || '').toLowerCase();
+            if (!mid.startsWith('google/gemini') || !mid.includes('flash')) continue;
+            if (['lite', 'image', 'preview', 'batch', 'thinking'].some(k => mid.includes(k))) continue;
+            const match = mid.match(/gemini[ -]?(\d+(?:\.\d+)*)[ -]?flash/);
+            if (match) {
+                const parts = match[1].split('.').map(Number);
+                const name = (m.name || '').replace(/^Google:\s*/i, '').trim();
+                candidates.push({ parts, name });
+            }
+        }
+        if (candidates.length > 0) {
+            candidates.sort((a, b) => {
+                for (let i = 0; i < Math.max(a.parts.length, b.parts.length); i++) {
+                    const diff = (b.parts[i] || 0) - (a.parts[i] || 0);
+                    if (diff !== 0) return diff;
+                }
+                return 0;
+            });
+            geminiLabel.textContent = candidates[0].name;
+        }
+    } catch (_) {}
+}
+
+// ============================================
 // INITIALIZE EVERYTHING!
 // ============================================
 
@@ -913,7 +958,8 @@ async function init() {
         await Promise.allSettled([
             loadFeaturedProjects(),
             initializeSurprise(),
-            loadCoolPeople()
+            loadCoolPeople(),
+            updateLatestModels()
         ]);
 
         console.log('✅ Site fully loaded');
