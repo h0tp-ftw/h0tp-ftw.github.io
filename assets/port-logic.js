@@ -4,7 +4,17 @@
 
 const GITHUB_USERNAME = 'h0tp-ftw';
 const FEATURED_PROJECTS_COUNT = 6;
-const PORTFOLIO_CSV_URL = 'assets/portfolio-returns.csv';
+const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+function escapeHtml(value) {
+    return String(value).replace(/[&<>'"]/g, character => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+    })[character]);
+}
 
 // Static snapshots generated daily by .github/workflows/snapshot-github-data.yml.
 // Visitors read these instead of GitHub's unauthenticated API (60 req/hr/IP), so
@@ -36,9 +46,9 @@ function renderState(container, { icon = 'ℹ️', title = '', detail = '', onRe
     const panel = document.createElement('div');
     panel.className = 'loading-state state-panel';
     panel.innerHTML = `
-        <div class="state-icon" aria-hidden="true">${icon}</div>
-        <p class="state-title">${title}</p>
-        ${detail ? `<p class="state-detail">${detail}</p>` : ''}
+        <div class="state-icon" aria-hidden="true">${escapeHtml(icon)}</div>
+        <p class="state-title">${escapeHtml(title)}</p>
+        ${detail ? `<p class="state-detail">${escapeHtml(detail)}</p>` : ''}
     `;
     if (onRetry) {
         const btn = document.createElement('button');
@@ -95,13 +105,6 @@ function shuffleArray(array) {
     return shuffled;
 }
 
-function getProjectImpactHtml(repoName) {
-    // PROJECT_IMPACTS lives in assets/site-config.js (loaded before this file).
-    const impacts = (typeof PROJECT_IMPACTS !== 'undefined') ? PROJECT_IMPACTS : {};
-    const impactText = impacts[repoName.toLowerCase()] || '';
-    return impactText ? `<p class="project-impact">${impactText}</p>` : '';
-}
-
 // ============================================
 // SCROLL REVEAL & PARALLAX
 // ============================================
@@ -121,10 +124,17 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
+function observeAnimatedElement(element) {
+    if (reducedMotionQuery.matches) {
+        element.classList.add('visible');
+    } else {
+        observer.observe(element);
+    }
+}
+
 function initScrollAnimations() {
-    document.querySelectorAll('.fade-in-up, .fade-in-left, .fade-in-right').forEach(el => {
-        observer.observe(el);
-    });
+    document.querySelectorAll('.fade-in-up, .fade-in-left, .fade-in-right')
+        .forEach(observeAnimatedElement);
 }
 
 // Enhanced parallax with multiple layers
@@ -138,15 +148,22 @@ function initScrollAnimations() {
 const themeToggle = document.getElementById('theme-toggle');
 const html = document.documentElement;
 
-const savedTheme = localStorage.getItem('theme') || 'frappe';
+let savedTheme = html.getAttribute('data-theme') || 'frappe';
+try {
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme === 'latte' || storedTheme === 'frappe') savedTheme = storedTheme;
+} catch (_) {
+    // Keep the theme already applied in <head> when storage is unavailable.
+}
 html.setAttribute('data-theme', savedTheme);
 
 function updateTogglePosition() {
     const currentTheme = html.getAttribute('data-theme');
+    const isLight = currentTheme === 'latte';
     const slider = document.querySelector('.theme-slider');
-    if (slider) {
-        slider.classList.toggle('light-mode', currentTheme === 'latte');
-    }
+    if (slider) slider.classList.toggle('light-mode', isLight);
+    html.style.colorScheme = isLight ? 'light' : 'dark';
+    themeToggle.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
 }
 
 updateTogglePosition();
@@ -156,13 +173,12 @@ themeToggle.addEventListener('click', () => {
     const newTheme = currentTheme === 'frappe' ? 'latte' : 'frappe';
 
     html.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-    updateTogglePosition();
-
-    // Update chart if exists
-    if (window.portfolioChart) {
-        updateChartTheme();
+    try {
+        localStorage.setItem('theme', newTheme);
+    } catch (_) {
+        // Theme still works for this visit when storage is unavailable.
     }
+    updateTogglePosition();
 });
 
 // ============================================
@@ -178,13 +194,16 @@ navItems.forEach(item => {
         const section = document.getElementById(sectionId);
 
         if (section) {
-            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            section.scrollIntoView({
+                behavior: reducedMotionQuery.matches ? 'auto' : 'smooth',
+                block: 'start'
+            });
         }
     });
 });
 
 function updateActiveNav() {
-    const sections = ['hero', 'my-setup', 'featured-projects', 'surprise-section', 'portfolio-performance', 'cool-people'];
+    const sections = ['hero', 'my-setup', 'featured-projects', 'surprise-section', 'cool-people'];
 
     const scrollPosition = window.scrollY + 100;
 
@@ -197,10 +216,12 @@ function updateActiveNav() {
 
         if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
             navItems.forEach(item => {
-                if (item.dataset.section === sectionId) {
-                    item.classList.add('active');
+                const isActive = item.dataset.section === sectionId;
+                item.classList.toggle('active', isActive);
+                if (isActive) {
+                    item.setAttribute('aria-current', 'location');
                 } else {
-                    item.classList.remove('active');
+                    item.removeAttribute('aria-current');
                 }
             });
             break;
@@ -249,7 +270,11 @@ function typeText() {
     setTimeout(typeText, isDeleting ? deletingSpeed : typingSpeed);
 }
 
-setTimeout(typeText, 1000);
+if (reducedMotionQuery.matches) {
+    rotatingTextElement.textContent = ROTATING_WORDS[0];
+} else {
+    setTimeout(typeText, 1000);
+}
 
 // ============================================
 // GITHUB API
@@ -427,11 +452,11 @@ function formatNumber(num) {
 }
 
 function renderRepoName(fullName) {
-    if (!fullName.includes('/')) return `<span>${fullName}</span>`;
+    if (!fullName.includes('/')) return `<span>${escapeHtml(fullName)}</span>`;
     const [owner, name] = fullName.split('/');
     return `
-        <span class="repo-owner">${owner}/</span>
-        <span class="repo-title">${name}</span>
+        <span class="repo-owner">${escapeHtml(owner)}/</span>
+        <span class="repo-title">${escapeHtml(name)}</span>
     `;
 }
 // ============================================
@@ -495,12 +520,14 @@ async function loadFeaturedProjects() {
                 // Unified card template: owner avatar top-left + content below
                 const ownerLogin = repo.owner ? repo.owner.login : repo.full_name.split('/')[0];
                 const ownerAvatar = `https://github.com/${ownerLogin}.png?size=64`;
+                const cardLogo = customLogo || ownerAvatar;
+                const cardLogoAlt = customLogo ? `${repo.name} logo` : `${ownerLogin} avatar`;
                 const iconClass = getLanguageIcon(language);
 
                 card.innerHTML = `
                     <div class="project-top">
                         <div class="project-top-left">
-                            <img src="${ownerAvatar}" alt="${ownerLogin}" class="project-owner-avatar" loading="lazy" />
+                            <img src="${escapeHtml(cardLogo)}" alt="${escapeHtml(cardLogoAlt)}" class="project-owner-avatar" loading="lazy" />
                             <h3 class="project-name">
                                 ${renderRepoName(repo.full_name)}
                             </h3>
@@ -508,17 +535,16 @@ async function loadFeaturedProjects() {
                         <div class="project-stats">
                             <span class="stat">⭐ ${stars}</span>
                             <span class="stat">🍴 ${repo.forks_count}</span>
-                            <span class="stat"><i class="stat-lang-icon ${iconClass}"></i>${language}</span>
+                            <span class="stat"><i class="stat-lang-icon ${iconClass}"></i>${escapeHtml(language)}</span>
                         </div>
                     </div>
                     <div class="project-info">
-                        <p class="project-description">${description}</p>
-                        ${getProjectImpactHtml(repo.name)}
+                        <p class="project-description">${escapeHtml(description)}</p>
                     </div>
                 `;
 
                 container.appendChild(card);
-                observer.observe(card);
+                observeAnimatedElement(card);
             });
         };
 
@@ -575,346 +601,6 @@ async function loadFeaturedProjects() {
 }
 
 // ============================================
-// PORTFOLIO CHART WITH TOGGLE - 3 COLUMN CSV!
-// ============================================
-
-let portfolioChart = null;
-let portfolioData = null;
-let currentView = 'cumulative';
-
-async function loadPortfolioDataFromCSV() {
-    try {
-        const csvUrl = PORTFOLIO_CSV_URL;
-
-        console.log('📊 Loading CSV:', csvUrl);
-
-        const response = await fetch(csvUrl);
-
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-        }
-
-        const csvText = await response.text();
-        console.log('✓ CSV loaded:', csvText.length, 'characters');
-
-        const lines = csvText.split(/\r?\n/).filter(line => line.trim());
-        console.log('✓ Lines:', lines.length);
-
-        const dataLines = lines.slice(1);
-
-        const months = [];
-        const cumulativeReturns = [];
-        const periodReturns = [];
-
-        dataLines.forEach(line => {
-            const parts = line.split(',').map(p => p.trim());
-            if (parts.length < 3) return;
-
-            const month = parts[0];
-            const returnVal = parseFloat(parts[1]);
-            const periodVal = parseFloat(parts[2]);
-
-            let formattedMonth = month;
-            if (month.includes('-')) {
-                const [monthName, year] = month.split('-');
-                const fullYear = year.length === 2 ? '20' + year : year;
-                formattedMonth = `${monthName} ${fullYear}`;
-            }
-
-            months.push(formattedMonth);
-            cumulativeReturns.push(returnVal);
-            periodReturns.push(periodVal);
-        });
-
-        console.log(`✅ Loaded ${months.length} months: ${months[0]} to ${months[months.length - 1]}`);
-
-        return {
-            months: months,
-            cumulative: cumulativeReturns,
-            period: periodReturns
-        };
-
-    } catch (error) {
-        console.error('❌ Error loading CSV:', error);
-        return {
-            months: ["Oct 2024", "Nov 2024", "Dec 2024"],
-            cumulative: [0.0, 0.8, 2.3],
-            period: [0.0, 0.8, 1.5]
-        };
-    }
-}
-
-async function createPortfolioChart() {
-    const canvas = document.getElementById('portfolio-chart');
-
-    if (!canvas) {
-        console.log('Portfolio chart canvas not found');
-        return;
-    }
-
-    try {
-        portfolioData = await loadPortfolioDataFromCSV();
-
-        if (!portfolioData || portfolioData.months.length === 0) {
-            renderState(canvas.parentElement, { icon: '📈', title: 'No portfolio data yet', detail: 'Performance data will appear here.' });
-            return;
-        }
-
-        renderChart('cumulative');
-        setupToggleButton();
-
-        console.log('✅ Portfolio chart initialized');
-
-    } catch (error) {
-        console.error('Error creating portfolio chart:', error);
-        renderState(canvas.parentElement, {
-            icon: '⚠️',
-            title: "Couldn't load the chart",
-            detail: 'Please refresh the page to try again.'
-        });
-    }
-}
-
-function renderChart(viewType) {
-    const canvas = document.getElementById('portfolio-chart');
-    const theme = getChartTheme();
-
-    if (portfolioChart) {
-        portfolioChart.destroy();
-    }
-
-    const data = viewType === 'cumulative' ? portfolioData.cumulative : portfolioData.period;
-    const label = viewType === 'cumulative' ? 'Cumulative TWR (%)' : 'Period Return (%)';
-
-    const ctx = canvas.getContext('2d');
-
-    portfolioChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: portfolioData.months,
-            datasets: [{
-                label: label,
-                data: data,
-                borderColor: '#ca9ee6',
-                backgroundColor: function (context) {
-                    const chart = context.chart;
-                    const { ctx, chartArea, scales } = chart;
-                    if (!chartArea) return null;
-
-                    const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-
-                    // If scales are not ready yet, return a default or wait
-                    if (!scales || !scales.y) {
-                        return 'rgba(202, 158, 230, 0.2)'; // fallback
-                    }
-
-                    const yAxis = scales.y;
-                    // getPixelForValue returns the pixel location for a value
-                    const zeroPixel = yAxis.getPixelForValue(0);
-                    const top = chartArea.top;
-                    const bottom = chartArea.bottom;
-                    const height = bottom - top;
-
-                    // Calculate ratio where 0 is located from 0..1 (top..bottom)
-                    let zeroRatio = (zeroPixel - top) / height;
-
-                    // Clamp ratio to [0, 1]
-                    zeroRatio = Math.max(0, Math.min(1, zeroRatio));
-
-                    // Green for above 0 (#a6d189)
-                    gradient.addColorStop(0, 'rgba(166, 209, 137, 0.5)');
-                    gradient.addColorStop(zeroRatio, 'rgba(166, 209, 137, 0.05)');
-
-                    // Red for below 0 (#e78284)
-                    gradient.addColorStop(zeroRatio, 'rgba(231, 130, 132, 0.05)');
-                    gradient.addColorStop(1, 'rgba(231, 130, 132, 0.5)');
-
-                    return gradient;
-                },
-                borderWidth: 3,
-                fill: true,
-                tension: 0.4,
-                pointRadius: 5,
-                pointHoverRadius: 8,
-                pointBackgroundColor: '#ca9ee6',
-                pointBorderColor: '#ffffff',
-                pointBorderWidth: 2,
-                pointHoverBackgroundColor: '#f4b8e4',
-                pointHoverBorderWidth: 3
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            aspectRatio: 2.5,
-            interaction: {
-                intersect: false,
-                mode: 'index'
-            },
-            plugins: {
-                legend: {
-                    display: true,
-                    labels: {
-                        color: theme.textColor,
-                        font: {
-                            size: 14,
-                            weight: '600'
-                        }
-                    }
-                },
-                tooltip: {
-                    backgroundColor: theme.tooltipBg,
-                    titleColor: theme.textColor,
-                    bodyColor: theme.textColor,
-                    borderColor: theme.tooltipBorder,
-                    borderWidth: 2,
-                    padding: 12,
-                    displayColors: false,
-                    callbacks: {
-                        label: function (context) {
-                            const prefix = viewType === 'cumulative' ? 'TWR' : 'Period';
-                            return `${prefix}: ${context.parsed.y.toFixed(2)}%`;
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    grid: {
-                        color: theme.gridColor,
-                        lineWidth: 1
-                    },
-                    ticks: {
-                        color: theme.textColor,
-                        maxRotation: 45,
-                        minRotation: 0
-                    }
-                },
-                y: {
-                    beginAtZero: viewType === 'cumulative',
-                    grid: {
-                        color: theme.gridColor,
-                        lineWidth: 1
-                    },
-                    ticks: {
-                        color: theme.textColor,
-                        callback: function (value) {
-                            return value + '%';
-                        }
-                    }
-                }
-            },
-            animation: {
-                duration: 1000,
-                easing: 'easeInOutQuart'
-            }
-        }
-    });
-
-    updateStatsDisplay(viewType);
-    updateToggleButton(viewType);
-
-    window.portfolioChart = portfolioChart;
-}
-
-function getChartTheme() {
-    const theme = html.getAttribute('data-theme');
-    const isDark = theme === 'frappe';
-
-    return {
-        textColor: isDark ? '#c6d0f5' : '#4c4f69',
-        gridColor: isDark ? '#414559' : '#dce0e8',
-        tooltipBg: isDark ? '#303446' : '#eff1f5',
-        tooltipBorder: isDark ? '#ca9ee6' : '#8839ef'
-    };
-}
-
-function updateStatsDisplay(viewType) {
-    const statsContainer = document.getElementById('chart-stats-display');
-    if (!statsContainer) return;
-
-    const data = viewType === 'cumulative' ? portfolioData.cumulative : portfolioData.period;
-    const currentValue = data[data.length - 1];
-
-    if (viewType === 'cumulative') {
-        statsContainer.innerHTML = `
-            <div class="stat-item">
-                <span class="stat-label">Current Return</span>
-                <span class="stat-value">${currentValue.toFixed(2)}%</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Time Period</span>
-                <span class="stat-value">${portfolioData.months[0]} - ${portfolioData.months[portfolioData.months.length - 1]}</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Months Tracked</span>
-                <span class="stat-value">${portfolioData.months.length}</span>
-            </div>
-        `;
-    } else {
-        const maxValue = Math.max(...data);
-        const minValue = Math.min(...data);
-        const avgValue = data.reduce((a, b) => a + b, 0) / data.length;
-
-        statsContainer.innerHTML = `
-            <div class="stat-item">
-                <span class="stat-label">Best Month</span>
-                <span class="stat-value">+${maxValue.toFixed(2)}%</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Worst Month</span>
-                <span class="stat-value">${minValue.toFixed(2)}%</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Avg Month</span>
-                <span class="stat-value">${avgValue.toFixed(2)}%</span>
-            </div>
-        `;
-    }
-}
-
-function setupToggleButton() {
-    const toggleBtn = document.getElementById('chart-toggle-btn');
-    if (!toggleBtn) {
-        console.warn('⚠️ Toggle button not found!');
-        return;
-    }
-
-    console.log('✓ Setting up toggle button');
-
-    toggleBtn.addEventListener('click', () => {
-        currentView = currentView === 'cumulative' ? 'period' : 'cumulative';
-        console.log(`🔄 Toggled to: ${currentView}`);
-        renderChart(currentView);
-    });
-}
-
-function updateToggleButton(viewType) {
-    const toggleBtn = document.getElementById('chart-toggle-btn');
-    if (!toggleBtn) return;
-
-    if (viewType === 'cumulative') {
-        toggleBtn.innerHTML = `
-            <svg class="btn-svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M3 13h2v8H3v-8zm4-6h2v14H7V7zm4 10h2v4h-2v-4zm4-6h2v10h-2V11zm4-4h2v14h-2V7z"/>
-            </svg>
-            <span>Show Period Returns</span>
-        `;
-    } else {
-        toggleBtn.innerHTML = `
-            <svg class="btn-svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
-            </svg>
-            <span>Show Cumulative TWR</span>
-        `;
-    }
-}
-
-function updateChartTheme() {
-    if (!portfolioChart || !portfolioData) return;
-    renderChart(currentView);
-}
-// ============================================
 // 3 RANDOM STARRED PROJECTS
 // ============================================
 
@@ -947,8 +633,7 @@ surpriseBtn.addEventListener('click', () => {
 });
 
 function getRandomProjects(count) {
-    const shuffled = [...starredProjects].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, Math.min(count, starredProjects.length));
+    return shuffleArray(starredProjects).slice(0, Math.min(count, starredProjects.length));
 }
 
 function display5RandomCards(projects) {
@@ -972,24 +657,23 @@ function display5RandomCards(projects) {
         card.innerHTML = `
             <div class="project-top">
                 <div class="project-top-left">
-                    <img src="${ownerAvatar}" alt="${ownerLogin}" class="project-owner-avatar" loading="lazy" />
+                    <img src="${ownerAvatar}" alt="${escapeHtml(ownerLogin)}" class="project-owner-avatar" loading="lazy" />
                     <h3 class="project-name">
                         ${renderRepoName(repo.full_name)}
                     </h3>
                 </div>
                 <div class="project-stats">
                     <span class="stat">⭐ ${stars}</span>
-                    <span class="stat"><i class="stat-lang-icon ${iconClass}"></i>${language}</span>
+                    <span class="stat"><i class="stat-lang-icon ${iconClass}"></i>${escapeHtml(language)}</span>
                 </div>
             </div>
             <div class="project-info">
-                <p class="project-description">${description}</p>
-                ${getProjectImpactHtml(repo.name)}
+                <p class="project-description">${escapeHtml(description)}</p>
             </div>
         `;
 
         surpriseCardsGrid.appendChild(card);
-        observer.observe(card);
+        observeAnimatedElement(card);
     });
 }
 
@@ -1005,6 +689,9 @@ let allStarsLoaded = false;
 
 showAllStarsBtn.addEventListener('click', async () => {
     isStarsExpanded = !isStarsExpanded;
+    showAllStarsBtn.setAttribute('aria-expanded', String(isStarsExpanded));
+    allStarsInline.setAttribute('aria-hidden', String(!isStarsExpanded));
+    allStarsInline.toggleAttribute('inert', !isStarsExpanded);
 
     if (isStarsExpanded) {
         allStarsInline.classList.remove('collapsed');
@@ -1030,6 +717,7 @@ showAllStarsBtn.addEventListener('click', async () => {
 // ============================================
 
 let allStars = [];
+let activeStars = [];
 let displayedStars = 0;
 const STARS_PER_PAGE = 12;
 
@@ -1042,8 +730,10 @@ async function loadAllStars() {
         return;
     }
 
+    activeStars = allStars;
     const languages = [...new Set(allStars.map(r => r.language).filter(Boolean))].sort();
     const languageFilter = document.getElementById('language-filter');
+    languageFilter.replaceChildren(new Option('All Languages', ''));
     languages.forEach(lang => {
         const option = document.createElement('option');
         option.value = lang;
@@ -1055,9 +745,19 @@ async function loadAllStars() {
     displayMoreStars();
 }
 
-function displayMoreStars(filtered = allStars) {
+function displayMoreStars(filtered = activeStars) {
     const container = document.getElementById('stars-grid');
     const loadMoreBtn = document.getElementById('load-more');
+
+    if (filtered.length === 0) {
+        renderState(container, {
+            icon: '🔎',
+            title: 'No matching projects',
+            detail: 'Try a different search or language filter.'
+        });
+        loadMoreBtn.style.display = 'none';
+        return;
+    }
 
     const toDisplay = filtered.slice(displayedStars, displayedStars + STARS_PER_PAGE);
 
@@ -1078,24 +778,23 @@ function displayMoreStars(filtered = allStars) {
         card.innerHTML = `
             <div class="project-top">
                 <div class="project-top-left">
-                    <img src="${ownerAvatar}" alt="${ownerLogin}" class="project-owner-avatar" loading="lazy" />
+                    <img src="${ownerAvatar}" alt="${escapeHtml(ownerLogin)}" class="project-owner-avatar" loading="lazy" />
                     <h3 class="project-name">
                         ${renderRepoName(repo.full_name)}
                     </h3>
                 </div>
                 <div class="project-stats">
                     <span class="stat">⭐ ${stars}</span>
-                    <span class="stat"><i class="stat-lang-icon ${iconClass}"></i>${language}</span>
+                    <span class="stat"><i class="stat-lang-icon ${iconClass}"></i>${escapeHtml(language)}</span>
                 </div>
             </div>
             <div class="project-info">
-                <p class="project-description">${description}</p>
-                ${getProjectImpactHtml(repo.name)}
+                <p class="project-description">${escapeHtml(description)}</p>
             </div>
         `;
 
         container.appendChild(card);
-        observer.observe(card);
+        observeAnimatedElement(card);
     });
 
     displayedStars += toDisplay.length;
@@ -1115,7 +814,7 @@ function filterStars() {
     const searchTerm = searchInput.value.toLowerCase();
     const selectedLang = languageFilter.value;
 
-    const filtered = allStars.filter(repo => {
+    activeStars = allStars.filter(repo => {
         const matchesSearch = !searchTerm ||
             repo.name.toLowerCase().includes(searchTerm) ||
             repo.full_name.toLowerCase().includes(searchTerm) ||
@@ -1128,7 +827,7 @@ function filterStars() {
 
     displayedStars = 0;
     document.getElementById('stars-grid').innerHTML = '';
-    displayMoreStars(filtered);
+    displayMoreStars(activeStars);
 }
 
 searchInput.addEventListener('input', filterStars);
@@ -1164,16 +863,16 @@ async function loadCoolPeople() {
 
             card.innerHTML = `
                 <div class="person-avatar">
-                    <img src="${user.avatar_url}" alt="${user.login}" loading="lazy" />
+                    <img src="${escapeHtml(user.avatar_url)}" alt="${escapeHtml(`${user.login} avatar`)}" loading="lazy" />
                 </div>
-                <div class="person-name">${user.login}</div>
+                <div class="person-name">${escapeHtml(user.login)}</div>
                 <div class="person-bio"></div>
             `;
             // Set bio via textContent so profile data can't inject markup.
             card.querySelector('.person-bio').textContent = user.bio || user.name || user.login;
 
             container.appendChild(card);
-            observer.observe(card);
+            observeAnimatedElement(card);
         });
 
         // Snapshot data already carries bios; only the live-API fallback needs lookups.
@@ -1234,7 +933,6 @@ async function init() {
         await Promise.allSettled([
             loadFeaturedProjects(),
             initializeSurprise(),
-            createPortfolioChart(),
             loadCoolPeople()
         ]);
 
@@ -1260,7 +958,7 @@ if (document.readyState === 'loading') {
 // Initialize tilt effects — skip on touch devices for performance
 function initCoolFeatures() {
     const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    if (isTouchDevice) return;
+    if (isTouchDevice || reducedMotionQuery.matches) return;
 
     const tiltElements = document.querySelectorAll('.project-card, .profile-image');
     tiltElements.forEach(el => {
