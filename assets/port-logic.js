@@ -1675,8 +1675,8 @@ function initClawdMascot() {
     if (!clawd) return;
 
     const link = clawd.closest('.clawd-mascot-link') || clawd.parentElement;
-    const idleSrc = 'assets/clawd-idle.gif?v=20260902d';
-    const jumpSrc = 'assets/clawd-jump.gif?v=20260902d';
+    const idleSrc = 'assets/clawd-idle.gif?v=20260902f';
+    const jumpSrc = 'assets/clawd-jump.gif?v=20260902f';
 
     // Preload animation states into browser cache
     [idleSrc, jumpSrc].forEach(src => {
