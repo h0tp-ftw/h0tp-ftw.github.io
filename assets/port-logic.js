@@ -1704,9 +1704,11 @@ function initClawdMascot() {
     };
 
     clawd.addEventListener('mouseenter', () => {
-        if (!clawd.dataset.jumping) {
-            clawd.src = walkSrc;
-        }
+        window.triggerClawdJump(true);
+    });
+
+    clawd.parentElement?.addEventListener('mouseenter', () => {
+        window.triggerClawdJump(true);
     });
 
     clawd.addEventListener('mouseleave', () => {
@@ -1719,6 +1721,7 @@ function initClawdMascot() {
         window.triggerClawdJump(true);
     });
 }
+
 
 
 
