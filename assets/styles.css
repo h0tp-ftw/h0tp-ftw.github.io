@@ -605,30 +605,41 @@ h6 {
   letter-spacing: -0.02em;
 }
 
-.wave-emoji {
+/* Pixelated Art Utility */
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* Clawd Mascot in Hero Title */
+.clawd-mascot-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  vertical-align: middle;
+  margin-left: 0.35rem;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+}
+
+.clawd-mascot-link:hover {
+  transform: scale(1.18) translateY(-3px);
+}
+
+.clawd-mascot-img {
+  height: clamp(34px, 5.5vw, 44px);
+  width: auto;
   display: inline-block;
-  transform-origin: 70% 70%;
-  animation: waveHand 2.2s infinite ease-in-out;
-  cursor: default;
-  -webkit-text-fill-color: initial !important;
-  color: initial !important;
-  transition: transform 0.2s ease;
+  vertical-align: middle;
+  filter: drop-shadow(0 4px 12px rgba(217, 119, 87, 0.35));
+  transition: filter 0.2s ease;
 }
 
-.wave-emoji:hover {
-  animation: waveHand 0.75s infinite ease-in-out;
+.clawd-mascot-link:hover .clawd-mascot-img {
+  filter: drop-shadow(0 6px 16px rgba(217, 119, 87, 0.55));
 }
 
-@keyframes waveHand {
-  0% { transform: rotate(0deg); }
-  10% { transform: rotate(14deg); }
-  20% { transform: rotate(-8deg); }
-  30% { transform: rotate(14deg); }
-  40% { transform: rotate(-4deg); }
-  50% { transform: rotate(10deg); }
-  60% { transform: rotate(0deg); }
-  100% { transform: rotate(0deg); }
-}
 
 
 .tagline {

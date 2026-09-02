@@ -1654,6 +1654,7 @@ async function init() {
         initScrollAnimations();
         initHeroTerminal();
         initLanyardPresence();
+        initClawdMascot();
 
         await Promise.allSettled([
             loadFeaturedProjects(),
@@ -1667,6 +1668,34 @@ async function init() {
         console.error('❌ Error during initialization:', error);
     }
 }
+
+// Clawd pixel mascot dynamic animations (Idle / Crawl / Jump)
+function initClawdMascot() {
+    const clawd = document.getElementById('clawd-mascot');
+    if (!clawd) return;
+
+    const idleSrc = 'assets/clawd-idle.gif';
+    const walkSrc = 'assets/clawd-walk.gif';
+    const jumpSrc = 'assets/clawd-jump.gif';
+
+    clawd.addEventListener('mouseenter', () => {
+        if (!clawd.dataset.jumping) clawd.src = walkSrc;
+    });
+
+    clawd.addEventListener('mouseleave', () => {
+        if (!clawd.dataset.jumping) clawd.src = idleSrc;
+    });
+
+    clawd.parentElement?.addEventListener('click', (e) => {
+        clawd.dataset.jumping = 'true';
+        clawd.src = jumpSrc;
+        setTimeout(() => {
+            delete clawd.dataset.jumping;
+            clawd.src = clawd.matches(':hover') ? walkSrc : idleSrc;
+        }, 900);
+    });
+}
+
 
 
 if (document.readyState === 'loading') {
