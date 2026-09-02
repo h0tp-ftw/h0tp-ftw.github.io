@@ -142,8 +142,16 @@ function initScrollAnimations() {
 // Parallax effects removed to eliminate lag
 
 // ============================================
-// THEME TOGGLE
+// THEME TOGGLE (4 CATPPUCCIN FLAVORS)
 // ============================================
+
+const THEME_CYCLE = ['frappe', 'macchiato', 'mocha', 'latte'];
+const THEME_NAMES = {
+    'frappe': '☕ Frappé',
+    'macchiato': '🥛 Macchiato',
+    'mocha': '🍫 Mocha',
+    'latte': '☀️ Latte'
+};
 
 const themeToggle = document.getElementById('theme-toggle');
 const html = document.documentElement;
@@ -151,34 +159,44 @@ const html = document.documentElement;
 let savedTheme = html.getAttribute('data-theme') || 'frappe';
 try {
     const storedTheme = localStorage.getItem('theme');
-    if (storedTheme === 'latte' || storedTheme === 'frappe') savedTheme = storedTheme;
+    if (THEME_CYCLE.includes(storedTheme)) savedTheme = storedTheme;
 } catch (_) {
     // Keep the theme already applied in <head> when storage is unavailable.
 }
 html.setAttribute('data-theme', savedTheme);
 
+function applyTheme(themeName) {
+    if (!THEME_CYCLE.includes(themeName)) return;
+    html.setAttribute('data-theme', themeName);
+    try {
+        localStorage.setItem('theme', themeName);
+    } catch (_) {
+        // Fallback for private browsing
+    }
+    updateTogglePosition();
+}
+
 function updateTogglePosition() {
-    const currentTheme = html.getAttribute('data-theme');
+    const currentTheme = html.getAttribute('data-theme') || 'frappe';
     const isLight = currentTheme === 'latte';
-    const slider = document.querySelector('.theme-slider');
-    if (slider) slider.classList.toggle('light-mode', isLight);
     html.style.colorScheme = isLight ? 'light' : 'dark';
-    themeToggle.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
+
+    const themeButtons = document.querySelectorAll('.theme-btn');
+    themeButtons.forEach(btn => {
+        const val = btn.getAttribute('data-theme-val');
+        const isActive = val === currentTheme;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-checked', isActive ? 'true' : 'false');
+    });
 }
 
 updateTogglePosition();
 
-themeToggle.addEventListener('click', () => {
-    const currentTheme = html.getAttribute('data-theme');
-    const newTheme = currentTheme === 'frappe' ? 'latte' : 'frappe';
-
-    html.setAttribute('data-theme', newTheme);
-    try {
-        localStorage.setItem('theme', newTheme);
-    } catch (_) {
-        // Theme still works for this visit when storage is unavailable.
-    }
-    updateTogglePosition();
+document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-theme-val');
+        if (target) applyTheme(target);
+    });
 });
 
 // ============================================
@@ -946,6 +964,729 @@ async function updateLatestModels() {
 }
 
 // ============================================
+// INTERACTIVE HERO TERMINAL CLI ENGINE
+// ============================================
+
+const terminalState = {
+    history: [],
+    historyIndex: -1,
+    siteStartTime: Date.now()
+};
+
+const COMMANDS_LIST = [
+    'help',
+    'neofetch',
+    'whoami',
+    'skills',
+    'projects',
+    'setup',
+    'stars',
+    'status',
+    'theme',
+    'discord',
+    'spotify',
+    'matrix',
+    'cat',
+    'sudo',
+    'echo',
+    'date',
+    'clear',
+    'exit'
+];
+
+function initHeroTerminal() {
+    const terminalWindow = document.getElementById('terminal-window');
+    const terminalBody = document.getElementById('terminal-body');
+    const cliInput = document.getElementById('terminal-cli-input');
+    const dotRed = document.querySelector('.terminal-dot.red');
+    const dotYellow = document.querySelector('.terminal-dot.yellow');
+    const dotGreen = document.querySelector('.terminal-dot.green');
+
+    if (!cliInput || !terminalBody) return;
+
+    // Focus input on clicking anywhere in terminal
+    if (terminalWindow) {
+        terminalWindow.addEventListener('click', (e) => {
+            if (window.getSelection().toString().length === 0) {
+                cliInput.focus();
+            }
+        });
+    }
+
+    // Window controls easter eggs
+    if (dotRed) {
+        dotRed.addEventListener('click', (e) => {
+            e.stopPropagation();
+            appendTerminalHistory('exit', '<span style="color: var(--ctp-red);">Terminal closed. Type anything to restart session.</span>');
+            scrollTerminalToBottom();
+        });
+    }
+    if (dotYellow) {
+        dotYellow.addEventListener('click', (e) => {
+            e.stopPropagation();
+            appendTerminalHistory('clear', '');
+            document.getElementById('terminal-output').innerHTML = '';
+            scrollTerminalToBottom();
+        });
+    }
+    if (dotGreen) {
+        dotGreen.addEventListener('click', (e) => {
+            e.stopPropagation();
+            executeTerminalCommand('neofetch');
+            scrollTerminalToBottom();
+        });
+    }
+
+    cliInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const rawCmd = cliInput.value.trim();
+            if (rawCmd) {
+                terminalState.history.push(rawCmd);
+                terminalState.historyIndex = terminalState.history.length;
+                executeTerminalCommand(rawCmd);
+            } else {
+                appendTerminalHistory('', '');
+            }
+            cliInput.value = '';
+            scrollTerminalToBottom();
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (terminalState.history.length > 0) {
+                if (terminalState.historyIndex > 0) {
+                    terminalState.historyIndex--;
+                }
+                cliInput.value = terminalState.history[terminalState.historyIndex] || '';
+            }
+        } else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (terminalState.history.length > 0) {
+                if (terminalState.historyIndex < terminalState.history.length - 1) {
+                    terminalState.historyIndex++;
+                    cliInput.value = terminalState.history[terminalState.historyIndex] || '';
+                } else {
+                    terminalState.historyIndex = terminalState.history.length;
+                    cliInput.value = '';
+                }
+            }
+        } else if (e.key === 'Tab') {
+            e.preventDefault();
+            handleTabCompletion(cliInput);
+        }
+    });
+}
+
+function handleTabCompletion(inputEl) {
+    const currentVal = inputEl.value;
+    const parts = currentVal.trimStart().split(' ');
+
+    if (parts.length === 1) {
+        const query = parts[0].toLowerCase();
+        const matches = COMMANDS_LIST.filter(cmd => cmd.startsWith(query));
+        if (matches.length === 1) {
+            inputEl.value = matches[0] + ' ';
+        } else if (matches.length > 1) {
+            appendTerminalHistory(currentVal, `<div style="color: var(--ctp-subtext0); font-size: 0.84rem;">Suggestions: ${matches.join('  ')}</div>`);
+            scrollTerminalToBottom();
+        }
+    } else if (parts.length === 2) {
+        const sub = parts[0].toLowerCase();
+        const arg = parts[1].toLowerCase();
+        if (sub === 'cat') {
+            const files = Object.keys(window.TERMINAL_FILES || {});
+            const matches = files.filter(f => f.toLowerCase().startsWith(arg));
+            if (matches.length === 1) {
+                inputEl.value = `cat ${matches[0]}`;
+            } else if (matches.length > 1) {
+                appendTerminalHistory(currentVal, `<div style="color: var(--ctp-subtext0); font-size: 0.84rem;">Files: ${matches.join('  ')}</div>`);
+                scrollTerminalToBottom();
+            }
+        } else if (sub === 'theme') {
+            const themes = THEME_CYCLE;
+            const matches = themes.filter(t => t.startsWith(arg));
+            if (matches.length === 1) {
+                inputEl.value = `theme ${matches[0]}`;
+            } else if (matches.length > 1) {
+                appendTerminalHistory(currentVal, `<div style="color: var(--ctp-subtext0); font-size: 0.84rem;">Themes: ${matches.join('  ')}</div>`);
+                scrollTerminalToBottom();
+            }
+        }
+    }
+}
+
+function appendTerminalHistory(command, resultHtml) {
+    const output = document.getElementById('terminal-output');
+    if (!output) return;
+
+    if (command) {
+        const entry = document.createElement('div');
+        entry.className = 'terminal-history-entry';
+        entry.innerHTML = `<span class="terminal-user">h0tp</span>@<span class="terminal-prompt">portfolio</span>:<span class="terminal-path">~</span>$ <span class="terminal-cmd-text">${escapeHtml(command)}</span>`;
+        output.appendChild(entry);
+    }
+
+    if (resultHtml) {
+        const result = document.createElement('div');
+        result.className = 'terminal-cmd-result';
+        result.innerHTML = resultHtml;
+        output.appendChild(result);
+    }
+}
+
+function scrollTerminalToBottom() {
+    const body = document.getElementById('terminal-body');
+    if (body) {
+        requestAnimationFrame(() => {
+            body.scrollTop = body.scrollHeight;
+        });
+    }
+}
+
+function executeTerminalCommand(raw) {
+    const tokens = raw.trim().split(/\s+/);
+    const cmd = tokens[0].toLowerCase();
+    const args = tokens.slice(1);
+
+    switch (cmd) {
+        case 'help': {
+            const helpHtml = `
+                <div style="margin-bottom: 0.4rem; color: var(--ctp-peach); font-weight: 600;">Available Commands:</div>
+                <div class="terminal-help-table">
+                    <div><span class="terminal-cmd-tag">neofetch</span></div><div>Display system stats & portfolio info</div>
+                    <div><span class="terminal-cmd-tag">whoami</span></div><div>Display developer bio & background</div>
+                    <div><span class="terminal-cmd-tag">skills</span></div><div>List technical capabilities & stack</div>
+                    <div><span class="terminal-cmd-tag">projects</span></div><div>List featured open-source repositories</div>
+                    <div><span class="terminal-cmd-tag">setup</span></div><div>View development environment tools</div>
+                    <div><span class="terminal-cmd-tag">stars</span></div><div>Overview of starred GitHub repositories</div>
+                    <div><span class="terminal-cmd-tag">theme &lt;name&gt;</span></div><div>Switch theme (frappe, macchiato, mocha, latte)</div>
+                    <div><span class="terminal-cmd-tag">discord</span></div><div>Check live Discord status & activity</div>
+                    <div><span class="terminal-cmd-tag">spotify</span></div><div>View currently playing track</div>
+                    <div><span class="terminal-cmd-tag">matrix</span></div><div>Enter the matrix rain simulation</div>
+                    <div><span class="terminal-cmd-tag">cat &lt;file&gt;</span></div><div>Read file (status.txt, skills.txt, about.md, contact.txt, setup.txt)</div>
+                    <div><span class="terminal-cmd-tag">sudo &lt;cmd&gt;</span></div><div>Execute command with elevated privileges</div>
+                    <div><span class="terminal-cmd-tag">date</span></div><div>Print current date and time</div>
+                    <div><span class="terminal-cmd-tag">clear</span></div><div>Clear terminal output</div>
+                </div>
+            `;
+            appendTerminalHistory(raw, helpHtml);
+            break;
+        }
+
+        case 'neofetch': {
+            const currentTheme = html.getAttribute('data-theme') || 'frappe';
+            const uptimeMinutes = Math.floor((Date.now() - terminalState.siteStartTime) / 60000);
+            const uptimeSeconds = Math.floor(((Date.now() - terminalState.siteStartTime) % 60000) / 1000);
+            const uptimeStr = uptimeMinutes > 0 ? `${uptimeMinutes}m ${uptimeSeconds}s` : `${uptimeSeconds}s`;
+
+            const colors = ['#ca9ee6', '#8caaee', '#81c8be', '#a6d189', '#e5c890', '#ef9f76', '#ea999c', '#f2d5cf'];
+            const dotsHtml = colors.map(c => `<span class="neofetch-color-dot" style="background: ${c};"></span>`).join('');
+
+            const neofetchHtml = `
+                <div class="terminal-neofetch">
+                    <div class="terminal-neofetch-logo">
+                        <div class="nyan-anim-box" aria-label="Animated Nyan Cat">
+                            <div class="nyan-frame nyan-frame-a">
+<span class="nyan-star nyan-s1">★</span>  <span class="nyan-star nyan-s2">✦</span>   <span class="nyan-star nyan-s3">★</span>
+<span class="nyan-r1">~-~-~-~-~</span>   <span class="nyan-cat">/\\_/\\</span>
+<span class="nyan-r2">~-~-~-~-~</span>  <span class="nyan-face">( o.o)</span><span class="nyan-pop">[::•.::]</span><span class="nyan-tail">~</span>
+<span class="nyan-r3">~-~-~-~-~</span>   <span class="nyan-paws">(")_(")</span>
+<span class="nyan-r4">~-~-~-~-~</span>
+<span class="nyan-r5">~-~-~-~-~</span>
+<span class="nyan-r6">~-~-~-~-~</span>
+                            </div>
+                            <div class="nyan-frame nyan-frame-b">
+  <span class="nyan-star nyan-s2">✦</span>   <span class="nyan-star nyan-s3">★</span>   <span class="nyan-star nyan-s1">✦</span>
+<span class="nyan-r1">-_-_-_-_-</span>    <span class="nyan-cat">/\\_/\\</span>
+<span class="nyan-r2">-_-_-_-_-</span>  <span class="nyan-face">( ^.^)</span><span class="nyan-pop">[::.•::]</span><span class="nyan-tail">^</span>
+<span class="nyan-r3">-_-_-_-_-</span>    <span class="nyan-paws">(") (")</span>
+<span class="nyan-r4">-_-_-_-_-</span>
+<span class="nyan-r5">-_-_-_-_-</span>
+<span class="nyan-r6">-_-_-_-_-</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="terminal-neofetch-info">
+                        <div style="font-weight: bold; color: var(--accent); margin-bottom: 0.25rem;">h0tp@portfolio</div>
+                        <div><span class="neofetch-key">OS:</span> <span class="neofetch-val">Windows 11 / Ubuntu (WSL2)</span></div>
+                        <div><span class="neofetch-key">Host:</span> <span class="neofetch-val">h0tp-ftw.github.io (Static zero-build)</span></div>
+                        <div><span class="neofetch-key">Uptime:</span> <span class="neofetch-val">${uptimeStr}</span></div>
+                        <div><span class="neofetch-key">Shell:</span> <span class="neofetch-val">zsh 5.9 / Antigravity CLI</span></div>
+                        <div><span class="neofetch-key">Theme:</span> <span class="neofetch-val">Catppuccin ${escapeHtml(currentTheme)}</span></div>
+                        <div><span class="neofetch-key">AI Stack:</span> <span class="neofetch-val">Antigravity, Claude Code, Codex, Gemini</span></div>
+                        <div><span class="neofetch-key">Flagship:</span> <span class="neofetch-val">Ankimon (66★)</span></div>
+                        <div class="neofetch-palette">${dotsHtml}</div>
+                    </div>
+                </div>
+            `;
+            appendTerminalHistory(raw, neofetchHtml);
+            break;
+        }
+
+        case 'whoami':
+        case 'bio': {
+            appendTerminalHistory(raw, `
+                <div style="color: var(--ctp-text);">
+                    <strong>h0tp-ftw</strong> — FOSS developer and AI enthusiast.<br>
+                    Focusing on autonomous agent systems, full-stack tools, computational biology, and cybersecurity.
+                </div>
+            `);
+            break;
+        }
+
+        case 'skills': {
+            appendTerminalHistory(raw, `
+                <div style="line-height: 1.6;">
+                    <div>🤖 <strong style="color: var(--ctp-mauve);">Agentic AI & ML/RL:</strong> Autonomous agents, Claude Code, Codex, Antigravity, PyTorch, Prompt Architecture</div>
+                    <div>🌐 <strong style="color: var(--ctp-blue);">Full-Stack:</strong> TypeScript, JavaScript, Python, Node.js, Fastify, HTML5, CSS3/Tailwind</div>
+                    <div>🧬 <strong style="color: var(--ctp-teal);">Computational Biology:</strong> Bioinformatics tools, genomic sequencing pipelines</div>
+                    <div>🔒 <strong style="color: var(--ctp-red);">Cybersecurity:</strong> Security tooling, reverse engineering, defensive hardening</div>
+                </div>
+            `);
+            break;
+        }
+
+        case 'projects': {
+            const repos = myReposCache || [];
+            if (repos.length > 0) {
+                const listHtml = repos.slice(0, 6).map(r => `
+                    <div style="margin-bottom: 0.35rem;">
+                        <a href="${escapeHtml(r.html_url)}" target="_blank" rel="noopener" style="color: var(--accent); font-weight: 600; text-decoration: underline;">${escapeHtml(r.name)}</a>
+                        <span style="color: var(--ctp-yellow); font-size: 0.85rem;">★ ${r.stargazers_count}</span>
+                        <span style="color: var(--ctp-subtext0); font-size: 0.85rem;">(${escapeHtml(r.language || 'Code')})</span>
+                        <div style="color: var(--ctp-subtext1); font-size: 0.84rem;">${escapeHtml(r.description || 'No description provided.')}</div>
+                    </div>
+                `).join('');
+                appendTerminalHistory(raw, listHtml);
+            } else {
+                appendTerminalHistory(raw, `
+                    <div>Featured projects: <a href="https://github.com/h0tp-ftw/ankimon" target="_blank" rel="noopener" style="color: var(--accent);">ankimon (66★)</a>, <a href="https://github.com/h0tp-ftw/anki-vscode" target="_blank" rel="noopener" style="color: var(--accent);">anki-vscode (13★)</a>, <a href="https://github.com/h0tp-ftw/anki-prettify" target="_blank" rel="noopener" style="color: var(--accent);">anki-prettify (2★)</a></div>
+                `);
+            }
+            break;
+        }
+
+        case 'setup': {
+            appendTerminalHistory(raw, `
+                <div style="line-height: 1.6;">
+                    <div>💻 <strong>OS:</strong> Windows 11 Pro & Ubuntu (WSL2)</div>
+                    <div>⚡ <strong>Editors:</strong> Antigravity, Claude Code, Codex, VS Code</div>
+                    <div>🧠 <strong>AI Engines:</strong> Claude Opus 4.6, Gemini Flash, Perplexity</div>
+                </div>
+            `);
+            break;
+        }
+
+        case 'stars': {
+            const stars = starredReposCache || [];
+            const count = stars.length > 0 ? stars.length : '100+';
+            appendTerminalHistory(raw, `
+                <div>Starred Repositories: <strong style="color: var(--ctp-yellow);">${count} total stars</strong></div>
+                <div style="color: var(--ctp-subtext0); font-size: 0.85rem; margin-top: 0.2rem;">Use the "Discover Starred Projects" section or the "Surprise Me!" button below to explore them!</div>
+            `);
+            break;
+        }
+
+        case 'status': {
+            appendTerminalHistory(raw, `
+                <div>Status: <span style="color: var(--ctp-green);">Online & Building</span></div>
+                <div>Focus: Autonomous Agent Tooling & ML Systems</div>
+            `);
+            break;
+        }
+
+        case 'theme': {
+            if (args.length === 0) {
+                const curr = html.getAttribute('data-theme') || 'frappe';
+                appendTerminalHistory(raw, `Current theme: <strong>${escapeHtml(curr)}</strong>. Available: <code>frappe</code>, <code>macchiato</code>, <code>mocha</code>, <code>latte</code>. Example: <code>theme mocha</code>`);
+            } else {
+                const target = args[0].toLowerCase();
+                if (THEME_CYCLE.includes(target)) {
+                    applyTheme(target);
+                    appendTerminalHistory(raw, `<span style="color: var(--ctp-green);">Switched theme to <strong>Catppuccin ${escapeHtml(target)}</strong>! 🎨</span>`);
+                } else {
+                    appendTerminalHistory(raw, `<span style="color: var(--ctp-red);">Unknown theme '${escapeHtml(target)}'. Choose from: ${THEME_CYCLE.join(', ')}</span>`);
+                }
+            }
+            break;
+        }
+
+        case 'discord': {
+            const d = lanyardState.data;
+            if (d) {
+                const status = d.discord_status || 'offline';
+                const tag = d.discord_user ? `${d.discord_user.username}` : 'h0tp';
+                const custom = (d.activities || []).find(a => a.type === 4);
+                const app = (d.activities || []).find(a => a.type === 0 && a.name);
+
+                let extra = '';
+                if (custom && custom.state) {
+                    extra += `<div>Status: <span style="color: var(--ctp-peach);">${custom.emoji ? escapeHtml(custom.emoji.name) + ' ' : ''}${escapeHtml(custom.state)}</span></div>`;
+                }
+                if (app) {
+                    extra += `<div>Activity: <span style="color: var(--ctp-mauve);">💻 ${escapeHtml(app.name)}${app.details ? ` (${escapeHtml(app.details)})` : ''}</span></div>`;
+                }
+                if (d.listening_to_spotify && d.spotify) {
+                    extra += `<div>Music: <span style="color: var(--ctp-green);">🎵 ${escapeHtml(d.spotify.song)} by ${escapeHtml(d.spotify.artist)}</span></div>`;
+                }
+
+                appendTerminalHistory(raw, `
+                    <div>Discord: <strong>@${escapeHtml(tag)}</strong> (ID: ${escapeHtml(DISCORD_USER_ID)})</div>
+                    <div>Mode: <span style="color: var(--accent); font-weight: 600;">${status === 'dnd' ? 'In Flow (Do Not Disturb)' : escapeHtml(status.toUpperCase())}</span></div>
+                    ${extra}
+                `);
+            } else {
+                appendTerminalHistory(raw, `
+                    <div>Discord: <strong>@h0tp</strong> (ID: ${escapeHtml(DISCORD_USER_ID)})</div>
+                    <div style="font-size: 0.84rem; color: var(--ctp-subtext0);">Connect via <a href="https://discordapp.com/users/${escapeHtml(DISCORD_USER_ID)}" target="_blank" rel="noopener" style="color: var(--accent);">profile link</a></div>
+                `);
+            }
+            break;
+        }
+
+        case 'spotify': {
+            const d = lanyardState.data;
+            if (d && d.listening_to_spotify && d.spotify) {
+                const sp = d.spotify;
+                appendTerminalHistory(raw, `
+                    <div>🎵 <strong style="color: var(--ctp-green);">${escapeHtml(sp.song)}</strong> by <span style="color: var(--ctp-peach);">${escapeHtml(sp.artist)}</span></div>
+                    <div style="font-size: 0.84rem; color: var(--ctp-subtext0);">Album: ${escapeHtml(sp.album)}</div>
+                `);
+            } else {
+                appendTerminalHistory(raw, `<div>No track currently playing on Spotify.</div>`);
+            }
+            break;
+        }
+
+        case 'matrix': {
+            appendTerminalHistory(raw, `<span style="color: var(--ctp-green);">Initializing Matrix neural stream...</span>`);
+            runMatrixEffect();
+            break;
+        }
+
+        case 'cat': {
+            if (args.length === 0) {
+                appendTerminalHistory(raw, `<span style="color: var(--ctp-red);">usage: cat &lt;filename&gt;</span>`);
+            } else {
+                const filename = args[0].toLowerCase();
+                const files = window.TERMINAL_FILES || {};
+                if (filename in files) {
+                    appendTerminalHistory(raw, `<div style="white-space: pre-wrap; color: var(--ctp-text);">${escapeHtml(files[filename])}</div>`);
+                } else {
+                    const available = Object.keys(files).join(', ');
+                    appendTerminalHistory(raw, `<span style="color: var(--ctp-red);">cat: ${escapeHtml(filename)}: No such file. Available files: ${available}</span>`);
+                }
+            }
+            break;
+        }
+
+        case 'sudo': {
+            appendTerminalHistory(raw, `
+                <div><span style="color: var(--ctp-green);">[sudo] password for guest:</span> ••••••••</div>
+                <div style="margin-top: 0.25rem; color: var(--ctp-peach); font-weight: 600;">Permission Granted! 🚀 Let's build something awesome together.</div>
+                <div style="color: var(--ctp-subtext0); font-size: 0.84rem;">Feel free to reach out on Discord (@h0tp) or GitHub!</div>
+            `);
+            break;
+        }
+
+        case 'echo': {
+            appendTerminalHistory(raw, `<div>${escapeHtml(args.join(' '))}</div>`);
+            break;
+        }
+
+        case 'date': {
+            appendTerminalHistory(raw, `<div>${escapeHtml(new Date().toString())}</div>`);
+            break;
+        }
+
+        case 'clear': {
+            const output = document.getElementById('terminal-output');
+            if (output) output.innerHTML = '';
+            break;
+        }
+
+        case 'exit': {
+            appendTerminalHistory(raw, `<div>Use <code>clear</code> to reset terminal or scroll to explore projects! 🚀</div>`);
+            break;
+        }
+
+        default: {
+            appendTerminalHistory(raw, `<span style="color: var(--ctp-red);">command not found: ${escapeHtml(cmd)}. Type <code>help</code> for available commands.</span>`);
+            break;
+        }
+    }
+}
+
+function runMatrixEffect() {
+    const canvas = document.getElementById('terminal-matrix-canvas');
+    if (!canvas) return;
+
+    canvas.style.display = 'block';
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth || 600;
+    canvas.height = canvas.offsetHeight || 300;
+
+    const chars = '0123456789ABCDEFｦｱｳｴｵｶｷｹｺｻｼｽｾｿﾀﾂﾃﾅﾆﾇﾈﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ';
+    const fontSize = 14;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = new Array(columns).fill(1);
+
+    let frames = 0;
+    const interval = setInterval(() => {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = '#a6d189';
+        ctx.font = `${fontSize}px monospace`;
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+
+        frames++;
+        if (frames > 140) {
+            clearInterval(interval);
+            canvas.style.display = 'none';
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            appendTerminalHistory('', `<span style="color: var(--ctp-green);">[Matrix simulation complete]</span>`);
+            scrollTerminalToBottom();
+        }
+    }, 33);
+}
+
+// ============================================
+// LANYARD DISCORD PRESENCE & SPOTIFY TELEMETRY
+// ============================================
+
+let lanyardState = {
+    data: null,
+    ws: null,
+    heartbeatTimer: null
+};
+
+function initLanyardPresence(userId = typeof DISCORD_USER_ID !== 'undefined' ? DISCORD_USER_ID : '445586026451173377') {
+    if (!userId) return;
+
+    function connectWS() {
+        try {
+            const ws = new WebSocket('wss://api.lanyard.rest/socket');
+            lanyardState.ws = ws;
+
+            ws.onmessage = (event) => {
+                try {
+                    const message = JSON.parse(event.data);
+                    const { op, t, d } = message;
+
+                    if (op === 1) {
+                        const interval = d.heartbeat_interval;
+                        if (lanyardState.heartbeatTimer) clearInterval(lanyardState.heartbeatTimer);
+                        lanyardState.heartbeatTimer = setInterval(() => {
+                            if (ws.readyState === WebSocket.OPEN) {
+                                ws.send(JSON.stringify({ op: 3 }));
+                            }
+                        }, interval);
+
+                        ws.send(JSON.stringify({
+                            op: 2,
+                            d: { subscribe_to_id: userId }
+                        }));
+                    } else if (op === 0) {
+                        if (t === 'INIT_STATE' || t === 'PRESENCE_UPDATE') {
+                            lanyardState.data = d;
+                            updateLanyardUI(d);
+                        }
+                    }
+                } catch (err) {
+                    console.warn('[Lanyard] Parse error:', err);
+                }
+            };
+
+            ws.onerror = () => {
+                fallbackLanyardREST(userId);
+            };
+
+            ws.onclose = () => {
+                if (lanyardState.heartbeatTimer) clearInterval(lanyardState.heartbeatTimer);
+                setTimeout(connectWS, 30000);
+            };
+        } catch (_) {
+            fallbackLanyardREST(userId);
+        }
+    }
+
+    async function fallbackLanyardREST(id) {
+        try {
+            const res = await fetch(`https://api.lanyard.rest/v1/users/${id}`);
+            if (!res.ok) return;
+            const json = await res.json();
+            if (json.success && json.data) {
+                lanyardState.data = json.data;
+                updateLanyardUI(json.data);
+            }
+        } catch (_) {}
+    }
+
+    connectWS();
+}
+
+function getDiscordAssetUrl(appId, assetKey) {
+    if (!assetKey) return '';
+    if (assetKey.startsWith('http://') || assetKey.startsWith('https://')) return assetKey;
+    if (assetKey.startsWith('mp:external/')) {
+        const match = assetKey.match(/https?\/(.+)$/);
+        if (match) return 'https://' + match[1];
+        return `https://media.discordapp.net/${assetKey.replace('mp:', '')}`;
+    }
+    if (appId) {
+        return `https://cdn.discordapp.com/app-assets/${appId}/${assetKey}.png`;
+    }
+    return '';
+}
+
+function updateLanyardUI(data) {
+    if (!data) return;
+
+    const statusDot = document.getElementById('discord-status-dot');
+    const discordLabel = document.getElementById('discord-btn-label');
+    const telemetryContainer = document.getElementById('live-telemetry');
+
+    const status = data.discord_status || 'offline';
+    const activities = data.activities || [];
+
+    // Custom status (Type 4)
+    const customActivity = activities.find(a => a.type === 4);
+    const customText = customActivity ? (customActivity.state || '').trim() : '';
+    const customEmoji = customActivity && customActivity.emoji ? (customActivity.emoji.name || '') : '';
+    const hasCustom = Boolean(customText || customEmoji);
+
+    // Music / Media player (Spotify or Rich Presence Music like YouTube Music, Cider, Apple Music)
+    let musicActivity = null;
+    if (data.listening_to_spotify && data.spotify) {
+        const sp = data.spotify;
+        musicActivity = {
+            source: 'Spotify',
+            title: sp.song || 'Music',
+            artist: sp.artist || '',
+            album: sp.album || '',
+            artUrl: sp.album_art_url || '',
+            url: sp.track_id ? `https://open.spotify.com/track/${sp.track_id}` : 'https://spotify.com'
+        };
+    } else {
+        const mediaAct = activities.find(a => a.type === 2 || (a.name && /music/i.test(a.name)));
+        if (mediaAct) {
+            musicActivity = {
+                source: mediaAct.name || 'YouTube Music',
+                title: mediaAct.details || mediaAct.state || 'Music',
+                artist: mediaAct.state && mediaAct.details ? mediaAct.state : '',
+                album: '',
+                artUrl: getDiscordAssetUrl(mediaAct.application_id, mediaAct.assets ? mediaAct.assets.large_image : null),
+                url: mediaAct.details_url || mediaAct.state_url || (mediaAct.name === 'YouTube Music' ? 'https://music.youtube.com' : '#')
+            };
+        }
+    }
+
+    // General app/game activity (Type 0, 1, 3)
+    const generalActivity = activities.find(a => a.type !== 4 && (!musicActivity || a.name !== musicActivity.source));
+
+    // Status Dot Title
+    if (statusDot) {
+        statusDot.className = `discord-status-dot ${status}`;
+        let statusTitle = 'Offline';
+        if (status !== 'offline') {
+            const contextPart = musicActivity 
+                ? `Listening to ${musicActivity.title}`
+                : (generalActivity 
+                    ? `In ${generalActivity.name}`
+                    : (customText || customEmoji || (status === 'dnd' ? 'In Flow' : 'Online')));
+            statusTitle = `${status === 'dnd' ? 'In Flow' : 'Online'} · ${contextPart}`;
+        }
+        statusDot.setAttribute('title', `Discord: ${statusTitle}`);
+    }
+
+    // Discord Button Label in Hero
+    if (discordLabel) {
+        if (status !== 'offline') {
+            if (musicActivity) {
+                const track = musicActivity.title.length > 18 ? musicActivity.title.substring(0, 16) + '…' : musicActivity.title;
+                discordLabel.textContent = `Discord · 🎵 ${track}`;
+            } else if (generalActivity) {
+                const appName = generalActivity.name.length > 16 ? generalActivity.name.substring(0, 14) + '…' : generalActivity.name;
+                discordLabel.textContent = `Discord · 💻 ${appName}`;
+            } else if (hasCustom) {
+                if (customText) {
+                    const shortText = customText.length > 16 ? customText.substring(0, 14) + '…' : customText;
+                    discordLabel.textContent = `Discord · ${customEmoji ? customEmoji + ' ' : ''}${shortText}`;
+                } else {
+                    discordLabel.textContent = `Discord · ${customEmoji}`;
+                }
+            } else if (status === 'dnd') {
+                discordLabel.textContent = 'Discord · In Flow';
+            } else {
+                discordLabel.textContent = 'Discord · Online';
+            }
+        } else {
+            discordLabel.textContent = 'Discord';
+        }
+    }
+
+    // Telemetry Card in Hero
+    if (telemetryContainer) {
+        if (musicActivity) {
+            const songName = escapeHtml(musicActivity.title);
+            const artistName = escapeHtml(musicActivity.artist);
+            const artUrl = escapeHtml(musicActivity.artUrl);
+            const sourceName = escapeHtml(musicActivity.source);
+            const targetUrl = musicActivity.url.startsWith('http') ? musicActivity.url : 'https://music.youtube.com';
+
+            telemetryContainer.innerHTML = `
+                <a href="${targetUrl}" target="_blank" rel="noopener" class="spotify-card" title="Listening to ${songName}${artistName ? ' by ' + artistName : ''} on ${sourceName}">
+                    ${artUrl ? `<img src="${artUrl}" alt="Album Art" class="spotify-album-art" loading="lazy" />` : ''}
+                    <div class="spotify-info">
+                        <div class="spotify-header">
+                            <span>Listening to ${sourceName}</span>
+                            <div class="spotify-equalizer" aria-hidden="true">
+                                <div class="equalizer-bar"></div>
+                                <div class="equalizer-bar"></div>
+                                <div class="equalizer-bar"></div>
+                                <div class="equalizer-bar"></div>
+                            </div>
+                        </div>
+                        <div class="spotify-track">${songName}</div>
+                        ${artistName ? `<div class="spotify-artist">${artistName}</div>` : ''}
+                    </div>
+                </a>
+            `;
+            telemetryContainer.style.display = 'block';
+        } else if (generalActivity) {
+            const actName = escapeHtml(generalActivity.name);
+            const actDetails = generalActivity.details ? escapeHtml(generalActivity.details) : (generalActivity.state ? escapeHtml(generalActivity.state) : '');
+            telemetryContainer.innerHTML = `
+                <div class="activity-card" title="${actName} ${actDetails}">
+                    <span class="activity-badge-icon">💻</span>
+                    <span><strong>${actName}</strong>${actDetails ? ` · ${actDetails}` : ''}</span>
+                </div>
+            `;
+            telemetryContainer.style.display = 'block';
+        } else if (hasCustom) {
+            telemetryContainer.innerHTML = `
+                <div class="activity-card" title="Discord Status: ${customEmoji} ${escapeHtml(customText)}">
+                    <span class="activity-badge-icon">${customEmoji ? escapeHtml(customEmoji) : '💬'}</span>
+                    <span>${customText ? escapeHtml(customText) : 'In Flow'}</span>
+                </div>
+            `;
+            telemetryContainer.style.display = 'block';
+        } else {
+            telemetryContainer.style.display = 'none';
+        }
+    }
+}
+
+// ============================================
 // INITIALIZE EVERYTHING!
 // ============================================
 
@@ -954,6 +1695,8 @@ async function init() {
 
     try {
         initScrollAnimations();
+        initHeroTerminal();
+        initLanyardPresence();
 
         await Promise.allSettled([
             loadFeaturedProjects(),
@@ -967,6 +1710,7 @@ async function init() {
         console.error('❌ Error during initialization:', error);
     }
 }
+
 
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
