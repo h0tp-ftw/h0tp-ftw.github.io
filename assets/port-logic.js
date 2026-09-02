@@ -1678,8 +1678,20 @@ function initClawdMascot() {
     const walkSrc = 'assets/clawd-walk.gif';
     const jumpSrc = 'assets/clawd-jump.gif';
 
+    window.triggerClawdJump = function() {
+        if (clawd.dataset.jumping) return;
+        clawd.dataset.jumping = 'true';
+        clawd.src = jumpSrc;
+        clawd.classList.add('clawd-jumping');
+        setTimeout(() => {
+            delete clawd.dataset.jumping;
+            clawd.classList.remove('clawd-jumping');
+            clawd.src = clawd.matches(':hover') ? walkSrc : idleSrc;
+        }, 900);
+    };
+
     clawd.addEventListener('mouseenter', () => {
-        if (!clawd.dataset.jumping) clawd.src = walkSrc;
+        window.triggerClawdJump();
     });
 
     clawd.addEventListener('mouseleave', () => {
@@ -1687,14 +1699,10 @@ function initClawdMascot() {
     });
 
     clawd.parentElement?.addEventListener('click', (e) => {
-        clawd.dataset.jumping = 'true';
-        clawd.src = jumpSrc;
-        setTimeout(() => {
-            delete clawd.dataset.jumping;
-            clawd.src = clawd.matches(':hover') ? walkSrc : idleSrc;
-        }, 900);
+        window.triggerClawdJump();
     });
 }
+
 
 
 

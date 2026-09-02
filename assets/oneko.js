@@ -311,7 +311,22 @@
 
     nekoEl.style.left = `${nekoPosX - 16}px`;
     nekoEl.style.top = `${nekoPosY - 16}px`;
+
+    // Check overlap with Clawd mascot to trigger startled jump
+    const clawd = document.getElementById('clawd-mascot');
+    if (clawd && typeof window.triggerClawdJump === 'function') {
+      const rect = clawd.getBoundingClientRect();
+      if (
+        nekoPosX >= rect.left - 20 &&
+        nekoPosX <= rect.right + 20 &&
+        nekoPosY >= rect.top - 20 &&
+        nekoPosY <= rect.bottom + 20
+      ) {
+        window.triggerClawdJump();
+      }
+    }
   }
 
   init();
 })();
+
