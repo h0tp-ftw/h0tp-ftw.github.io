@@ -1539,9 +1539,10 @@ function getDiscordAssetUrl(appId, assetKey) {
     if (!assetKey) return '';
     if (assetKey.startsWith('http://') || assetKey.startsWith('https://')) return assetKey;
     if (assetKey.startsWith('mp:external/')) {
-        const match = assetKey.match(/https?\/(.+)$/);
-        if (match) return 'https://' + match[1];
-        return `https://media.discordapp.net/${assetKey.replace('mp:', '')}`;
+        return 'https://media.discordapp.net/external/' + assetKey.substring('mp:external/'.length);
+    }
+    if (assetKey.startsWith('mp:')) {
+        return 'https://media.discordapp.net/' + assetKey.substring('mp:'.length);
     }
     if (appId) {
         return `https://cdn.discordapp.com/app-assets/${appId}/${assetKey}.png`;
@@ -1599,14 +1600,11 @@ function updateLanyardUI(data) {
 
     const statusDot = document.getElementById('discord-status-dot');
     const discordLabel = document.getElementById('discord-btn-label');
-    const liveAvatar = document.getElementById('discord-live-avatar');
-    const defaultSvg = document.getElementById('discord-default-svg');
     const telemetryContainer = document.getElementById('live-telemetry');
     const terminalLiveStatus = document.getElementById('terminal-live-status');
 
     const status = data.discord_status || 'offline';
     const activities = data.activities || [];
-    const user = data.discord_user;
 
     // Update live terminal status line and virtual file
     const liveStatusSummary = formatDiscordStatusSummary(data);
@@ -1645,7 +1643,6 @@ function updateLanyardUI(data) {
 
     // General app/game activity (Type 0, 1, 3)
     const generalActivity = activities.find(a => a.type !== 4 && (!musicActivity || a.name !== musicActivity.source));
-    const generalAppIcon = generalActivity && generalActivity.assets ? getDiscordAssetUrl(generalActivity.application_id, generalActivity.assets.large_image) : null;
 
     // Custom status (Type 4)
     const customActivity = activities.find(a => a.type === 4);
@@ -1653,32 +1650,6 @@ function updateLanyardUI(data) {
     const customEmojiName = customActivity && customActivity.emoji ? (customActivity.emoji.name || '') : '';
     const customEmojiImgUrl = customActivity && customActivity.emoji ? getDiscordEmojiUrl(customActivity.emoji) : null;
     const hasCustom = Boolean(customText || customEmojiName || customEmojiImgUrl);
-
-    // Rich Presence Logo in Discord Button (Active Music Cover -> App/Game Logo -> Custom Emote -> Avatar)
-    if (liveAvatar && defaultSvg) {
-        let presenceLogoUrl = '';
-        if (status !== 'offline') {
-            if (musicActivity && musicActivity.artUrl) {
-                presenceLogoUrl = musicActivity.artUrl;
-            } else if (generalAppIcon) {
-                presenceLogoUrl = generalAppIcon;
-            } else if (customEmojiImgUrl) {
-                presenceLogoUrl = customEmojiImgUrl;
-            } else if (user && user.avatar) {
-                const ext = user.avatar.startsWith('a_') ? 'gif' : 'webp';
-                presenceLogoUrl = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=64`;
-            }
-        }
-
-        if (presenceLogoUrl) {
-            liveAvatar.src = presenceLogoUrl;
-            liveAvatar.style.display = 'block';
-            defaultSvg.style.display = 'none';
-        } else {
-            liveAvatar.style.display = 'none';
-            defaultSvg.style.display = 'block';
-        }
-    }
 
     // Status Dot Title
     if (statusDot) {
@@ -1732,7 +1703,12 @@ function updateLanyardUI(data) {
 
             telemetryContainer.innerHTML = `
                 <a href="${targetUrl}" target="_blank" rel="noopener" class="spotify-card" title="Listening to ${songName}${artistName ? ' by ' + artistName : ''} on ${sourceName}">
-                    ${artUrl ? `<img src="${artUrl}" alt="Album Art" class="spotify-album-art" loading="lazy" />` : ''}
+                    ${artUrl ? `
+                        <img src="${artUrl}" alt="Album Art" class="spotify-album-art" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'; if (this.nextElementSibling) this.nextElementSibling.style.display='flex';" />
+                        <div class="spotify-album-fallback" style="display: none;">🎵</div>
+                    ` : `
+                        <div class="spotify-album-fallback">🎵</div>
+                    `}
                     <div class="spotify-info">
                         <div class="spotify-header">
                             <span>Listening to ${sourceName}</span>
@@ -1759,8 +1735,8 @@ function updateLanyardUI(data) {
                 <div class="activity-card" title="${actName} ${actDetails}">
                     ${largeImgUrl ? `
                         <div class="activity-card-img-wrapper">
-                            <img src="${escapeHtml(largeImgUrl)}" alt="${actName}" class="activity-large-img" loading="lazy" />
-                            ${smallImgUrl ? `<img src="${escapeHtml(smallImgUrl)}" alt="Status" class="activity-small-img" loading="lazy" />` : ''}
+                            <img src="${escapeHtml(largeImgUrl)}" alt="${actName}" class="activity-large-img" loading="lazy" referrerpolicy="no-referrer" />
+                            ${smallImgUrl ? `<img src="${escapeHtml(smallImgUrl)}" alt="Status" class="activity-small-img" loading="lazy" referrerpolicy="no-referrer" />` : ''}
                         </div>
                     ` : `<span class="activity-badge-icon">💻</span>`}
                     <div class="activity-text-info">
@@ -1774,7 +1750,7 @@ function updateLanyardUI(data) {
             telemetryContainer.innerHTML = `
                 <div class="activity-card" title="Discord Status: ${customEmojiName} ${escapeHtml(customText)}">
                     ${customEmojiImgUrl 
-                        ? `<img src="${escapeHtml(customEmojiImgUrl)}" alt="${escapeHtml(customEmojiName)}" class="custom-status-emoji-img" />`
+                        ? `<img src="${escapeHtml(customEmojiImgUrl)}" alt="${escapeHtml(customEmojiName)}" class="custom-status-emoji-img" referrerpolicy="no-referrer" />`
                         : `<span class="activity-badge-icon">${escapeHtml(customEmojiName || '💬')}</span>`
                     }
                     <span>${customText ? escapeHtml(customText) : 'In Flow'}</span>
