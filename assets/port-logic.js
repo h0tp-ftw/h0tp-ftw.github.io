@@ -1678,11 +1678,24 @@ function initClawdMascot() {
     const walkSrc = 'assets/clawd-walk.gif';
     const jumpSrc = 'assets/clawd-jump.gif';
 
-    window.triggerClawdJump = function() {
-        if (clawd.dataset.jumping) return;
+    // Preload animation frames for instant, flicker-free switching
+    [walkSrc, jumpSrc].forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+
+    let lastJumpTime = 0;
+
+    window.triggerClawdJump = function(force = false) {
+        const now = Date.now();
+        // Cooldown of 3.5s for collision proximity triggers, or bypass if direct click
+        if (!force && (clawd.dataset.jumping || (now - lastJumpTime < 3500))) return;
+
+        lastJumpTime = now;
         clawd.dataset.jumping = 'true';
         clawd.src = jumpSrc;
         clawd.classList.add('clawd-jumping');
+
         setTimeout(() => {
             delete clawd.dataset.jumping;
             clawd.classList.remove('clawd-jumping');
@@ -1691,17 +1704,23 @@ function initClawdMascot() {
     };
 
     clawd.addEventListener('mouseenter', () => {
-        window.triggerClawdJump();
+        if (!clawd.dataset.jumping) {
+            clawd.src = walkSrc;
+        }
     });
 
     clawd.addEventListener('mouseleave', () => {
-        if (!clawd.dataset.jumping) clawd.src = idleSrc;
+        if (!clawd.dataset.jumping) {
+            clawd.src = idleSrc;
+        }
     });
 
     clawd.parentElement?.addEventListener('click', (e) => {
-        window.triggerClawdJump();
+        window.triggerClawdJump(true);
     });
 }
+
+
 
 
 
