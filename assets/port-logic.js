@@ -1617,26 +1617,6 @@ function updateLanyardUI(data) {
         window.TERMINAL_FILES['status.txt'] = liveStatusSummary;
     }
 
-    // Live avatar in Discord button
-    if (liveAvatar && defaultSvg) {
-        if (status !== 'offline' && user && user.avatar) {
-            const ext = user.avatar.startsWith('a_') ? 'gif' : 'webp';
-            liveAvatar.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=64`;
-            liveAvatar.style.display = 'block';
-            defaultSvg.style.display = 'none';
-        } else {
-            liveAvatar.style.display = 'none';
-            defaultSvg.style.display = 'block';
-        }
-    }
-
-    // Custom status (Type 4)
-    const customActivity = activities.find(a => a.type === 4);
-    const customText = customActivity ? (customActivity.state || '').trim() : '';
-    const customEmojiName = customActivity && customActivity.emoji ? (customActivity.emoji.name || '') : '';
-    const customEmojiImgUrl = customActivity && customActivity.emoji ? getDiscordEmojiUrl(customActivity.emoji) : null;
-    const hasCustom = Boolean(customText || customEmojiName || customEmojiImgUrl);
-
     // Music / Media player (Spotify or Rich Presence Music like YouTube Music, Cider, Apple Music)
     let musicActivity = null;
     if (data.listening_to_spotify && data.spotify) {
@@ -1665,6 +1645,40 @@ function updateLanyardUI(data) {
 
     // General app/game activity (Type 0, 1, 3)
     const generalActivity = activities.find(a => a.type !== 4 && (!musicActivity || a.name !== musicActivity.source));
+    const generalAppIcon = generalActivity && generalActivity.assets ? getDiscordAssetUrl(generalActivity.application_id, generalActivity.assets.large_image) : null;
+
+    // Custom status (Type 4)
+    const customActivity = activities.find(a => a.type === 4);
+    const customText = customActivity ? (customActivity.state || '').trim() : '';
+    const customEmojiName = customActivity && customActivity.emoji ? (customActivity.emoji.name || '') : '';
+    const customEmojiImgUrl = customActivity && customActivity.emoji ? getDiscordEmojiUrl(customActivity.emoji) : null;
+    const hasCustom = Boolean(customText || customEmojiName || customEmojiImgUrl);
+
+    // Rich Presence Logo in Discord Button (Active Music Cover -> App/Game Logo -> Custom Emote -> Avatar)
+    if (liveAvatar && defaultSvg) {
+        let presenceLogoUrl = '';
+        if (status !== 'offline') {
+            if (musicActivity && musicActivity.artUrl) {
+                presenceLogoUrl = musicActivity.artUrl;
+            } else if (generalAppIcon) {
+                presenceLogoUrl = generalAppIcon;
+            } else if (customEmojiImgUrl) {
+                presenceLogoUrl = customEmojiImgUrl;
+            } else if (user && user.avatar) {
+                const ext = user.avatar.startsWith('a_') ? 'gif' : 'webp';
+                presenceLogoUrl = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=64`;
+            }
+        }
+
+        if (presenceLogoUrl) {
+            liveAvatar.src = presenceLogoUrl;
+            liveAvatar.style.display = 'block';
+            defaultSvg.style.display = 'none';
+        } else {
+            liveAvatar.style.display = 'none';
+            defaultSvg.style.display = 'block';
+        }
+    }
 
     // Status Dot Title
     if (statusDot) {
