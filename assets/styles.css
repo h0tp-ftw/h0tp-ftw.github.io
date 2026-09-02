@@ -694,9 +694,15 @@ h6 {
 }
 
 .hero-link.discord-link:hover {
-  border-color: #5865f2;
-  color: #5865f2;
+  border-color: #9aa5f8;
+  color: #9aa5f8;
 }
+
+[data-theme="latte"] .hero-link.discord-link:hover {
+  border-color: #5865f2;
+  color: #4752c4;
+}
+
 
 .hero-link svg {
   width: 24px;
@@ -2406,9 +2412,16 @@ a:focus-visible,
 
 .hero-link.discord-link:hover {
   box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.2),
-    0 0 30px rgba(88, 101, 242, 0.4);
+    0 8px 24px rgba(0, 0, 0, 0.25),
+    0 0 30px rgba(154, 165, 248, 0.4);
 }
+
+[data-theme="latte"] .hero-link.discord-link:hover {
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.08),
+    0 0 24px rgba(88, 101, 242, 0.25);
+}
+
 
 /* Project cards with subtle glow on hover */
 .project-card:hover {
