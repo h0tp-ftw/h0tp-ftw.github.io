@@ -1669,17 +1669,17 @@ async function init() {
     }
 }
 
-// Clawd pixel mascot dynamic animations (Idle / Crawl / Jump)
+// Clawd pixel mascot dynamic animations (Idle / Jump)
 function initClawdMascot() {
     const clawd = document.getElementById('clawd-mascot');
     if (!clawd) return;
 
+    const link = clawd.closest('.clawd-mascot-link') || clawd.parentElement;
     const idleSrc = 'assets/clawd-idle.gif';
-    const walkSrc = 'assets/clawd-walk.gif';
     const jumpSrc = 'assets/clawd-jump.gif';
 
-    // Preload all 3 animation states into browser cache
-    [idleSrc, walkSrc, jumpSrc].forEach(src => {
+    // Preload animation states into browser cache
+    [idleSrc, jumpSrc].forEach(src => {
         const img = new Image();
         img.src = src;
     });
@@ -1697,29 +1697,32 @@ function initClawdMascot() {
 
         setTimeout(() => {
             delete clawd.dataset.jumping;
-            clawd.classList.remove('clawd-jumping');
-            const isHovered = clawd.matches(':hover') || clawd.parentElement?.matches(':hover');
-            clawd.src = isHovered ? walkSrc : idleSrc;
+            const isHovered = link?.matches(':hover') || clawd.matches(':hover');
+            if (!isHovered) {
+                clawd.classList.remove('clawd-jumping');
+                clawd.src = idleSrc;
+            } else {
+                clawd.src = jumpSrc;
+            }
         }, 850);
     };
 
-    clawd.addEventListener('mouseenter', () => {
-        window.triggerClawdJump(true);
-    });
+    if (link) {
+        link.addEventListener('mouseenter', () => {
+            clawd.src = jumpSrc;
+        });
 
-    clawd.parentElement?.addEventListener('mouseenter', () => {
-        window.triggerClawdJump(true);
-    });
+        link.addEventListener('mouseleave', () => {
+            if (!clawd.dataset.jumping) {
+                clawd.classList.remove('clawd-jumping');
+                clawd.src = idleSrc;
+            }
+        });
 
-    clawd.addEventListener('mouseleave', () => {
-        if (!clawd.dataset.jumping) {
-            clawd.src = idleSrc;
-        }
-    });
-
-    clawd.parentElement?.addEventListener('click', (e) => {
-        window.triggerClawdJump(true);
-    });
+        link.addEventListener('click', () => {
+            window.triggerClawdJump(true);
+        });
+    }
 }
 
 

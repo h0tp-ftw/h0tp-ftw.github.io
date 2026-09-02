@@ -633,6 +633,7 @@ h6 {
   vertical-align: middle;
   filter: drop-shadow(0 4px 12px rgba(217, 119, 87, 0.35));
   transition: filter 0.2s ease;
+  opacity: 1 !important;
 }
 
 .clawd-mascot-link:hover .clawd-mascot-img {
@@ -647,6 +648,12 @@ h6 {
 
 .clawd-mascot-img.clawd-jumping {
   animation: clawdBounce 0.85s cubic-bezier(0.34, 1.56, 0.64, 1);
+  opacity: 1 !important;
+}
+
+.clawd-mascot-link:hover .clawd-mascot-img {
+  animation: clawdBounce 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+  opacity: 1 !important;
 }
 
 
@@ -1982,7 +1989,7 @@ a.setup-chip:hover {
 }
 
 /* Smooth image loading fade */
-img {
+img:not(.clawd-mascot-img) {
   opacity: 0;
   animation: fade-in-img 0.5s ease forwards;
 }
