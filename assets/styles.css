@@ -496,7 +496,7 @@ h6 {
   border: 1px solid var(--glass-border);
   border-radius: 999px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  gap: 2px;
+  gap: 3px;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -504,15 +504,14 @@ h6 {
 .theme-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.42rem;
-  padding: 0.42rem 0.8rem;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
   background: transparent;
   border: none;
   border-radius: 999px;
   color: var(--ctp-subtext0);
-  font-family: var(--font-body);
-  font-size: 0.82rem;
-  font-weight: 600;
   cursor: pointer;
   transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
@@ -541,17 +540,13 @@ h6 {
 }
 
 .theme-btn:hover .theme-icon {
-  transform: scale(1.12);
+  transform: scale(1.15);
 }
 
-@media (max-width: 640px) {
-  .theme-btn-label {
-    display: none;
-  }
-  .theme-btn {
-    padding: 0.45rem 0.55rem;
-  }
+.theme-btn-label {
+  display: none;
 }
+
 
 
 
