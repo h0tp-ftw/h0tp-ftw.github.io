@@ -1224,10 +1224,11 @@ function executeTerminalCommand(raw) {
 
         case 'whoami':
         case 'bio': {
+            const adjective = (typeof ROTATING_WORDS !== 'undefined' && ROTATING_WORDS[currentWordIndex]) ? ROTATING_WORDS[currentWordIndex] : 'passionate';
             appendTerminalHistory(raw, `
                 <div style="color: var(--ctp-text);">
-                    <strong>h0tp-ftw</strong> — FOSS developer and AI enthusiast.<br>
-                    Focusing on autonomous agent systems, full-stack tools, computational biology, and cybersecurity.
+                    <strong>h0tp-ftw</strong> — Just another <span style="color: var(--ctp-yellow); font-weight: bold;">${escapeHtml(adjective)}</span> FOSS developer &amp; AI enthusiast.<br>
+                    Focusing on autonomous agent systems, full-stack dev tools, computational biology, and cybersecurity.
                 </div>
             `);
             break;
@@ -1287,9 +1288,9 @@ function executeTerminalCommand(raw) {
         }
 
         case 'status': {
+            const summary = lanyardState.data ? formatDiscordStatusSummary(lanyardState.data) : (window.TERMINAL_FILES ? window.TERMINAL_FILES['status.txt'] : 'In Flow 🫡');
             appendTerminalHistory(raw, `
-                <div>Status: <span style="color: var(--ctp-green);">Online & Building</span></div>
-                <div>Focus: Autonomous Agent Tooling & ML Systems</div>
+                <div>Live Presence: <span style="color: var(--accent); font-weight: 600;">${escapeHtml(summary)}</span></div>
             `);
             break;
         }
@@ -1556,6 +1557,43 @@ function getDiscordEmojiUrl(emoji) {
     return null;
 }
 
+function formatDiscordStatusSummary(data) {
+    if (!data) return 'Offline';
+    const status = data.discord_status || 'offline';
+    if (status === 'offline') return 'Offline';
+
+    const modeText = status === 'dnd' ? 'In Flow' : (status === 'idle' ? 'Away' : 'Online');
+    const activities = data.activities || [];
+
+    // Music
+    if (data.listening_to_spotify && data.spotify) {
+        return `In Flow · 🎵 ${data.spotify.song} by ${data.spotify.artist} (Spotify)`;
+    }
+    const mediaAct = activities.find(a => a.type === 2 || (a.name && /music/i.test(a.name)));
+    if (mediaAct) {
+        const title = mediaAct.details || mediaAct.state || 'Music';
+        const artist = mediaAct.state && mediaAct.details ? ` - ${mediaAct.state}` : '';
+        return `In Flow · 🎵 ${title}${artist} (${mediaAct.name || 'YouTube Music'})`;
+    }
+
+    // App / Coding
+    const appAct = activities.find(a => a.type === 0 && a.name);
+    if (appAct) {
+        const details = appAct.details ? ` (${appAct.details})` : '';
+        return `In Flow · 💻 ${appAct.name}${details}`;
+    }
+
+    // Custom status
+    const custom = activities.find(a => a.type === 4);
+    if (custom) {
+        const emoji = custom.emoji ? (custom.emoji.name + ' ') : '';
+        const text = custom.state ? custom.state : '';
+        return `${emoji}${text ? text + ' · ' : ''}${modeText}`.trim();
+    }
+
+    return `${modeText} 🫡`;
+}
+
 function updateLanyardUI(data) {
     if (!data) return;
 
@@ -1564,10 +1602,20 @@ function updateLanyardUI(data) {
     const liveAvatar = document.getElementById('discord-live-avatar');
     const defaultSvg = document.getElementById('discord-default-svg');
     const telemetryContainer = document.getElementById('live-telemetry');
+    const terminalLiveStatus = document.getElementById('terminal-live-status');
 
     const status = data.discord_status || 'offline';
     const activities = data.activities || [];
     const user = data.discord_user;
+
+    // Update live terminal status line and virtual file
+    const liveStatusSummary = formatDiscordStatusSummary(data);
+    if (terminalLiveStatus) {
+        terminalLiveStatus.textContent = liveStatusSummary;
+    }
+    if (window.TERMINAL_FILES) {
+        window.TERMINAL_FILES['status.txt'] = liveStatusSummary;
+    }
 
     // Live avatar in Discord button
     if (liveAvatar && defaultSvg) {
