@@ -610,6 +610,8 @@ h6 {
   transform-origin: 70% 70%;
   animation: waveHand 2.2s infinite ease-in-out;
   cursor: default;
+  -webkit-text-fill-color: initial !important;
+  color: initial !important;
   transition: transform 0.2s ease;
 }
 
@@ -2648,15 +2650,12 @@ a:focus-visible,
 .username {
   margin-bottom: 1rem;
   font-size: clamp(2.9rem, 7vw, 4.65rem);
-  font-weight: 600;
-  letter-spacing: 0.012em;
-  line-height: 1.05;
-  background: linear-gradient(115deg, var(--ctp-text) 18%, var(--ctp-mauve) 58%, var(--ctp-blue) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 8px 20px rgba(202, 158, 230, 0.12));
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ctp-text);
 }
+
 
 .profile-image {
   width: 144px;
