@@ -2217,12 +2217,12 @@ body::before {
    MICRO-INTERACTIONS
    ============================================ */
 
-/* Smooth link underlines - exclude buttons and cards */
-a:not(.hero-link):not(.project-card):not(.person-card):not(.setup-chip):not(.spotify-card):not(.theme-btn) {
+/* Smooth link underlines - exclude buttons, cards, and mascot links */
+a:not(.hero-link):not(.project-card):not(.person-card):not(.setup-chip):not(.spotify-card):not(.theme-btn):not(.clawd-mascot-link) {
   position: relative;
 }
 
-a:not(.hero-link):not(.project-card):not(.person-card):not(.setup-chip):not(.spotify-card):not(.theme-btn)::after {
+a:not(.hero-link):not(.project-card):not(.person-card):not(.setup-chip):not(.spotify-card):not(.theme-btn):not(.clawd-mascot-link)::after {
   content: "";
   position: absolute;
   bottom: -2px;
@@ -2233,9 +2233,10 @@ a:not(.hero-link):not(.project-card):not(.person-card):not(.setup-chip):not(.spo
   transition: width 0.3s ease;
 }
 
-a:not(.hero-link):not(.project-card):not(.person-card):not(.setup-chip):not(.spotify-card):not(.theme-btn):hover::after {
+a:not(.hero-link):not(.project-card):not(.person-card):not(.setup-chip):not(.spotify-card):not(.theme-btn):not(.clawd-mascot-link):hover::after {
   width: 100%;
 }
+
 
 /* Button press effect */
 button:active:not(:disabled) {

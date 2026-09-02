@@ -1678,25 +1678,29 @@ function initClawdMascot() {
     const walkSrc = 'assets/clawd-walk.gif';
     const jumpSrc = 'assets/clawd-jump.gif';
 
+    // Preload all 3 animation states into browser cache
+    [idleSrc, walkSrc, jumpSrc].forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+
     let lastJumpTime = 0;
 
     window.triggerClawdJump = function(force = false) {
         const now = Date.now();
-        // Cooldown for collision proximity triggers, bypass on direct hover/click
-        if (!force && (clawd.dataset.jumping || (now - lastJumpTime < 3000))) return;
+        if (!force && (clawd.dataset.jumping || (now - lastJumpTime < 2500))) return;
 
         lastJumpTime = now;
         clawd.dataset.jumping = 'true';
-        // Timestamp cache-busting forces the GIF animation to restart from frame 0 every single time
-        clawd.src = jumpSrc + '?t=' + now;
+        clawd.src = jumpSrc;
         clawd.classList.add('clawd-jumping');
 
         setTimeout(() => {
             delete clawd.dataset.jumping;
             clawd.classList.remove('clawd-jumping');
             const isHovered = clawd.matches(':hover') || clawd.parentElement?.matches(':hover');
-            clawd.src = isHovered ? (walkSrc + '?t=' + Date.now()) : (idleSrc + '?t=' + Date.now());
-        }, 900);
+            clawd.src = isHovered ? walkSrc : idleSrc;
+        }, 850);
     };
 
     clawd.addEventListener('mouseenter', () => {
@@ -1709,7 +1713,7 @@ function initClawdMascot() {
 
     clawd.addEventListener('mouseleave', () => {
         if (!clawd.dataset.jumping) {
-            clawd.src = idleSrc + '?t=' + Date.now();
+            clawd.src = idleSrc;
         }
     });
 
@@ -1717,6 +1721,7 @@ function initClawdMascot() {
         window.triggerClawdJump(true);
     });
 }
+
 
 
 
