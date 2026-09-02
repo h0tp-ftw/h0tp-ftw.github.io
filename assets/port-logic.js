@@ -1288,9 +1288,9 @@ function executeTerminalCommand(raw) {
         }
 
         case 'status': {
-            const summary = lanyardState.data ? formatDiscordStatusSummary(lanyardState.data) : (window.TERMINAL_FILES ? window.TERMINAL_FILES['status.txt'] : 'In Flow 🫡');
+            const liveHtml = lanyardState.data ? formatDiscordStatusHtml(lanyardState.data) : (window.TERMINAL_FILES ? window.TERMINAL_FILES['status.txt'] : '<span style="color: var(--ctp-mauve);">In Flow</span> 🫡');
             appendTerminalHistory(raw, `
-                <div>Live Presence: <span style="color: var(--accent); font-weight: 600;">${escapeHtml(summary)}</span></div>
+                <div>Live Presence: ${liveHtml}</div>
             `);
             break;
         }
@@ -1313,34 +1313,12 @@ function executeTerminalCommand(raw) {
 
         case 'discord': {
             const d = lanyardState.data;
-            if (d) {
-                const status = d.discord_status || 'offline';
-                const tag = d.discord_user ? `${d.discord_user.username}` : 'h0tp';
-                const custom = (d.activities || []).find(a => a.type === 4);
-                const app = (d.activities || []).find(a => a.type === 0 && a.name);
-
-                let extra = '';
-                if (custom && custom.state) {
-                    extra += `<div>Status: <span style="color: var(--ctp-peach);">${custom.emoji ? escapeHtml(custom.emoji.name) + ' ' : ''}${escapeHtml(custom.state)}</span></div>`;
-                }
-                if (app) {
-                    extra += `<div>Activity: <span style="color: var(--ctp-mauve);">💻 ${escapeHtml(app.name)}${app.details ? ` (${escapeHtml(app.details)})` : ''}</span></div>`;
-                }
-                if (d.listening_to_spotify && d.spotify) {
-                    extra += `<div>Music: <span style="color: var(--ctp-green);">🎵 ${escapeHtml(d.spotify.song)} by ${escapeHtml(d.spotify.artist)}</span></div>`;
-                }
-
-                appendTerminalHistory(raw, `
-                    <div>Discord: <strong>@${escapeHtml(tag)}</strong> (ID: ${escapeHtml(DISCORD_USER_ID)})</div>
-                    <div>Mode: <span style="color: var(--accent); font-weight: 600;">${status === 'dnd' ? 'In Flow (Do Not Disturb)' : escapeHtml(status.toUpperCase())}</span></div>
-                    ${extra}
-                `);
-            } else {
-                appendTerminalHistory(raw, `
-                    <div>Discord: <strong>@h0tp</strong> (ID: ${escapeHtml(DISCORD_USER_ID)})</div>
-                    <div style="font-size: 0.84rem; color: var(--ctp-subtext0);">Connect via <a href="https://discordapp.com/users/${escapeHtml(DISCORD_USER_ID)}" target="_blank" rel="noopener" style="color: var(--accent);">profile link</a></div>
-                `);
-            }
+            const liveHtml = d ? formatDiscordStatusHtml(d) : '<span style="color: var(--ctp-mauve);">In Flow</span> 🫡';
+            appendTerminalHistory(raw, `
+                <div>Discord: <strong>@h0tp</strong> (ID: ${escapeHtml(DISCORD_USER_ID)})</div>
+                <div>Status: ${liveHtml}</div>
+                <div style="font-size: 0.84rem; color: var(--ctp-subtext0); margin-top: 0.25rem;">Profile: <a href="https://discordapp.com/users/${escapeHtml(DISCORD_USER_ID)}" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline;">discord.com/users/${escapeHtml(DISCORD_USER_ID)}</a></div>
+            `);
             break;
         }
 
@@ -1348,8 +1326,9 @@ function executeTerminalCommand(raw) {
             const d = lanyardState.data;
             if (d && d.listening_to_spotify && d.spotify) {
                 const sp = d.spotify;
+                const trackUrl = sp.track_id ? `https://open.spotify.com/track/${sp.track_id}` : 'https://spotify.com';
                 appendTerminalHistory(raw, `
-                    <div>🎵 <strong style="color: var(--ctp-green);">${escapeHtml(sp.song)}</strong> by <span style="color: var(--ctp-peach);">${escapeHtml(sp.artist)}</span></div>
+                    <div>🎵 <a href="${escapeHtml(trackUrl)}" target="_blank" rel="noopener" style="color: var(--ctp-green); font-weight: 600; text-decoration: underline;">${escapeHtml(sp.song)}</a> by <span style="color: var(--ctp-peach);">${escapeHtml(sp.artist)}</span></div>
                     <div style="font-size: 0.84rem; color: var(--ctp-subtext0);">Album: ${escapeHtml(sp.album)}</div>
                 `);
             } else {
@@ -1371,7 +1350,7 @@ function executeTerminalCommand(raw) {
                 const filename = args[0].toLowerCase();
                 const files = window.TERMINAL_FILES || {};
                 if (filename in files) {
-                    appendTerminalHistory(raw, `<div style="white-space: pre-wrap; color: var(--ctp-text);">${escapeHtml(files[filename])}</div>`);
+                    appendTerminalHistory(raw, `<div style="white-space: normal; color: var(--ctp-text);">${files[filename]}</div>`);
                 } else {
                     const available = Object.keys(files).join(', ');
                     appendTerminalHistory(raw, `<span style="color: var(--ctp-red);">cat: ${escapeHtml(filename)}: No such file. Available files: ${available}</span>`);
@@ -1558,208 +1537,66 @@ function getDiscordEmojiUrl(emoji) {
     return null;
 }
 
-function formatDiscordStatusSummary(data) {
-    if (!data) return 'Offline';
+function formatDiscordStatusHtml(data) {
+    if (!data) return '<span style="color: var(--ctp-subtext0);">Offline</span>';
     const status = data.discord_status || 'offline';
-    if (status === 'offline') return 'Offline';
+    if (status === 'offline') return '<span style="color: var(--ctp-subtext0);">Offline</span>';
 
-    const modeText = status === 'dnd' ? 'In Flow' : (status === 'idle' ? 'Away' : 'Online');
+    const modeTag = status === 'dnd' ? 'In Flow' : (status === 'idle' ? 'Away' : 'Online');
     const activities = data.activities || [];
 
-    // Music
+    // Music (Spotify)
     if (data.listening_to_spotify && data.spotify) {
-        return `In Flow · 🎵 ${data.spotify.song} by ${data.spotify.artist} (Spotify)`;
+        const sp = data.spotify;
+        const trackUrl = sp.track_id ? `https://open.spotify.com/track/${sp.track_id}` : 'https://spotify.com';
+        return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · 🎵 <a href="${escapeHtml(trackUrl)}" target="_blank" rel="noopener" style="color: var(--ctp-green); text-decoration: underline; font-weight: 600;">${escapeHtml(sp.song || 'Music')}</a> by <span style="color: var(--ctp-peach);">${escapeHtml(sp.artist || '')}</span> <span style="color: var(--ctp-subtext0);">(Spotify)</span>`;
     }
+
+    // Music (YouTube Music / other media)
     const mediaAct = activities.find(a => a.type === 2 || (a.name && /music/i.test(a.name)));
     if (mediaAct) {
         const title = mediaAct.details || mediaAct.state || 'Music';
-        const artist = mediaAct.state && mediaAct.details ? ` - ${mediaAct.state}` : '';
-        return `In Flow · 🎵 ${title}${artist} (${mediaAct.name || 'YouTube Music'})`;
+        const artist = mediaAct.state && mediaAct.details ? mediaAct.state : '';
+        const targetUrl = mediaAct.details_url || mediaAct.state_url || 'https://music.youtube.com';
+        const sourceName = mediaAct.name || 'YouTube Music';
+        return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · 🎵 <a href="${escapeHtml(targetUrl)}" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline; font-weight: 600;">${escapeHtml(title)}</a>${artist ? ` by <span style="color: var(--ctp-peach);">${escapeHtml(artist)}</span>` : ''} <span style="color: var(--ctp-subtext0);">(${escapeHtml(sourceName)})</span>`;
     }
 
     // App / Coding
     const appAct = activities.find(a => a.type === 0 && a.name);
     if (appAct) {
-        const details = appAct.details ? ` (${appAct.details})` : '';
-        return `In Flow · 💻 ${appAct.name}${details}`;
+        const details = appAct.details ? ` · <span style="color: var(--ctp-subtext0);">${escapeHtml(appAct.details)}</span>` : '';
+        return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · 💻 <strong style="color: var(--ctp-blue);">${escapeHtml(appAct.name)}</strong>${details}`;
     }
 
     // Custom status
     const custom = activities.find(a => a.type === 4);
     if (custom) {
-        const emoji = custom.emoji ? (custom.emoji.name + ' ') : '';
-        const text = custom.state ? custom.state : '';
-        return `${emoji}${text ? text + ' · ' : ''}${modeText}`.trim();
+        const customEmojiImgUrl = custom.emoji ? getDiscordEmojiUrl(custom.emoji) : null;
+        let emojiHtml = '';
+        if (customEmojiImgUrl) {
+            emojiHtml = `<img src="${escapeHtml(customEmojiImgUrl)}" alt="emote" style="width: 18px; height: 18px; vertical-align: middle; margin-right: 4px;" />`;
+        } else if (custom.emoji && custom.emoji.name) {
+            emojiHtml = `${escapeHtml(custom.emoji.name)} `;
+        }
+        const text = custom.state ? `<span style="color: var(--ctp-peach);">${escapeHtml(custom.state)}</span>` : '';
+        return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · ${emojiHtml}${text}`.trim();
     }
 
-    return `${modeText} 🫡`;
+    return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> 🫡`;
 }
 
 function updateLanyardUI(data) {
     if (!data) return;
 
-    const statusDot = document.getElementById('discord-status-dot');
-    const discordLabel = document.getElementById('discord-btn-label');
-    const telemetryContainer = document.getElementById('live-telemetry');
     const terminalLiveStatus = document.getElementById('terminal-live-status');
+    const liveStatusHtml = formatDiscordStatusHtml(data);
 
-    const status = data.discord_status || 'offline';
-    const activities = data.activities || [];
-
-    // Update live terminal status line and virtual file
-    const liveStatusSummary = formatDiscordStatusSummary(data);
     if (terminalLiveStatus) {
-        terminalLiveStatus.textContent = liveStatusSummary;
+        terminalLiveStatus.innerHTML = liveStatusHtml;
     }
     if (window.TERMINAL_FILES) {
-        window.TERMINAL_FILES['status.txt'] = liveStatusSummary;
-    }
-
-    // Music / Media player (Spotify or Rich Presence Music like YouTube Music, Cider, Apple Music)
-    let musicActivity = null;
-    if (data.listening_to_spotify && data.spotify) {
-        const sp = data.spotify;
-        musicActivity = {
-            source: 'Spotify',
-            title: sp.song || 'Music',
-            artist: sp.artist || '',
-            album: sp.album || '',
-            artUrl: sp.album_art_url || '',
-            url: sp.track_id ? `https://open.spotify.com/track/${sp.track_id}` : 'https://spotify.com'
-        };
-    } else {
-        const mediaAct = activities.find(a => a.type === 2 || (a.name && /music/i.test(a.name)));
-        if (mediaAct) {
-            musicActivity = {
-                source: mediaAct.name || 'YouTube Music',
-                title: mediaAct.details || mediaAct.state || 'Music',
-                artist: mediaAct.state && mediaAct.details ? mediaAct.state : '',
-                album: '',
-                artUrl: getDiscordAssetUrl(mediaAct.application_id, mediaAct.assets ? mediaAct.assets.large_image : null),
-                url: mediaAct.details_url || mediaAct.state_url || (mediaAct.name === 'YouTube Music' ? 'https://music.youtube.com' : '#')
-            };
-        }
-    }
-
-    // General app/game activity (Type 0, 1, 3)
-    const generalActivity = activities.find(a => a.type !== 4 && (!musicActivity || a.name !== musicActivity.source));
-
-    // Custom status (Type 4)
-    const customActivity = activities.find(a => a.type === 4);
-    const customText = customActivity ? (customActivity.state || '').trim() : '';
-    const customEmojiName = customActivity && customActivity.emoji ? (customActivity.emoji.name || '') : '';
-    const customEmojiImgUrl = customActivity && customActivity.emoji ? getDiscordEmojiUrl(customActivity.emoji) : null;
-    const hasCustom = Boolean(customText || customEmojiName || customEmojiImgUrl);
-
-    // Status Dot Title
-    if (statusDot) {
-        statusDot.className = `discord-status-dot ${status}`;
-        let statusTitle = 'Offline';
-        if (status !== 'offline') {
-            const contextPart = musicActivity 
-                ? `Listening to ${musicActivity.title}`
-                : (generalActivity 
-                    ? `In ${generalActivity.name}`
-                    : (customText || customEmojiName || (status === 'dnd' ? 'In Flow' : 'Online')));
-            statusTitle = `${status === 'dnd' ? 'In Flow' : 'Online'} · ${contextPart}`;
-        }
-        statusDot.setAttribute('title', `Discord: ${statusTitle}`);
-    }
-
-    // Discord Button Label in Hero
-    if (discordLabel) {
-        if (status !== 'offline') {
-            if (musicActivity) {
-                const track = musicActivity.title.length > 18 ? musicActivity.title.substring(0, 16) + '…' : musicActivity.title;
-                discordLabel.textContent = `Discord · 🎵 ${track}`;
-            } else if (generalActivity) {
-                const appName = generalActivity.name.length > 16 ? generalActivity.name.substring(0, 14) + '…' : generalActivity.name;
-                discordLabel.textContent = `Discord · 💻 ${appName}`;
-            } else if (hasCustom) {
-                if (customText) {
-                    const shortText = customText.length > 16 ? customText.substring(0, 14) + '…' : customText;
-                    discordLabel.textContent = `Discord · ${customEmojiName ? customEmojiName + ' ' : ''}${shortText}`;
-                } else {
-                    discordLabel.textContent = `Discord · ${customEmojiName || '🫡'}`;
-                }
-            } else if (status === 'dnd') {
-                discordLabel.textContent = 'Discord · In Flow';
-            } else {
-                discordLabel.textContent = 'Discord · Online';
-            }
-        } else {
-            discordLabel.textContent = 'Discord';
-        }
-    }
-
-    // Telemetry Card in Hero
-    if (telemetryContainer) {
-        if (musicActivity) {
-            const songName = escapeHtml(musicActivity.title);
-            const artistName = escapeHtml(musicActivity.artist);
-            const artUrl = escapeHtml(musicActivity.artUrl);
-            const sourceName = escapeHtml(musicActivity.source);
-            const targetUrl = musicActivity.url.startsWith('http') ? musicActivity.url : 'https://music.youtube.com';
-
-            telemetryContainer.innerHTML = `
-                <a href="${targetUrl}" target="_blank" rel="noopener" class="spotify-card" title="Listening to ${songName}${artistName ? ' by ' + artistName : ''} on ${sourceName}">
-                    ${artUrl ? `
-                        <img src="${artUrl}" alt="Album Art" class="spotify-album-art" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'; if (this.nextElementSibling) this.nextElementSibling.style.display='flex';" />
-                        <div class="spotify-album-fallback" style="display: none;">🎵</div>
-                    ` : `
-                        <div class="spotify-album-fallback">🎵</div>
-                    `}
-                    <div class="spotify-info">
-                        <div class="spotify-header">
-                            <span>Listening to ${sourceName}</span>
-                            <div class="spotify-equalizer" aria-hidden="true">
-                                <div class="equalizer-bar"></div>
-                                <div class="equalizer-bar"></div>
-                                <div class="equalizer-bar"></div>
-                                <div class="equalizer-bar"></div>
-                            </div>
-                        </div>
-                        <div class="spotify-track">${songName}</div>
-                        ${artistName ? `<div class="spotify-artist">${artistName}</div>` : ''}
-                    </div>
-                </a>
-            `;
-            telemetryContainer.style.display = 'block';
-        } else if (generalActivity) {
-            const actName = escapeHtml(generalActivity.name);
-            const actDetails = generalActivity.details ? escapeHtml(generalActivity.details) : (generalActivity.state ? escapeHtml(generalActivity.state) : '');
-            const largeImgUrl = generalActivity.assets ? getDiscordAssetUrl(generalActivity.application_id, generalActivity.assets.large_image) : null;
-            const smallImgUrl = generalActivity.assets ? getDiscordAssetUrl(generalActivity.application_id, generalActivity.assets.small_image) : null;
-
-            telemetryContainer.innerHTML = `
-                <div class="activity-card" title="${actName} ${actDetails}">
-                    ${largeImgUrl ? `
-                        <div class="activity-card-img-wrapper">
-                            <img src="${escapeHtml(largeImgUrl)}" alt="${actName}" class="activity-large-img" loading="lazy" referrerpolicy="no-referrer" />
-                            ${smallImgUrl ? `<img src="${escapeHtml(smallImgUrl)}" alt="Status" class="activity-small-img" loading="lazy" referrerpolicy="no-referrer" />` : ''}
-                        </div>
-                    ` : `<span class="activity-badge-icon">💻</span>`}
-                    <div class="activity-text-info">
-                        <div><strong>${actName}</strong></div>
-                        ${actDetails ? `<div style="font-size: 0.78rem; color: var(--ctp-subtext0);">${actDetails}</div>` : ''}
-                    </div>
-                </div>
-            `;
-            telemetryContainer.style.display = 'block';
-        } else if (hasCustom) {
-            telemetryContainer.innerHTML = `
-                <div class="activity-card" title="Discord Status: ${customEmojiName} ${escapeHtml(customText)}">
-                    ${customEmojiImgUrl 
-                        ? `<img src="${escapeHtml(customEmojiImgUrl)}" alt="${escapeHtml(customEmojiName)}" class="custom-status-emoji-img" referrerpolicy="no-referrer" />`
-                        : `<span class="activity-badge-icon">${escapeHtml(customEmojiName || '💬')}</span>`
-                    }
-                    <span>${customText ? escapeHtml(customText) : 'In Flow'}</span>
-                </div>
-            `;
-            telemetryContainer.style.display = 'block';
-        } else {
-            telemetryContainer.style.display = 'none';
-        }
+        window.TERMINAL_FILES['status.txt'] = liveStatusHtml;
     }
 }
 
