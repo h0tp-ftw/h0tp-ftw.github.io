@@ -76,7 +76,7 @@ const CATPPUCCIN_THEMES = [
 
 // Virtual files accessible via `cat` command in the hero terminal
 const TERMINAL_FILES = {
-    'status.txt': 'In Flow 🫡',
+    'status.txt': 'Online 🫡',
     'skills.txt': 'Agentic AI & ML/RL, Full-Stack Dev, Computational Biology, Cybersecurity',
     'about.md': '# About h0tp-ftw\nJust another passionate FOSS developer and AI enthusiast building autonomous agent systems, dev tools, and learning utilities (Ankimon).',
     'contact.txt': 'GitHub: https://github.com/h0tp-ftw\nDiscord: @h0tp (ID: 445586026451173377)',

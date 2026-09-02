@@ -1542,7 +1542,6 @@ function formatDiscordStatusHtml(data) {
     const status = data.discord_status || 'offline';
     if (status === 'offline') return '<span style="color: var(--ctp-subtext0);">Offline</span>';
 
-    const modeTag = status === 'dnd' ? 'In Flow' : (status === 'idle' ? 'Away' : 'Online');
     const activities = data.activities || [];
 
     // 1. Music (Spotify)
@@ -1550,7 +1549,7 @@ function formatDiscordStatusHtml(data) {
         const sp = data.spotify;
         const trackUrl = sp.track_id ? `https://open.spotify.com/track/${sp.track_id}` : 'https://spotify.com';
         const eqHtml = `<span class="cli-equalizer" aria-hidden="true"><span class="cli-bar"></span><span class="cli-bar"></span><span class="cli-bar"></span><span class="cli-bar"></span></span>`;
-        return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · ${eqHtml}🎵 <a href="${escapeHtml(trackUrl)}" target="_blank" rel="noopener" style="color: var(--ctp-green); text-decoration: underline; font-weight: 600;">${escapeHtml(sp.song || 'Music')}</a> by <span style="color: var(--ctp-peach);">${escapeHtml(sp.artist || '')}</span> <span style="color: var(--ctp-subtext0);">(Spotify)</span>`;
+        return `${eqHtml}🎵 <a href="${escapeHtml(trackUrl)}" target="_blank" rel="noopener" style="color: var(--ctp-green); text-decoration: underline; font-weight: 600;">${escapeHtml(sp.song || 'Music')}</a> by <span style="color: var(--ctp-peach);">${escapeHtml(sp.artist || '')}</span> <span style="color: var(--ctp-subtext0);">(Spotify)</span>`;
     }
 
     // 2. Music (YouTube Music / other rich media)
@@ -1561,7 +1560,7 @@ function formatDiscordStatusHtml(data) {
         const targetUrl = mediaAct.details_url || mediaAct.state_url || 'https://music.youtube.com';
         const sourceName = mediaAct.name || 'YouTube Music';
         const eqHtml = `<span class="cli-equalizer" aria-hidden="true"><span class="cli-bar"></span><span class="cli-bar"></span><span class="cli-bar"></span><span class="cli-bar"></span></span>`;
-        return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · ${eqHtml}🎵 <a href="${escapeHtml(targetUrl)}" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline; font-weight: 600;">${escapeHtml(title)}</a>${artist ? ` by <span style="color: var(--ctp-peach);">${escapeHtml(artist)}</span>` : ''} <span style="color: var(--ctp-subtext0);">(${escapeHtml(sourceName)})</span>`;
+        return `${eqHtml}🎵 <a href="${escapeHtml(targetUrl)}" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline; font-weight: 600;">${escapeHtml(title)}</a>${artist ? ` by <span style="color: var(--ctp-peach);">${escapeHtml(artist)}</span>` : ''} <span style="color: var(--ctp-subtext0);">(${escapeHtml(sourceName)})</span>`;
     }
 
     // 3. Streaming (Type 1)
@@ -1573,7 +1572,7 @@ function formatDiscordStatusHtml(data) {
             ? `<a href="${escapeHtml(streamAct.url)}" target="_blank" rel="noopener" style="color: var(--ctp-red); text-decoration: underline; font-weight: 600;">${streamName}</a>`
             : `<strong style="color: var(--ctp-red);">${streamName}</strong>`;
         const streamBadge = `<span class="cli-game-badge" aria-hidden="true"><span class="cli-stream-dot"></span></span>`;
-        return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · ${streamBadge}🔴 Streaming ${streamLink}${streamDetails}`;
+        return `${streamBadge}🔴 Streaming ${streamLink}${streamDetails}`;
     }
 
     // 4. Watching (Type 3)
@@ -1581,7 +1580,7 @@ function formatDiscordStatusHtml(data) {
     if (watchAct) {
         const watchDetails = [watchAct.details, watchAct.state].filter(Boolean).map(escapeHtml).join(' · ');
         const detailsStr = watchDetails ? ` · <span style="color: var(--ctp-subtext0);">${watchDetails}</span>` : '';
-        return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · 📺 Watching <strong style="color: var(--ctp-lavender);">${escapeHtml(watchAct.name)}</strong>${detailsStr}`;
+        return `📺 Watching <strong style="color: var(--ctp-lavender);">${escapeHtml(watchAct.name)}</strong>${detailsStr}`;
     }
 
     // 5. Competing (Type 5)
@@ -1589,7 +1588,7 @@ function formatDiscordStatusHtml(data) {
     if (compAct) {
         const compDetails = [compAct.details, compAct.state].filter(Boolean).map(escapeHtml).join(' · ');
         const detailsStr = compDetails ? ` · <span style="color: var(--ctp-subtext0);">${compDetails}</span>` : '';
-        return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · 🏆 Competing in <strong style="color: var(--ctp-yellow);">${escapeHtml(compAct.name)}</strong>${detailsStr}`;
+        return `🏆 Competing in <strong style="color: var(--ctp-yellow);">${escapeHtml(compAct.name)}</strong>${detailsStr}`;
     }
 
     // 6. Games vs. Development / Apps (Type 0)
@@ -1602,14 +1601,13 @@ function formatDiscordStatusHtml(data) {
 
         if (isDevTool) {
             const devBadge = `<span class="cli-game-badge" aria-hidden="true"><span class="cli-game-dot" style="background: var(--ctp-blue); box-shadow: 0 0 6px var(--ctp-blue);"></span></span>`;
-            return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · ${devBadge}💻 <strong style="color: var(--ctp-blue);">${escapeHtml(name)}</strong>${detailsStr}`;
+            return `${devBadge}💻 <strong style="color: var(--ctp-blue);">${escapeHtml(name)}</strong>${detailsStr}`;
         } else {
             // Gaming!
             const gameBadge = `<span class="cli-game-badge" aria-hidden="true"><span class="cli-game-dot"></span></span>`;
-            return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · ${gameBadge}🎮 Playing <strong style="color: var(--ctp-green);">${escapeHtml(name)}</strong>${detailsStr}`;
+            return `${gameBadge}🎮 Playing <strong style="color: var(--ctp-green);">${escapeHtml(name)}</strong>${detailsStr}`;
         }
     }
-
 
     // 7. Custom Status (Type 4)
     const custom = activities.find(a => a.type === 4);
@@ -1622,11 +1620,13 @@ function formatDiscordStatusHtml(data) {
             emojiHtml = `${escapeHtml(custom.emoji.name)} `;
         }
         const text = custom.state ? `<span style="color: var(--ctp-peach);">${escapeHtml(custom.state)}</span>` : '';
-        return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · ${emojiHtml}${text}`.trim();
+        const combined = `${emojiHtml}${text}`.trim();
+        if (combined) return combined;
     }
 
-    return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> 🫡`;
+    return 'Online 🫡';
 }
+
 
 
 function updateLanyardUI(data) {
