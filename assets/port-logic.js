@@ -1548,21 +1548,46 @@ function getDiscordAssetUrl(appId, assetKey) {
     return '';
 }
 
+function getDiscordEmojiUrl(emoji) {
+    if (!emoji) return null;
+    if (emoji.id) {
+        return `https://cdn.discordapp.com/emojis/${emoji.id}.${emoji.animated ? 'gif' : 'webp'}?size=48&quality=lossless`;
+    }
+    return null;
+}
+
 function updateLanyardUI(data) {
     if (!data) return;
 
     const statusDot = document.getElementById('discord-status-dot');
     const discordLabel = document.getElementById('discord-btn-label');
+    const liveAvatar = document.getElementById('discord-live-avatar');
+    const defaultSvg = document.getElementById('discord-default-svg');
     const telemetryContainer = document.getElementById('live-telemetry');
 
     const status = data.discord_status || 'offline';
     const activities = data.activities || [];
+    const user = data.discord_user;
+
+    // Live avatar in Discord button
+    if (liveAvatar && defaultSvg) {
+        if (status !== 'offline' && user && user.avatar) {
+            const ext = user.avatar.startsWith('a_') ? 'gif' : 'webp';
+            liveAvatar.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=64`;
+            liveAvatar.style.display = 'block';
+            defaultSvg.style.display = 'none';
+        } else {
+            liveAvatar.style.display = 'none';
+            defaultSvg.style.display = 'block';
+        }
+    }
 
     // Custom status (Type 4)
     const customActivity = activities.find(a => a.type === 4);
     const customText = customActivity ? (customActivity.state || '').trim() : '';
-    const customEmoji = customActivity && customActivity.emoji ? (customActivity.emoji.name || '') : '';
-    const hasCustom = Boolean(customText || customEmoji);
+    const customEmojiName = customActivity && customActivity.emoji ? (customActivity.emoji.name || '') : '';
+    const customEmojiImgUrl = customActivity && customActivity.emoji ? getDiscordEmojiUrl(customActivity.emoji) : null;
+    const hasCustom = Boolean(customText || customEmojiName || customEmojiImgUrl);
 
     // Music / Media player (Spotify or Rich Presence Music like YouTube Music, Cider, Apple Music)
     let musicActivity = null;
@@ -1602,7 +1627,7 @@ function updateLanyardUI(data) {
                 ? `Listening to ${musicActivity.title}`
                 : (generalActivity 
                     ? `In ${generalActivity.name}`
-                    : (customText || customEmoji || (status === 'dnd' ? 'In Flow' : 'Online')));
+                    : (customText || customEmojiName || (status === 'dnd' ? 'In Flow' : 'Online')));
             statusTitle = `${status === 'dnd' ? 'In Flow' : 'Online'} · ${contextPart}`;
         }
         statusDot.setAttribute('title', `Discord: ${statusTitle}`);
@@ -1620,9 +1645,9 @@ function updateLanyardUI(data) {
             } else if (hasCustom) {
                 if (customText) {
                     const shortText = customText.length > 16 ? customText.substring(0, 14) + '…' : customText;
-                    discordLabel.textContent = `Discord · ${customEmoji ? customEmoji + ' ' : ''}${shortText}`;
+                    discordLabel.textContent = `Discord · ${customEmojiName ? customEmojiName + ' ' : ''}${shortText}`;
                 } else {
-                    discordLabel.textContent = `Discord · ${customEmoji}`;
+                    discordLabel.textContent = `Discord · ${customEmojiName || '🫡'}`;
                 }
             } else if (status === 'dnd') {
                 discordLabel.textContent = 'Discord · In Flow';
@@ -1665,17 +1690,31 @@ function updateLanyardUI(data) {
         } else if (generalActivity) {
             const actName = escapeHtml(generalActivity.name);
             const actDetails = generalActivity.details ? escapeHtml(generalActivity.details) : (generalActivity.state ? escapeHtml(generalActivity.state) : '');
+            const largeImgUrl = generalActivity.assets ? getDiscordAssetUrl(generalActivity.application_id, generalActivity.assets.large_image) : null;
+            const smallImgUrl = generalActivity.assets ? getDiscordAssetUrl(generalActivity.application_id, generalActivity.assets.small_image) : null;
+
             telemetryContainer.innerHTML = `
                 <div class="activity-card" title="${actName} ${actDetails}">
-                    <span class="activity-badge-icon">💻</span>
-                    <span><strong>${actName}</strong>${actDetails ? ` · ${actDetails}` : ''}</span>
+                    ${largeImgUrl ? `
+                        <div class="activity-card-img-wrapper">
+                            <img src="${escapeHtml(largeImgUrl)}" alt="${actName}" class="activity-large-img" loading="lazy" />
+                            ${smallImgUrl ? `<img src="${escapeHtml(smallImgUrl)}" alt="Status" class="activity-small-img" loading="lazy" />` : ''}
+                        </div>
+                    ` : `<span class="activity-badge-icon">💻</span>`}
+                    <div class="activity-text-info">
+                        <div><strong>${actName}</strong></div>
+                        ${actDetails ? `<div style="font-size: 0.78rem; color: var(--ctp-subtext0);">${actDetails}</div>` : ''}
+                    </div>
                 </div>
             `;
             telemetryContainer.style.display = 'block';
         } else if (hasCustom) {
             telemetryContainer.innerHTML = `
-                <div class="activity-card" title="Discord Status: ${customEmoji} ${escapeHtml(customText)}">
-                    <span class="activity-badge-icon">${customEmoji ? escapeHtml(customEmoji) : '💬'}</span>
+                <div class="activity-card" title="Discord Status: ${customEmojiName} ${escapeHtml(customText)}">
+                    ${customEmojiImgUrl 
+                        ? `<img src="${escapeHtml(customEmojiImgUrl)}" alt="${escapeHtml(customEmojiName)}" class="custom-status-emoji-img" />`
+                        : `<span class="activity-badge-icon">${escapeHtml(customEmojiName || '💬')}</span>`
+                    }
                     <span>${customText ? escapeHtml(customText) : 'In Flow'}</span>
                 </div>
             `;
