@@ -1545,14 +1545,14 @@ function formatDiscordStatusHtml(data) {
     const modeTag = status === 'dnd' ? 'In Flow' : (status === 'idle' ? 'Away' : 'Online');
     const activities = data.activities || [];
 
-    // Music (Spotify)
+    // 1. Music (Spotify)
     if (data.listening_to_spotify && data.spotify) {
         const sp = data.spotify;
         const trackUrl = sp.track_id ? `https://open.spotify.com/track/${sp.track_id}` : 'https://spotify.com';
         return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · 🎵 <a href="${escapeHtml(trackUrl)}" target="_blank" rel="noopener" style="color: var(--ctp-green); text-decoration: underline; font-weight: 600;">${escapeHtml(sp.song || 'Music')}</a> by <span style="color: var(--ctp-peach);">${escapeHtml(sp.artist || '')}</span> <span style="color: var(--ctp-subtext0);">(Spotify)</span>`;
     }
 
-    // Music (YouTube Music / other media)
+    // 2. Music (YouTube Music / other rich media)
     const mediaAct = activities.find(a => a.type === 2 || (a.name && /music/i.test(a.name)));
     if (mediaAct) {
         const title = mediaAct.details || mediaAct.state || 'Music';
@@ -1562,14 +1562,50 @@ function formatDiscordStatusHtml(data) {
         return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · 🎵 <a href="${escapeHtml(targetUrl)}" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline; font-weight: 600;">${escapeHtml(title)}</a>${artist ? ` by <span style="color: var(--ctp-peach);">${escapeHtml(artist)}</span>` : ''} <span style="color: var(--ctp-subtext0);">(${escapeHtml(sourceName)})</span>`;
     }
 
-    // App / Coding
-    const appAct = activities.find(a => a.type === 0 && a.name);
-    if (appAct) {
-        const details = appAct.details ? ` · <span style="color: var(--ctp-subtext0);">${escapeHtml(appAct.details)}</span>` : '';
-        return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · 💻 <strong style="color: var(--ctp-blue);">${escapeHtml(appAct.name)}</strong>${details}`;
+    // 3. Streaming (Type 1)
+    const streamAct = activities.find(a => a.type === 1);
+    if (streamAct) {
+        const streamName = escapeHtml(streamAct.name);
+        const streamDetails = streamAct.details ? ` · <span style="color: var(--ctp-subtext0);">${escapeHtml(streamAct.details)}</span>` : '';
+        const streamLink = streamAct.url 
+            ? `<a href="${escapeHtml(streamAct.url)}" target="_blank" rel="noopener" style="color: var(--ctp-red); text-decoration: underline; font-weight: 600;">${streamName}</a>`
+            : `<strong style="color: var(--ctp-red);">${streamName}</strong>`;
+        return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · 🔴 Streaming ${streamLink}${streamDetails}`;
     }
 
-    // Custom status
+    // 4. Watching (Type 3)
+    const watchAct = activities.find(a => a.type === 3);
+    if (watchAct) {
+        const watchDetails = [watchAct.details, watchAct.state].filter(Boolean).map(escapeHtml).join(' · ');
+        const detailsStr = watchDetails ? ` · <span style="color: var(--ctp-subtext0);">${watchDetails}</span>` : '';
+        return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · 📺 Watching <strong style="color: var(--ctp-lavender);">${escapeHtml(watchAct.name)}</strong>${detailsStr}`;
+    }
+
+    // 5. Competing (Type 5)
+    const compAct = activities.find(a => a.type === 5);
+    if (compAct) {
+        const compDetails = [compAct.details, compAct.state].filter(Boolean).map(escapeHtml).join(' · ');
+        const detailsStr = compDetails ? ` · <span style="color: var(--ctp-subtext0);">${compDetails}</span>` : '';
+        return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · 🏆 Competing in <strong style="color: var(--ctp-yellow);">${escapeHtml(compAct.name)}</strong>${detailsStr}`;
+    }
+
+    // 6. Games vs. Development / Apps (Type 0)
+    const appAct = activities.find(a => a.type === 0 && a.name);
+    if (appAct) {
+        const name = appAct.name;
+        const isDevTool = /code|studio|vim|intellij|pycharm|cursor|zed|xcode|sublime|antigravity|terminal|iterm|warp|fleet/i.test(name);
+        const extraParts = [appAct.details, appAct.state].filter(Boolean).map(escapeHtml);
+        const detailsStr = extraParts.length ? ` · <span style="color: var(--ctp-subtext0);">${extraParts.join(' · ')}</span>` : '';
+
+        if (isDevTool) {
+            return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · 💻 <strong style="color: var(--ctp-blue);">${escapeHtml(name)}</strong>${detailsStr}`;
+        } else {
+            // Gaming!
+            return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · 🎮 Playing <strong style="color: var(--ctp-green);">${escapeHtml(name)}</strong>${detailsStr}`;
+        }
+    }
+
+    // 7. Custom Status (Type 4)
     const custom = activities.find(a => a.type === 4);
     if (custom) {
         const customEmojiImgUrl = custom.emoji ? getDiscordEmojiUrl(custom.emoji) : null;
@@ -1585,6 +1621,7 @@ function formatDiscordStatusHtml(data) {
 
     return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> 🫡`;
 }
+
 
 function updateLanyardUI(data) {
     if (!data) return;
