@@ -3169,3 +3169,69 @@ a.setup-chip:hover::after {
   color: var(--ctp-green);
   font-weight: 600;
 }
+
+/* ============================================
+   CLI TERMINAL LIVE STATUS ANIMATIONS
+   ============================================ */
+
+.cli-equalizer {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2.5px;
+  height: 12px;
+  margin-right: 5px;
+  vertical-align: -1px;
+}
+
+.cli-equalizer .cli-bar {
+  width: 2.5px;
+  background: var(--ctp-green);
+  border-radius: 1px;
+  animation: cliSoundBars 0.75s ease-in-out infinite alternate;
+}
+
+.cli-equalizer .cli-bar:nth-child(1) { height: 40%; animation-delay: 0.1s; }
+.cli-equalizer .cli-bar:nth-child(2) { height: 100%; animation-delay: 0.3s; }
+.cli-equalizer .cli-bar:nth-child(3) { height: 60%; animation-delay: 0.2s; }
+.cli-equalizer .cli-bar:nth-child(4) { height: 85%; animation-delay: 0.4s; }
+
+@keyframes cliSoundBars {
+  0% { height: 25%; }
+  100% { height: 100%; }
+}
+
+.cli-game-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.cli-game-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ctp-green);
+  box-shadow: 0 0 6px var(--ctp-green);
+  animation: cliPulse 1.1s ease-in-out infinite alternate;
+}
+
+@keyframes cliPulse {
+  0% { transform: scale(0.85); opacity: 0.55; box-shadow: 0 0 2px var(--ctp-green); }
+  100% { transform: scale(1.25); opacity: 1; box-shadow: 0 0 8px var(--ctp-green); }
+}
+
+.cli-stream-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ctp-red);
+  box-shadow: 0 0 6px var(--ctp-red);
+  animation: cliPulseRed 0.9s ease-in-out infinite alternate;
+}
+
+@keyframes cliPulseRed {
+  0% { transform: scale(0.85); opacity: 0.6; box-shadow: 0 0 2px var(--ctp-red); }
+  100% { transform: scale(1.25); opacity: 1; box-shadow: 0 0 8px var(--ctp-red); }
+}
+

@@ -1549,7 +1549,8 @@ function formatDiscordStatusHtml(data) {
     if (data.listening_to_spotify && data.spotify) {
         const sp = data.spotify;
         const trackUrl = sp.track_id ? `https://open.spotify.com/track/${sp.track_id}` : 'https://spotify.com';
-        return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · 🎵 <a href="${escapeHtml(trackUrl)}" target="_blank" rel="noopener" style="color: var(--ctp-green); text-decoration: underline; font-weight: 600;">${escapeHtml(sp.song || 'Music')}</a> by <span style="color: var(--ctp-peach);">${escapeHtml(sp.artist || '')}</span> <span style="color: var(--ctp-subtext0);">(Spotify)</span>`;
+        const eqHtml = `<span class="cli-equalizer" aria-hidden="true"><span class="cli-bar"></span><span class="cli-bar"></span><span class="cli-bar"></span><span class="cli-bar"></span></span>`;
+        return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · ${eqHtml}🎵 <a href="${escapeHtml(trackUrl)}" target="_blank" rel="noopener" style="color: var(--ctp-green); text-decoration: underline; font-weight: 600;">${escapeHtml(sp.song || 'Music')}</a> by <span style="color: var(--ctp-peach);">${escapeHtml(sp.artist || '')}</span> <span style="color: var(--ctp-subtext0);">(Spotify)</span>`;
     }
 
     // 2. Music (YouTube Music / other rich media)
@@ -1559,7 +1560,8 @@ function formatDiscordStatusHtml(data) {
         const artist = mediaAct.state && mediaAct.details ? mediaAct.state : '';
         const targetUrl = mediaAct.details_url || mediaAct.state_url || 'https://music.youtube.com';
         const sourceName = mediaAct.name || 'YouTube Music';
-        return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · 🎵 <a href="${escapeHtml(targetUrl)}" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline; font-weight: 600;">${escapeHtml(title)}</a>${artist ? ` by <span style="color: var(--ctp-peach);">${escapeHtml(artist)}</span>` : ''} <span style="color: var(--ctp-subtext0);">(${escapeHtml(sourceName)})</span>`;
+        const eqHtml = `<span class="cli-equalizer" aria-hidden="true"><span class="cli-bar"></span><span class="cli-bar"></span><span class="cli-bar"></span><span class="cli-bar"></span></span>`;
+        return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · ${eqHtml}🎵 <a href="${escapeHtml(targetUrl)}" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline; font-weight: 600;">${escapeHtml(title)}</a>${artist ? ` by <span style="color: var(--ctp-peach);">${escapeHtml(artist)}</span>` : ''} <span style="color: var(--ctp-subtext0);">(${escapeHtml(sourceName)})</span>`;
     }
 
     // 3. Streaming (Type 1)
@@ -1570,7 +1572,8 @@ function formatDiscordStatusHtml(data) {
         const streamLink = streamAct.url 
             ? `<a href="${escapeHtml(streamAct.url)}" target="_blank" rel="noopener" style="color: var(--ctp-red); text-decoration: underline; font-weight: 600;">${streamName}</a>`
             : `<strong style="color: var(--ctp-red);">${streamName}</strong>`;
-        return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · 🔴 Streaming ${streamLink}${streamDetails}`;
+        const streamBadge = `<span class="cli-game-badge" aria-hidden="true"><span class="cli-stream-dot"></span></span>`;
+        return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · ${streamBadge}🔴 Streaming ${streamLink}${streamDetails}`;
     }
 
     // 4. Watching (Type 3)
@@ -1598,12 +1601,15 @@ function formatDiscordStatusHtml(data) {
         const detailsStr = extraParts.length ? ` · <span style="color: var(--ctp-subtext0);">${extraParts.join(' · ')}</span>` : '';
 
         if (isDevTool) {
-            return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · 💻 <strong style="color: var(--ctp-blue);">${escapeHtml(name)}</strong>${detailsStr}`;
+            const devBadge = `<span class="cli-game-badge" aria-hidden="true"><span class="cli-game-dot" style="background: var(--ctp-blue); box-shadow: 0 0 6px var(--ctp-blue);"></span></span>`;
+            return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · ${devBadge}💻 <strong style="color: var(--ctp-blue);">${escapeHtml(name)}</strong>${detailsStr}`;
         } else {
             // Gaming!
-            return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · 🎮 Playing <strong style="color: var(--ctp-green);">${escapeHtml(name)}</strong>${detailsStr}`;
+            const gameBadge = `<span class="cli-game-badge" aria-hidden="true"><span class="cli-game-dot"></span></span>`;
+            return `<span style="color: var(--ctp-mauve); font-weight: 600;">${modeTag}</span> · ${gameBadge}🎮 Playing <strong style="color: var(--ctp-green);">${escapeHtml(name)}</strong>${detailsStr}`;
         }
     }
+
 
     // 7. Custom Status (Type 4)
     const custom = activities.find(a => a.type === 4);
