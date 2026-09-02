@@ -605,6 +605,30 @@ h6 {
   letter-spacing: -0.02em;
 }
 
+.wave-emoji {
+  display: inline-block;
+  transform-origin: 70% 70%;
+  animation: waveHand 2.2s infinite ease-in-out;
+  cursor: default;
+  transition: transform 0.2s ease;
+}
+
+.wave-emoji:hover {
+  animation: waveHand 0.75s infinite ease-in-out;
+}
+
+@keyframes waveHand {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(14deg); }
+  20% { transform: rotate(-8deg); }
+  30% { transform: rotate(14deg); }
+  40% { transform: rotate(-4deg); }
+  50% { transform: rotate(10deg); }
+  60% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+
 .tagline {
   font-size: 1.25rem;
   color: var(--ctp-subtext0);
