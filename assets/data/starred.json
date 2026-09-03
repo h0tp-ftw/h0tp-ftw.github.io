@@ -31,8 +31,8 @@
     "description": "The context API to search, scrape, and interact with the web at scale. 🔥",
     "html_url": "https://github.com/firecrawl/firecrawl",
     "language": "TypeScript",
-    "stargazers_count": 175488,
-    "forks_count": 9624,
+    "stargazers_count": 175944,
+    "forks_count": 9634,
     "fork": false,
     "owner": {
       "login": "firecrawl"
@@ -44,8 +44,8 @@
     "description": "The agent that grows with you",
     "html_url": "https://github.com/NousResearch/hermes-agent",
     "language": "Python",
-    "stargazers_count": 239752,
-    "forks_count": 49018,
+    "stargazers_count": 240477,
+    "forks_count": 49233,
     "fork": false,
     "owner": {
       "login": "NousResearch"
@@ -96,8 +96,8 @@
     "description": "Podman: A tool for managing OCI containers and pods.",
     "html_url": "https://github.com/podman-container-tools/podman",
     "language": "Go",
-    "stargazers_count": 32755,
-    "forks_count": 3354,
+    "stargazers_count": 32764,
+    "forks_count": 3351,
     "fork": false,
     "owner": {
       "login": "podman-container-tools"
@@ -109,8 +109,8 @@
     "description": "Your own personal AI assistant. Any OS. Any Platform. The lobster way. 🦞 ",
     "html_url": "https://github.com/openclaw/openclaw",
     "language": "TypeScript",
-    "stargazers_count": 388595,
-    "forks_count": 81593,
+    "stargazers_count": 388707,
+    "forks_count": 81623,
     "fork": false,
     "owner": {
       "login": "openclaw"
@@ -135,8 +135,8 @@
     "description": ":house_with_garden: Open source home automation that puts local control and privacy first.",
     "html_url": "https://github.com/home-assistant/core",
     "language": "Python",
-    "stargazers_count": 90217,
-    "forks_count": 38467,
+    "stargazers_count": 90223,
+    "forks_count": 38480,
     "fork": false,
     "owner": {
       "login": "home-assistant"
@@ -161,7 +161,7 @@
     "description": "Linux application sandboxing and distribution framework",
     "html_url": "https://github.com/flatpak/flatpak",
     "language": "C",
-    "stargazers_count": 5055,
+    "stargazers_count": 5057,
     "forks_count": 520,
     "fork": false,
     "owner": {
@@ -174,8 +174,8 @@
     "description": "Bazzite makes gaming and everyday use smoother and simpler across desktop PCs, handhelds, tablets, and home theater PCs.",
     "html_url": "https://github.com/ublue-os/bazzite",
     "language": "Just",
-    "stargazers_count": 9028,
-    "forks_count": 1081,
+    "stargazers_count": 9029,
+    "forks_count": 1082,
     "fork": false,
     "owner": {
       "login": "ublue-os"
@@ -187,8 +187,8 @@
     "description": "Bitwarden infrastructure/backend (API, database, Docker, etc).",
     "html_url": "https://github.com/bitwarden/server",
     "language": "C#",
-    "stargazers_count": 19983,
-    "forks_count": 1753,
+    "stargazers_count": 19992,
+    "forks_count": 1754,
     "fork": false,
     "owner": {
       "login": "bitwarden"
@@ -200,8 +200,8 @@
     "description": "Virtual whiteboard for sketching hand-drawn like diagrams",
     "html_url": "https://github.com/excalidraw/excalidraw",
     "language": "TypeScript",
-    "stargazers_count": 130991,
-    "forks_count": 15114,
+    "stargazers_count": 131056,
+    "forks_count": 15124,
     "fork": false,
     "owner": {
       "login": "excalidraw"
@@ -213,8 +213,8 @@
     "description": "Vesktop is a custom Discord App aiming to give you better performance and improve linux support",
     "html_url": "https://github.com/Vencord/Vesktop",
     "language": "TypeScript",
-    "stargazers_count": 8372,
-    "forks_count": 449,
+    "stargazers_count": 8374,
+    "forks_count": 448,
     "fork": false,
     "owner": {
       "login": "Vencord"
@@ -226,8 +226,8 @@
     "description": "Homepage for @zen-browser!",
     "html_url": "https://github.com/zen-browser/www",
     "language": "Astro",
-    "stargazers_count": 1413,
-    "forks_count": 265,
+    "stargazers_count": 1415,
+    "forks_count": 264,
     "fork": false,
     "owner": {
       "login": "zen-browser"
@@ -239,7 +239,7 @@
     "description": "😸 Soothing pastel theme for the high-spirited!",
     "html_url": "https://github.com/catppuccin/catppuccin",
     "language": "TypeScript",
-    "stargazers_count": 19723,
+    "stargazers_count": 19724,
     "forks_count": 352,
     "fork": false,
     "owner": {
@@ -252,8 +252,8 @@
     "description": "AnkiDroid: Anki flashcards on Android. Your secret trick to achieve superhuman information retention.",
     "html_url": "https://github.com/ankidroid/Anki-Android",
     "language": "Kotlin",
-    "stargazers_count": 11703,
-    "forks_count": 2889,
+    "stargazers_count": 11715,
+    "forks_count": 2890,
     "fork": false,
     "owner": {
       "login": "ankidroid"
@@ -265,7 +265,7 @@
     "description": "Anki is a smart spaced repetition flashcard program",
     "html_url": "https://github.com/ankitects/anki",
     "language": "Rust",
-    "stargazers_count": 30224,
+    "stargazers_count": 30271,
     "forks_count": 3179,
     "fork": false,
     "owner": {
@@ -278,8 +278,8 @@
     "description": "The Magic Mask for Android",
     "html_url": "https://github.com/topjohnwu/Magisk",
     "language": "Kotlin",
-    "stargazers_count": 62548,
-    "forks_count": 18473,
+    "stargazers_count": 62560,
+    "forks_count": 18486,
     "fork": false,
     "owner": {
       "login": "topjohnwu"
@@ -291,8 +291,8 @@
     "description": "Atmosphère is a work-in-progress customized firmware for the Nintendo Switch.",
     "html_url": "https://github.com/Atmosphere-NX/Atmosphere",
     "language": "C++",
-    "stargazers_count": 19492,
-    "forks_count": 1459,
+    "stargazers_count": 19496,
+    "forks_count": 1460,
     "fork": false,
     "owner": {
       "login": "Atmosphere-NX"
@@ -304,8 +304,8 @@
     "description": "Command-line tool to customize Spotify client. Supports Windows, macOS, and Linux.",
     "html_url": "https://github.com/spicetify/cli",
     "language": "JavaScript",
-    "stargazers_count": 24294,
-    "forks_count": 921,
+    "stargazers_count": 24316,
+    "forks_count": 920,
     "fork": false,
     "owner": {
       "login": "spicetify"
@@ -317,7 +317,7 @@
     "description": "A TizenBrew module to remove ads and add support for SponsorBlock for your Tizen TV.",
     "html_url": "https://github.com/reisxd/TizenTube",
     "language": "JavaScript",
-    "stargazers_count": 2051,
+    "stargazers_count": 2055,
     "forks_count": 177,
     "fork": false,
     "owner": {
@@ -343,8 +343,8 @@
     "description": "AdNauseam: Fight back against advertising surveillance",
     "html_url": "https://github.com/dhowe/AdNauseam",
     "language": "JavaScript",
-    "stargazers_count": 6721,
-    "forks_count": 247,
+    "stargazers_count": 6727,
+    "forks_count": 246,
     "fork": true,
     "owner": {
       "login": "dhowe"
@@ -356,8 +356,8 @@
     "description": "uBlock Origin - An efficient blocker for Chromium and Firefox. Fast and lean.",
     "html_url": "https://github.com/gorhill/uBlock",
     "language": "JavaScript",
-    "stargazers_count": 67493,
-    "forks_count": 4322,
+    "stargazers_count": 67531,
+    "forks_count": 4324,
     "fork": false,
     "owner": {
       "login": "gorhill"
@@ -369,7 +369,7 @@
     "description": "The next generation Linux workstation, designed for reliability, performance, and sustainability.",
     "html_url": "https://github.com/ublue-os/bluefin",
     "language": "Shell",
-    "stargazers_count": 2584,
+    "stargazers_count": 2585,
     "forks_count": 260,
     "fork": false,
     "owner": {
@@ -382,7 +382,7 @@
     "description": "The main repository for the Linux and Mac OS Bedrock edition Minecraft launcher.",
     "html_url": "https://github.com/minecraft-linux/mcpelauncher-manifest",
     "language": "CMake",
-    "stargazers_count": 1632,
+    "stargazers_count": 1633,
     "forks_count": 128,
     "fork": false,
     "owner": {
@@ -395,7 +395,7 @@
     "description": "UGENE is free open-source cross-platform bioinformatics software",
     "html_url": "https://github.com/ugeneunipro/ugene",
     "language": "C++",
-    "stargazers_count": 282,
+    "stargazers_count": 283,
     "forks_count": 69,
     "fork": false,
     "owner": {
@@ -408,7 +408,7 @@
     "description": "collection for free openai keys to use in your projects",
     "html_url": "https://github.com/dan1471/FREE-openai-api-keys",
     "language": null,
-    "stargazers_count": 5486,
+    "stargazers_count": 5496,
     "forks_count": 586,
     "fork": false,
     "owner": {
@@ -421,8 +421,8 @@
     "description": "Onigiri is an experimental add-on that replaces the standard Anki interface with a modern, highly customizable, and personalized dashboard, completely transforming how Anki looks. ",
     "html_url": "https://github.com/thepeacemonk/Onigiri",
     "language": "Python",
-    "stargazers_count": 373,
-    "forks_count": 21,
+    "stargazers_count": 378,
+    "forks_count": 22,
     "fork": false,
     "owner": {
       "login": "thepeacemonk"
@@ -434,8 +434,8 @@
     "description": "🌐 The open-source Agentic browser; alternative to ChatGPT Atlas, Perplexity Comet, Dia.",
     "html_url": "https://github.com/browseros-ai/BrowserOS",
     "language": "TypeScript",
-    "stargazers_count": 13485,
-    "forks_count": 1418,
+    "stargazers_count": 13523,
+    "forks_count": 1421,
     "fork": false,
     "owner": {
       "login": "browseros-ai"
@@ -447,8 +447,8 @@
     "description": "An open-source AI agent that brings the power of Gemini directly into your terminal.",
     "html_url": "https://github.com/google-gemini/gemini-cli",
     "language": "TypeScript",
-    "stargazers_count": 106762,
-    "forks_count": 14516,
+    "stargazers_count": 106791,
+    "forks_count": 14520,
     "fork": false,
     "owner": {
       "login": "google-gemini"
@@ -460,7 +460,7 @@
     "description": " Run Windows apps such as Microsoft Office/Adobe in Linux (Ubuntu/Fedora) and GNOME/KDE as if they were a part of the native OS, including Nautilus integration. Hard fork of https://github.com/Fmstrat/winapps/",
     "html_url": "https://github.com/winapps-org/winapps",
     "language": "Shell",
-    "stargazers_count": 15881,
+    "stargazers_count": 15884,
     "forks_count": 502,
     "fork": false,
     "owner": {
@@ -499,7 +499,7 @@
     "description": "Wallpaper downloader and manager for Linux systems",
     "html_url": "https://github.com/varietywalls/variety",
     "language": "Python",
-    "stargazers_count": 1697,
+    "stargazers_count": 1698,
     "forks_count": 192,
     "fork": false,
     "owner": {
@@ -538,7 +538,7 @@
     "description": "The Pokémon API",
     "html_url": "https://github.com/PokeAPI/pokeapi",
     "language": "Python",
-    "stargazers_count": 5368,
+    "stargazers_count": 5370,
     "forks_count": 1163,
     "fork": false,
     "owner": {
@@ -551,7 +551,7 @@
     "description": "Transcribe on your own!",
     "html_url": "https://github.com/thewh1teagle/vibe",
     "language": "TypeScript",
-    "stargazers_count": 7256,
+    "stargazers_count": 7263,
     "forks_count": 499,
     "fork": false,
     "owner": {
@@ -564,8 +564,8 @@
     "description": "Pear 🍐 is extension for music player",
     "html_url": "https://github.com/pear-devs/pear-desktop",
     "language": "TypeScript",
-    "stargazers_count": 33341,
-    "forks_count": 1972,
+    "stargazers_count": 33348,
+    "forks_count": 1971,
     "fork": false,
     "owner": {
       "login": "pear-devs"
