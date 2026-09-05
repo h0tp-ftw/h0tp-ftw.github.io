@@ -13,6 +13,19 @@
     }
   },
   {
+    "name": "anki-vscode",
+    "full_name": "h0tp-ftw/anki-vscode",
+    "description": "One-script setup to test and run Anki addons directly via VS Code, with full debugpy support! ",
+    "html_url": "https://github.com/h0tp-ftw/anki-vscode",
+    "language": "TypeScript",
+    "stargazers_count": 14,
+    "forks_count": 0,
+    "fork": true,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
     "name": "h0tp-ftw.github.io",
     "full_name": "h0tp-ftw/h0tp-ftw.github.io",
     "description": "website and profile for @h0tp-ftw ",
@@ -84,19 +97,6 @@
     "html_url": "https://github.com/h0tp-ftw/antigravity-remote",
     "language": null,
     "stargazers_count": 0,
-    "forks_count": 0,
-    "fork": true,
-    "owner": {
-      "login": "h0tp-ftw"
-    }
-  },
-  {
-    "name": "anki-vscode",
-    "full_name": "h0tp-ftw/anki-vscode",
-    "description": "One-script setup to test and run Anki addons directly via VS Code, with full debugpy support! ",
-    "html_url": "https://github.com/h0tp-ftw/anki-vscode",
-    "language": "TypeScript",
-    "stargazers_count": 13,
     "forks_count": 0,
     "fork": true,
     "owner": {
