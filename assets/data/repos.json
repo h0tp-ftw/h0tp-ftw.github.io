@@ -1,18 +1,5 @@
 [
   {
-    "name": "excalidraw-mcp",
-    "full_name": "h0tp-ftw/excalidraw-mcp",
-    "description": "Fast and streamable Excalidraw MCP App",
-    "html_url": "https://github.com/h0tp-ftw/excalidraw-mcp",
-    "language": null,
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "fork": true,
-    "owner": {
-      "login": "h0tp-ftw"
-    }
-  },
-  {
     "name": "ankimon",
     "full_name": "h0tp-ftw/ankimon",
     "description": "Ankimon  - an Anki Addon to Gamify your learning experience! EXPERIMENTAL branch!",
@@ -34,6 +21,19 @@
     "stargazers_count": 2,
     "forks_count": 0,
     "fork": false,
+    "owner": {
+      "login": "h0tp-ftw"
+    }
+  },
+  {
+    "name": "excalidraw-mcp",
+    "full_name": "h0tp-ftw/excalidraw-mcp",
+    "description": "Fast and streamable Excalidraw MCP App",
+    "html_url": "https://github.com/h0tp-ftw/excalidraw-mcp",
+    "language": null,
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "fork": true,
     "owner": {
       "login": "h0tp-ftw"
     }
