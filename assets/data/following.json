@@ -7,6 +7,13 @@
     "bio": "Web Warrior"
   },
   {
+    "login": "WillyOwl",
+    "html_url": "https://github.com/WillyOwl",
+    "avatar_url": "https://avatars.githubusercontent.com/u/58131094?v=4",
+    "name": "Yiyang Zuo",
+    "bio": null
+  },
+  {
     "login": "NamelessGO",
     "html_url": "https://github.com/NamelessGO",
     "avatar_url": "https://avatars.githubusercontent.com/u/66227691?v=4",
@@ -67,6 +74,13 @@
     "html_url": "https://github.com/mathieulabs",
     "avatar_url": "https://avatars.githubusercontent.com/u/156086076?v=4",
     "name": "Mathieu",
+    "bio": null
+  },
+  {
+    "login": "shanzhyilarionov",
+    "html_url": "https://github.com/shanzhyilarionov",
+    "avatar_url": "https://avatars.githubusercontent.com/u/217638131?v=4",
+    "name": "Shanzhy Ilarionov",
     "bio": null
   }
 ]
