@@ -1,5 +1,12 @@
 [
   {
+    "login": "subtleGradient",
+    "html_url": "https://github.com/subtleGradient",
+    "avatar_url": "https://avatars.githubusercontent.com/u/4117?v=4",
+    "name": "Tom Aylott",
+    "bio": "JW. AI wrangler.\r\n\r\nBuilding @effect-native\r\n\r\nex @reactjs @mootools @textmate @coinbase @facebook @crazyegginc"
+  },
+  {
     "login": "vladislav1133",
     "html_url": "https://github.com/vladislav1133",
     "avatar_url": "https://avatars.githubusercontent.com/u/22179602?v=4",
@@ -11,6 +18,13 @@
     "html_url": "https://github.com/WillyOwl",
     "avatar_url": "https://avatars.githubusercontent.com/u/58131094?v=4",
     "name": "Yiyang Zuo",
+    "bio": null
+  },
+  {
+    "login": "Jays-code-collection",
+    "html_url": "https://github.com/Jays-code-collection",
+    "avatar_url": "https://avatars.githubusercontent.com/u/63003326?v=4",
+    "name": null,
     "bio": null
   },
   {
@@ -61,6 +75,13 @@
     "avatar_url": "https://avatars.githubusercontent.com/u/105552060?v=4",
     "name": "Peace",
     "bio": "Pre-medical student, Anki add-on dev and web dev. "
+  },
+  {
+    "login": "JadonKJones",
+    "html_url": "https://github.com/JadonKJones",
+    "avatar_url": "https://avatars.githubusercontent.com/u/122186046?v=4",
+    "name": "Jadon Jones",
+    "bio": "CS Student & Full-Stack Dev\r\n\r\nMichigan State University ‘27"
   },
   {
     "login": "OuraN2O",
